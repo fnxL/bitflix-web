@@ -1,0 +1,57 @@
+import { getOneMonthAgoReleaseDate } from '../utils/utils';
+import { watchProvidersList } from '../utils/watchProviders';
+
+const tmdb_key = process.env.tmdb_key;
+const ENG = process.env.ENG;
+const WATCH_REGION = process.env.WATCH_REGION;
+
+const { netflix, primevideo, voot, hotstar } = watchProvidersList;
+
+const ONEMONTHAGO = getOneMonthAgoReleaseDate();
+
+const requests = {
+  fetchSearchQuery: `/search/multi?api_key=${tmdb_key}&language=${ENG}&query=`,
+  fetchTrendingAll: `/trending/all/week?api_key=${tmdb_key}&sort_by=popularity.desc&language=${ENG}`,
+
+  getMovieDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,release_dates,recommendations,credits`,
+  getTVDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits`,
+  // Movies
+  // watchProviders
+  popularNetflixMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${netflix}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate`,
+  popularPrimeMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${primevideo}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate`,
+  popularHotstarMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${hotstar}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate`,
+  popularVootMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${voot}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate`,
+
+  // Popular Movies
+  popularMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  hindiMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&include_video=false&with_original_language=hi&watch_region=IN&with_watch_monetization_types=flatrate`,
+
+  // TV Shows
+  popularTVShows: `/discover/tv?api_key=${tmdb_key}&sort_by=popularity.desc&include_null_first_air_dates=false&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  hindiSeries: `/discover/tv?api_key=${tmdb_key}&sort_by=popularity.desc&with_networks=1024|213&include_null_first_air_dates=false&with_original_language=hi&watch_region=IN&with_watch_monetization_types=flatrate`,
+  netflixOriginals: `/discover/tv?api_key=${tmdb_key}&with_networks=213&sort_by=popularity.desc`,
+  amazonOriginals: `/discover/tv?api_key=${tmdb_key}&with_networks=1024&sort_by=popularity.desc`,
+
+  // waste
+  fetchActionMovies: `/discover/movie?api_key=${tmdb_key}&with_genres=28&sort_by=popularity.desc&language=${ENG}`,
+  fetchAdventureMovies: `/discover/movie?api_key=${tmdb_key}&with_genres=12&sort_by=popularity.desc&language=${ENG}`,
+  fetchComedyMovies: `/discover/movie?api_key=${tmdb_key}&with_genres=35&sort_by=popularity.desc&language=${ENG}`,
+  fetchHorrorMovies: `/discover/movie?api_key=${tmdb_key}&with_genres=27&sort_by=popularity.desc&language=${ENG}`,
+  fetchRomanceMovies: `/discover/movie?api_key=${tmdb_key}&with_genres=10749&sort_by=popularity.desc&language=${ENG}`,
+  fetchWarMovies: `/discover/movie?api_key=${tmdb_key}&with_genres=10752&sort_by=popularity.desc&language=${ENG}`,
+  fetchAnimationMovies: `/discover/movie?api_key=${tmdb_key}&with_genres=16&sort_by=popularity.desc&language=${ENG}`,
+  discoverMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&language=${ENG}`,
+  // Series
+  discoverSeries: `/discover/tv?api_key=${tmdb_key}&sort_by=popularity.desc&language=${ENG}`,
+  fetchTrendingSeries: `/trending/tv/week?api_key=${tmdb_key}&sort_by=popularity.desc&language=${ENG}`,
+  fetchActionAdventureSeries: `/discover/tv?api_key=${tmdb_key}&with_genres=10759&sort_by=popularity.desc&language=${ENG}`,
+  fetchAnimationSeries: `/discover/tv?api_key=${tmdb_key}&with_genres=16&sort_by=popularity.desc&language=${ENG}`,
+  fetchComedySeries: `/discover/tv?api_key=${tmdb_key}&with_genres=35&sort_by=popularity.desc&language=${ENG}`,
+  fetchCrimeSeries: `/discover/tv?api_key=${tmdb_key}&with_genres=80&sort_by=popularity.desc&language=${ENG}`,
+  fetchDocumentarySeries: `/discover/tv?api_key=${tmdb_key}&with_genres=99&sort_by=popularity.desc&language=${ENG}`,
+  fetchFamilySeries: `/discover/tv?api_key=${tmdb_key}&with_genres=10751&sort_by=popularity.desc&language=${ENG}`,
+  fetchKidsSeries: `/discover/tv?api_key=${tmdb_key}&with_genres=10762&sort_by=popularity.desc&language=${ENG}`,
+  fetchSciFiFantasySeries: `/discover/tv?api_key=${tmdb_key}&with_genres=10765&sort_by=popularity.desc&language=${ENG}`,
+};
+
+export default requests;

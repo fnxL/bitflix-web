@@ -1,0 +1,71 @@
+.default {
+  background: rgba(109, 109, 110, 0.7);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  opacity: 1;
+  user-select: none;
+  white-space: nowrap;
+  color: white;
+  font-size: 14px;
+  flex-shrink: 0;
+  padding: 8px 20px;
+  align-items: center;
+  z-index: 30;
+  @apply 2xl:p-[0.72rem] 2xl:pl-[2.2rem] 2xl:pr-[2.5rem] 2xl:text-[1.44rem];
+}
+
+.default:hover {
+  background-color: rgba(109, 109, 110, 0.4);
+}
+
+.icon {
+  line-height: 0;
+}
+
+.white {
+  background: white;
+  color: black;
+}
+
+.white:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.circular {
+  -webkit-box-align: center;
+  align-items: center;
+  appearance: none;
+  cursor: pointer;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  opacity: 1;
+  padding: 0.6vw;
+  position: relative;
+  user-select: none;
+  will-change: background-color, color;
+  word-break: break-word;
+  white-space: nowrap;
+  border-radius: 50%;
+  border-width: 2px;
+  background-color: rgba(42, 42, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.circular:hover {
+  border-color: #fff;
+  background-color: #2a2a2a;
+}
+
+.cwhite {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: white;
+}
+
+.cwhite:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

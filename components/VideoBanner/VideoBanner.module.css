@@ -1,0 +1,109 @@
+.frame_container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  padding-top: 25px;
+  width: 300%; /* enlarge beyond browser width */
+  left: -100%;
+  /* center */
+}
+
+.frame_container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.movie {
+  transform: scaleY(1.4);
+}
+.banner_panel {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
+  background-color: rgba(20, 20, 20, 0.2);
+}
+
+.banner_vignette {
+  position: absolute;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(20, 20, 20, 0) 0,
+    rgba(20, 20, 20, 0.15) 15%,
+    rgba(20, 20, 20, 0.35) 29%,
+    rgba(20, 20, 20, 0.58) 44%,
+    #141414 68%,
+    #141414 100%
+  );
+  background-size: 100% 100%;
+  background-position: 0 top;
+  background-repeat: repeat-x;
+  background-color: transparent;
+  width: 100%;
+  height: 14.7vw;
+  top: auto;
+  bottom: -1px;
+  opacity: 1;
+  z-index: 22;
+}
+
+.maturity {
+  position: absolute;
+  right: 0;
+  bottom: 35%;
+  display: flex;
+  z-index: 30;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.maturity_rating {
+  border: solid 3px #dcdcdc;
+  border-style: none none none solid;
+  background-color: rgba(51, 51, 51, 0.6);
+  font-size: 1.1vw;
+  padding: 0.5vw 3.5vw 0.5vw 0.8vw;
+  display: flex;
+  align-items: center;
+  height: 2.4vw;
+}
+
+.info {
+  position: absolute;
+  top: 0;
+  bottom: 35%;
+  left: 4%;
+  width: 36%;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.description {
+  opacity: 1;
+  font-size: 16px;
+  line-height: 1.6;
+  text-shadow: 2px 2px 4px rgb(20 20 20 / 45%);
+
+  @apply sm:text-[18px] md:text-[2vw] md:max-w-[60vw] lg:text-left lg:px-0 lg:text-[1.2vw] xl:text-[1.4vw] lg:max-w-[40%];
+}
+
+.title {
+  font-size: 35px;
+  font-weight: bold;
+  color: #f2f2f2;
+  text-shadow: 2px 2px 4px rgb(20 20 20 / 45%);
+  margin-bottom: 1rem;
+  @apply sm:text-[2.5rem] md:text-[3.75rem] lg:max-w-[50%];
+}
+
+.logo_text {
+  transition: transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    -webkit-transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    -moz-transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    -o-transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
