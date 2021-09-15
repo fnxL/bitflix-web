@@ -1,0 +1,95 @@
+.navbar__primary {
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.7) 10%,
+    transparent
+  );
+  transition: all 0.4s ease-in-out;
+  @apply text-[#f2f2f2] w-full fixed top-0 z-[10] flex h-[70px] justify-between px-10 pr-12;
+}
+
+.navbar__left {
+  @apply flex flex-row items-center;
+}
+
+.navbar__items {
+  @apply ml-8 hidden sm:hidden md:hidden lg:flex items-center lg:text-[18px];
+}
+
+.navbar__navlinks {
+  font-weight: 400;
+  transition: color 0.2s ease-in-out;
+  text-shadow: 2px 2px 2px rgb(20 20 20 / 45%);
+}
+
+.navbar__navlinks:hover {
+  color: #b3b3b3;
+}
+
+.activeNavLink {
+  color: white;
+  font-weight: 700;
+  cursor: default;
+}
+
+.activeNavLink:hover {
+  color: white;
+}
+
+.navbar__mobile {
+  @apply lg:hidden cursor-pointer text-[16px] p-0 flex absolute w-full h-[45px] top-[70px] justify-center items-center left-0 m-auto;
+}
+
+.scrolled {
+  background-image: none;
+  background-color: #141414;
+}
+
+.text_shadow_mobile {
+  text-shadow: 2px 2px 6px rgb(3 3 3 / 90%);
+}
+
+.navbar__mobile__content {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65);
+  box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease-out;
+  @apply opacity-0  pointer-events-none fixed top-0 left-0 border-none flex justify-center items-center text-center z-[1];
+}
+
+.navbar_mobile_active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.navbar_profile_menu {
+  min-width: auto;
+  border: 1px solid hsla(0, 0%, 100%, 0.5);
+  background-color: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
+  transition: all 0.2s ease-out;
+
+  @apply block pointer-events-none absolute opacity-0 top-[100px] right-0 py-[10px] z-[1] whitespace-nowrap min-w-[180px];
+}
+.navbar_profile_caret {
+  pointer-events: all;
+  transition: transform 0.2s ease-out;
+  @apply cursor-pointer;
+}
+
+.caret_active {
+  transform: rotate(180deg);
+}
+
+.active {
+  opacity: 1;
+  top: 55px;
+  pointer-events: all;
+}
+
+.navbar__right {
+  @apply flex space-x-6 items-center;
+}

@@ -24,7 +24,7 @@
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 0;
+  z-index: 1;
   background-color: rgba(20, 20, 20, 0.2);
 }
 
@@ -48,7 +48,7 @@
   top: auto;
   bottom: -1px;
   opacity: 1;
-  z-index: 22;
+  z-index: 3;
 }
 
 .maturity {
@@ -56,7 +56,7 @@
   right: 0;
   bottom: 35%;
   display: flex;
-  z-index: 30;
+  z-index: 4;
   justify-content: flex-end;
   align-items: center;
 }

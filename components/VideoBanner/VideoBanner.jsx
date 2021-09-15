@@ -105,90 +105,96 @@ function VideoBanner({ data, type }) {
   };
 
   return (
-    <div className='wrapper absolute w-full overflow-hidden items-end h-[90vh] 2xl:h-[56.25vw] max-w-full'>
-      <div className='fill-container absolute top-0 left-0 right-0 bottom-0'>
-        {width > 1024 && (
-          <div
-            className={`${styles.frame_container} ${
-              (hasVideoEnded || !isPlaying) && 'hidden'
-            }`}
-          >
-            <YouTube
-              ref={playerRef}
-              className={type === 'movie' && styles.movie}
-              videoId='gL9EP2QabdQ'
-              opts={playerOptions}
-              onPlay={onPlay}
-              onEnd={onEnd}
-            />
-          </div>
-        )}
-        <div className='info absolute bottom-[15%] text-center md:text-left items-center left-[4%] md:bottom-[36.5%] 2xl:left-[60px] z-10 flex md:justify-end flex-col'>
-          <div className={`${styles.logo_text} w-full`}>
-            <div className='titleWrapper' style={transitionStyles.titleWrapper}>
-              {width > 1024 ? (
-                <div className='titleLogo min-h-[13.2vw]  relative mb-[1.2vw]'>
-                  <img
-                    className='transform origin-bottom-left'
-                    src='https://fanart.tv/fanart/movies/299534/hdmovielogo/avengers-infinity-war---part-ii-5c12c9cb63356.png'
-                    alt='cool'
-                    height='658px'
-                  />
-                </div>
-              ) : (
-                <h1 className={styles.title}>Avengers</h1>
-              )}
+    <span className='block z-[1] relative'>
+      <div className='wrapper absolute w-full overflow-hidden items-end h-[90vh] 2xl:h-[56.25vw] max-w-full'>
+        <div className='fill-container absolute top-0 left-0 right-0 bottom-0'>
+          {width > 1024 && (
+            <div
+              className={`${styles.frame_container} ${
+                (hasVideoEnded || !isPlaying) && 'hidden'
+              }`}
+            >
+              <YouTube
+                ref={playerRef}
+                className={type === 'movie' && styles.movie}
+                videoId='5VYb3B1ETlk'
+                opts={playerOptions}
+                onPlay={onPlay}
+                onEnd={onEnd}
+              />
             </div>
-            <div className='info_wrapper' style={transitionStyles.infoWrapper}>
-              <div className={`fade `} style={transitionStyles.infoFade}>
-                <div className={styles.description}>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Ullam pariatur labore vitae distinctio rerum in voluptatum
-                  quos laborum voluptate id.
+          )}
+          <div className='info absolute bottom-[15%] text-center md:text-left items-center left-[4%] md:bottom-[36.5%] 2xl:left-[60px] z-[2] flex md:justify-end flex-col'>
+            <div className={`${styles.logo_text} w-full`}>
+              <div
+                className='titleWrapper'
+                style={transitionStyles.titleWrapper}
+              >
+                {width > 1024 ? (
+                  <div className='titleLogo min-h-[13.2vw]  relative mb-[1.2vw]'>
+                    <img
+                      className='transform origin-bottom-left w-[35.68125vw]'
+                      src='https://fanart.tv/fanart/movies/299534/hdmovielogo/avengers-infinity-war---part-ii-5c12c9cb63356.png'
+                      alt='cool'
+                    />
+                  </div>
+                ) : (
+                  <h1 className={styles.title}>Avengers</h1>
+                )}
+              </div>
+              <div
+                className='info_wrapper'
+                style={transitionStyles.infoWrapper}
+              >
+                <div className={`fade `} style={transitionStyles.infoFade}>
+                  <div className={styles.description}>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Ullam pariatur labore vitae distinctio rerum in voluptatum
+                    quos laborum voluptate id.
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className='buttons justify-center md:justify-start space-x-4 mt-[1.5vw] whitespace-nowrap flex line-height: 88%'>
-              <Button text='Play' variant='white'>
-                <FaPlay />
-                <div className='w-4'></div>
-              </Button>
-              <Button text='More Info'>
-                <BiInfoCircle className='text-[1.4rem] lg:text-[1.6rem] xl:text-[1.8rem] 2xl:text-[2rem]' />
-                <div className='w-4'></div>
-              </Button>
+              <div className='buttons justify-center md:justify-start space-x-4 mt-[1.5vw] whitespace-nowrap flex line-height: 88%'>
+                <Button text='Play' variant='white'>
+                  <FaPlay />
+                  <div className='w-4'></div>
+                </Button>
+                <Button text='More Info'>
+                  <BiInfoCircle className='text-[1.4rem] lg:text-[1.6rem] xl:text-[1.8rem] 2xl:text-[2rem]' />
+                  <div className='w-4'></div>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+        <div className={styles.banner_vignette}></div>
+        <div className={styles.banner_panel}></div>
+        {(width <= 1024 || hasVideoEnded || !isPlaying) && (
+          <img
+            className='max-w-full absolute top-0 z-[-1] object-cover h-[99%] w-full'
+            src='https://image.tmdb.org/t/p/w1280/dq18nCTTLpy9PmtzZI6Y2yAgdw5.jpg'
+            alt='ok'
+          />
+        )}
+        {width >= 1024 && (
+          <div className={styles.maturity}>
+            <span className='action_button w-[2.9vw] relative mr-[1.1vw]'>
+              {hasVideoEnded && !isPlaying ? (
+                <Button onClick={replay} type='circular' variant='white'>
+                  <BsArrowClockwise size='1.8rem' />
+                </Button>
+              ) : (
+                <Button onClick={toggleMute} type='circular' variant='white'>
+                  {isMuted && <BsVolumeMute size='1.8rem' />}
+                  {!isMuted && <BsVolumeUp size='1.8rem' />}
+                </Button>
+              )}
+            </span>
+            <span className={styles.maturity_rating}>13+</span>
+          </div>
+        )}
       </div>
-
-      <div className={styles.banner_vignette}></div>
-      <div className={styles.banner_panel}></div>
-      {(width <= 1024 || hasVideoEnded || !isPlaying) && (
-        <img
-          className='max-w-full absolute top-0 z-[-1] object-cover h-[99%] w-full'
-          src='https://image.tmdb.org/t/p/original/dq18nCTTLpy9PmtzZI6Y2yAgdw5.jpg'
-          alt='ok'
-        />
-      )}
-      {width >= 1024 && (
-        <div className={styles.maturity}>
-          <span className='action_button w-[2.9vw] relative mr-[1.1vw]'>
-            {hasVideoEnded && !isPlaying ? (
-              <Button onClick={replay} type='circular' variant='white'>
-                <BsArrowClockwise size='1.8rem' />
-              </Button>
-            ) : (
-              <Button onClick={toggleMute} type='circular' variant='white'>
-                {isMuted && <BsVolumeMute size='1.8rem' />}
-                {!isMuted && <BsVolumeUp size='1.8rem' />}
-              </Button>
-            )}
-          </span>
-          <span className={styles.maturity_rating}>13+</span>
-        </div>
-      )}
-    </div>
+    </span>
   );
 }
 
