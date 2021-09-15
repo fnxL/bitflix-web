@@ -8,6 +8,24 @@
   --background: #141414;
   --white: #f2f2f2;
   --main-font: 'Inter', sans-seriff;
+  --movie-width: 15.5vw;
+  --movie-height: 200px;
+  --arrow-width: 50px;
+  --slider-py: 200px;
+}
+
+@media only screen and (max-width: 1000px) {
+  :root {
+    --movie-width: 25vw;
+  }
+}
+
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
 html,
@@ -26,4 +44,44 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.swiper {
+  width: 100%;
+  height: auto;
+  padding: 0 4%;
+  overflow: visible;
+}
+
+.swiper-pagination {
+  top: -35px;
+  right: 4.5%;
+  left: initial !important;
+  bottom: initial !important;
+  width: auto !important;
+  opacity: 0;
+  z-index: 1;
+  transform: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 4px;
+  display: inline-block;
+  margin: 0 !important;
+  margin-left: 2px !important;
+  border-radius: 0;
+  opacity: 1;
+  background-color: #4d4d4d;
+  transition: all 0.2s ease-in-out;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #aaa;
+  height: 5px;
+}
+
+.swiper-button-disabled {
+  opacity: 0.2;
 }

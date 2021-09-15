@@ -7,10 +7,8 @@ function Home() {
   return (
     <div className='overflow-hidden'>
       <Navbar />
-      <div className='mainview relative min-h-[1000px] z-0'>
-        <VideoBanner type='movie' />
-        <Row {...HomePageRows[0]} />
-      </div>
+      <VideoBanner type='movie' />
+      <Row {...HomePageRows[0]} />
     </div>
   );
 }

@@ -1,24 +1,22 @@
-import { useRef } from 'react';
-import { FiChevronRight } from 'react-icons/fi';
-import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { useQuery } from 'react-query';
-import SwiperCore, { Navigation, Pagination } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import useViewport from '../../hooks/useViewport';
 import fetcher from '../../query/fetcher';
+import styles from './Row.module.css';
 import RowPoster from '../RowPoster/RowPoster';
-
-SwiperCore.use([Navigation, Pagination]);
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper';
+import useViewport from '../../hooks/useViewport';
+import { useRef } from 'react';
+import { HiChevronRight } from 'react-icons/hi';
 
 function Row({ results, title, isLarge, url, type }) {
+  const { data, error } = useQuery([title, url], () => fetcher(url), {
+    enabled: !!url,
+  });
   const { width } = useViewport();
 
   const navigationPrevRef = useRef(null);
   const navigationNextRef = useRef(null);
-
-  const { data, error } = useQuery([title, url], () => fetcher(url), {
-    enabled: !!url,
-  });
 
   if (data) results = data.results;
 
@@ -47,90 +45,53 @@ function Row({ results, title, isLarge, url, type }) {
     slideToClickedSlide: false,
     allowTouchMove: true,
   };
-
-  const rightMouseOver = (e) => {
-    if (e.currentTarget.classList.contains('right')) {
-      e.currentTarget.parentElement.classList.add('is-right');
-    } else if (e.currentTarget.classList.contains('left')) {
-      e.currentTarget.parentElement.classList.add('is-left');
-    }
-  };
-
-  const rightMouseOut = (e) => {
-    e.currentTarget.parentElement.classList.remove('is-right', 'is-left');
-  };
-
-  const insertPositionClassName = (index) => {
-    const i = index + 1;
-
-    if (i === 1) return 'left';
-    else if (i === 20) return 'right';
-
-    if (width >= 1378) {
-      if ([7, 13, 19].includes(i)) return 'left';
-      else if ([6, 12, 18].includes(i)) return 'right';
-    } else if (width >= 998) {
-      if ([5, 9, 13, 17].includes(i)) return 'left';
-      else if ([4, 8, 12, 16].includes(i)) return 'right';
-    } else if (width >= 768) {
-      if ([4, 7, 10, 13, 16].includes(i)) return 'left';
-      else if ([3, 6, 9, 12, 15, 18].includes(i)) return 'right';
-    }
-  };
+  console.log(results);
 
   return (
-    <div className='Row'>
-      <h3 className='Row__title'>
-        <a>
-          <span>{title}</span>
-          <span className='Row__showmore'>
-            Show all <FiChevronRight />
-          </span>
+    <div className='Row block py-[1.5vh] md:py-[3vh]'>
+      <div className={`${styles.Row_header}`}>
+        <a className='flex items-center text-center h-[1vw] cursor-pointer'>
+          <div>{title}</div>
+          <div className={styles.explore_all}>Explore all</div>
+          <div className={`${styles.chevron}`}></div>
         </a>
-      </h3>
-
-      {results && (
-        <div className='Row__poster--wrp'>
-          <div className='Row__slider--mask left' ref={navigationPrevRef}>
-            <MdChevronLeft
-              className='Row__slider--mask-icon left'
-              size='3em'
-              style={{ color: 'white' }}
-            />
-          </div>
-          <div className='Row__slider--mask right' ref={navigationNextRef}>
-            <MdChevronRight
-              className='Row__slider--mask-icon right'
-              size='3em'
-              style={{ color: 'white' }}
-            />
-          </div>
-          <Swiper
-            {...customSwiperParams}
-            onBeforeInit={(swiper) => {
-              swiper.params.navigation.prevEl = navigationPrevRef.current;
-              swiper.params.navigation.nextEl = navigationNextRef.current;
-            }}
-          >
-            {results &&
-              results.map((result, i) => (
-                <SwiperSlide
-                  key={result.id}
-                  className={insertPositionClassName(i)}
-                  onMouseOver={rightMouseOver}
-                  onMouseOut={rightMouseOut}
-                >
-                  <RowPoster
-                    item={result}
-                    type={type}
-                    isLarge={isLarge}
-                    key={result.id}
-                  />
-                </SwiperSlide>
-              ))}
-          </Swiper>
+      </div>
+      <div className='poster_wrap flex relative'>
+        <div
+          className={`${styles.slider_mask} ${styles.left}`}
+          ref={navigationPrevRef}
+        >
+          <MdChevronLeft
+            className={styles.slider_mask_icon}
+            size='3em'
+            style={{ color: 'white' }}
+          />
         </div>
-      )}
+        <div
+          className={`${styles.slider_mask} ${styles.right}`}
+          ref={navigationNextRef}
+        >
+          <MdChevronRight
+            size='3em'
+            style={{ color: 'white' }}
+            className={styles.slider_mask_icon}
+          />
+        </div>
+        <Swiper
+          modules={[Navigation, Pagination]}
+          {...customSwiperParams}
+          onSwiper={(swiper) => console.log(swiper)}
+          spaceBetween={6}
+          onSlideChange={() => console.log('slide change')}
+        >
+          {results &&
+            results.map((result) => (
+              <SwiperSlide key={result.id}>
+                <RowPoster item={result} />
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      </div>
     </div>
   );
 }
