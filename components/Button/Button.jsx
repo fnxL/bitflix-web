@@ -20,7 +20,7 @@ function Button({ onClick, type, variant = 'dark', text, children }) {
       className={`${styles.default} ${variant === 'white' && styles.white} `}
     >
       {children}
-      <span className='font-bold'>{text}</span>
+      <span className=''>{text}</span>
     </button>
   );
 }

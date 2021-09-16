@@ -118,7 +118,7 @@ function VideoBanner({ data, type }) {
                 <YouTube
                   ref={playerRef}
                   className={type === 'movie' && styles.movie}
-                  videoId='5VYb3B1ETlk'
+                  videoId='XZG1FzyB8DI'
                   opts={playerOptions}
                   onPlay={onPlay}
                   onEnd={onEnd}
@@ -132,7 +132,7 @@ function VideoBanner({ data, type }) {
                   style={transitionStyles.titleWrapper}
                 >
                   {width > 1024 ? (
-                    <div className='titleLogo min-h-[13.2vw]  relative mb-[1.2vw]'>
+                    <div className='titleLogo min-h-[13.2vw]  relative mb-[1.8vw]'>
                       <img
                         className='transform origin-bottom-left w-[35.68125vw]'
                         src='https://fanart.tv/fanart/movies/299534/hdmovielogo/avengers-infinity-war---part-ii-5c12c9cb63356.png'
@@ -155,14 +155,14 @@ function VideoBanner({ data, type }) {
                     </div>
                   </div>
                 </div>
-                <div className='buttons justify-center md:justify-start space-x-3 mt-[1.5vw] whitespace-nowrap flex line-height: 88%'>
+                <div className='buttons justify-center md:justify-start mt-[0.55vw] whitespace-nowrap flex line-height: 88%'>
                   <Button text='Play' variant='white'>
                     <FaPlay />
-                    <div className='w-4'></div>
+                    <div className='w-[1.2rem]'></div>
                   </Button>
                   <Button text='More Info'>
                     <BiInfoCircle className='text-[1.5rem] lg:text-[2vw] xl:text-[1.75vw]' />
-                    <div className='w-4'></div>
+                    <div className='w-[1rem]'></div>
                   </Button>
                 </div>
               </div>
