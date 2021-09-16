@@ -14,7 +14,7 @@
   padding: 8px 20px;
   align-items: center;
   z-index: 30;
-  @apply 2xl:p-[0.72rem] 2xl:pl-[2.2rem] 2xl:pr-[2.5rem] 2xl:text-[1.44rem];
+  @apply lg:text-[1.2vw] xl:pl-[1.5vw] xl:pr-[1.8vw] xl:py-[0.6vw];
 }
 
 .default:hover {
@@ -28,6 +28,7 @@
 .white {
   background: white;
   color: black;
+  @apply xl:pl-[1.73vw];
 }
 
 .white:hover {

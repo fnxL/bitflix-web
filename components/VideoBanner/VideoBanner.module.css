@@ -86,7 +86,7 @@
 .description {
   opacity: 1;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.3;
   text-shadow: 2px 2px 4px rgb(20 20 20 / 45%);
 
   @apply sm:text-[18px] md:text-[2vw] md:max-w-[60vw] lg:text-left lg:px-0 lg:text-[1.2vw] xl:text-[1.4vw] lg:max-w-[40%];
@@ -97,7 +97,7 @@
   font-weight: bold;
   color: #f2f2f2;
   text-shadow: 2px 2px 4px rgb(20 20 20 / 45%);
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
   @apply sm:text-[2.5rem] md:text-[3.75rem] lg:max-w-[50%];
 }
 

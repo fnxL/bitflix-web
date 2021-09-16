@@ -155,13 +155,13 @@ function VideoBanner({ data, type }) {
                     </div>
                   </div>
                 </div>
-                <div className='buttons justify-center md:justify-start space-x-4 mt-[1.5vw] whitespace-nowrap flex line-height: 88%'>
+                <div className='buttons justify-center md:justify-start space-x-3 mt-[1.5vw] whitespace-nowrap flex line-height: 88%'>
                   <Button text='Play' variant='white'>
                     <FaPlay />
                     <div className='w-4'></div>
                   </Button>
                   <Button text='More Info'>
-                    <BiInfoCircle className='text-[1.4rem] lg:text-[1.6rem] xl:text-[1.8rem] 2xl:text-[2rem]' />
+                    <BiInfoCircle className='text-[1.5rem] lg:text-[2vw] xl:text-[1.75vw]' />
                     <div className='w-4'></div>
                   </Button>
                 </div>
@@ -172,17 +172,17 @@ function VideoBanner({ data, type }) {
           <div className={styles.banner_panel}></div>
           {(width <= 1024 || hasVideoEnded || !isPlaying) && (
             <img
-              className='max-w-full absolute top-0 z-[-1] object-cover h-[99%] w-full'
+              className='max-w-full absolute top-0 z-0 object-cover h-[99%] w-full'
               src='https://image.tmdb.org/t/p/w1280/dq18nCTTLpy9PmtzZI6Y2yAgdw5.jpg'
               alt='ok'
             />
           )}
           {width >= 1024 && (
             <div className={styles.maturity}>
-              <span className='action_button w-[2.9vw] relative mr-[1.1vw]'>
+              <span className='action_button w-[2.9vw] relative lg:mr-[1.5rem] xl:mr-[1.1vw]'>
                 {hasVideoEnded && !isPlaying ? (
                   <Button onClick={replay} type='circular' variant='white'>
-                    <BsArrowClockwise size='1.8rem' />
+                    <BsArrowClockwise size='1.75vw' />
                   </Button>
                 ) : (
                   <Button onClick={toggleMute} type='circular' variant='white'>
