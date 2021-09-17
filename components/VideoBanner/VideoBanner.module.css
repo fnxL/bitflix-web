@@ -57,6 +57,7 @@
   bottom: 35%;
   display: flex;
   z-index: 4;
+  user-select: none;
   justify-content: flex-end;
   align-items: center;
 }
@@ -102,6 +103,7 @@
 }
 
 .logo_text {
+  user-select: none;
   transition: transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1),
     -webkit-transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1),
     -moz-transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1),
