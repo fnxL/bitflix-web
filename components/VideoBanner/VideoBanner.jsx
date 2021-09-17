@@ -1,11 +1,20 @@
+import axios from 'axios';
 import { useRef, useState } from 'react';
 import { BiInfoCircle } from 'react-icons/bi';
 import { BsArrowClockwise, BsVolumeMute, BsVolumeUp } from 'react-icons/bs';
 import { FaPlay } from 'react-icons/fa';
+import { useQuery } from 'react-query';
 import YouTube from 'react-youtube';
+import useVideoBanner from '../../hooks/useVideoBanner';
 import useViewport from '../../hooks/useViewport';
+import fetcher from '../../query/fetcher';
+import requests from '../../query/requests';
+import { getFallBackTitle, truncate } from '../../utils/utils';
 import Button from '../Button/Button';
 import styles from './VideoBanner.module.css';
+
+const fanart = process.env.fanart;
+const FEATURED_URL = process.env.FEATURED_URL;
 
 const playerOptions = {
   playerVars: {
@@ -23,89 +32,63 @@ const playerOptions = {
   },
 };
 
-function VideoBanner({ data, type }) {
+function VideoBanner({ children, data, type }) {
   const playerRef = useRef();
-  const [isMuted, setIsMuted] = useState(true);
-  const [hasVideoEnded, setHasVideoEnded] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
-
-  const [transitionStyles, setTransitionStyles] = useState({
-    titleWrapper: {},
-    infoWrapper: {},
-    infoFade: {},
-  });
   const { width } = useViewport();
+  const {
+    isMuted,
+    hasVideoEnded,
+    isPlaying,
+    transitionStyles,
+    toggleMute,
+    onPlay,
+    onEnd,
+    replay,
+  } = useVideoBanner(playerRef);
 
-  const toggleMute = (e) => {
-    const player = playerRef.current.getInternalPlayer();
-    if (isMuted) {
-      player.unMute();
-      setIsMuted(false);
-    } else {
-      player.mute();
-      setIsMuted(true);
+  const fallBackTitle = getFallBackTitle(data);
+  const description = truncate(data?.overview, 150);
+  const { id, backdrop_path } = data;
+
+  const url =
+    type === 'movie'
+      ? `/movie/${id}${requests.movieDetails}`
+      : `/tv/${id}${requests.tvDetails}`;
+
+  const { data: trailer, error: trailerError } = useQuery(
+    [type, id],
+    () => fetcher(url),
+    { enabled: !data?.videos }
+  );
+
+  let videoKey;
+  let trailersList;
+  if (trailer || data?.videos) {
+    trailersList = trailer ? trailer?.videos?.results : data?.videos?.results;
+    trailersList = trailersList.filter((video) => video.type === 'Trailer');
+    videoKey = trailersList ? trailersList[0]?.key : undefined;
+  }
+
+  const { data: image, error: imageError } = useQuery(
+    ['fanart', id],
+    async () => {
+      const { data } = await axios.get(
+        `http://webservice.fanart.tv/v3/${
+          type === 'movie' ? 'movies' : 'tv'
+        }/${id}?api_key=${fanart}`
+      );
+      return data;
     }
-  };
-
-  const replay = () => {
-    const player = playerRef.current.getInternalPlayer();
-    if (hasVideoEnded) {
-      player.playVideo();
-    }
-  };
-
-  const onPlay = () => {
-    setIsPlaying(true);
-    setHasVideoEnded(false);
-    setTransitionStyles({
-      ...transitionStyles,
-      titleWrapper: {
-        transformOrigin: 'left bottom',
-        transform: 'scale(0.6) translate3d(0px, 13vw, 0px)',
-        transitionDuration: '1300ms',
-        transitionDelay: '5000ms',
-      },
-      infoWrapper: {
-        transform: 'translate3d(0px, 100px, 0px)',
-        transitionDuration: '1300ms',
-        transitionDelay: '5000ms',
-        opacity: 1,
-      },
-      infoFade: {
-        opacity: 0,
-        transitionDuration: '500ms',
-        transitionDelay: '5000ms',
-      },
-    });
-  };
-
-  const onEnd = () => {
-    setTransitionStyles({
-      ...transitionStyles,
-      titleWrapper: {
-        transformOrigin: 'left bottom',
-        transform: 'scale(1) translate3d(0px, 0px, 0px)',
-        transitionDuration: '1300ms',
-        transitionDelay: '0ms',
-      },
-      infoWrapper: {
-        transform: 'translate3d(0px, 0px, 0px)',
-        transitionDuration: '1300ms',
-        transitionDelay: '0ms',
-        opacity: 1,
-      },
-      infoFade: {
-        opacity: 1,
-        transitionDuration: '600ms',
-        transitionDelay: '200ms',
-      },
-    });
-    setIsPlaying(false);
-    setHasVideoEnded(true);
-  };
+  );
+  let imageUrl;
+  if (image) {
+    const check = image?.hdmovielogo;
+    if (check) imageUrl = check[0].url;
+  }
 
   return (
     <>
+      {imageError && JSON.stringify(imageError)}
       <div className='banner relative w-full h-[90vh] 2xl:h-[56.25vw] max-w-full'>
         <div className='wrapper absolute w-full overflow-hidden items-end h-[90vh] 2xl:h-[56.25vw] max-w-full'>
           <div className='fill-container absolute top-0 left-0 right-0 bottom-0'>
@@ -118,7 +101,7 @@ function VideoBanner({ data, type }) {
                 <YouTube
                   ref={playerRef}
                   className={type === 'movie' && styles.movie}
-                  videoId='XZG1FzyB8DI'
+                  videoId={videoKey}
                   opts={playerOptions}
                   onPlay={onPlay}
                   onEnd={onEnd}
@@ -131,16 +114,17 @@ function VideoBanner({ data, type }) {
                   className='titleWrapper'
                   style={transitionStyles.titleWrapper}
                 >
-                  {width > 1024 ? (
+                  {width > 1024 && imageUrl ? (
                     <div className='titleLogo min-h-[13.2vw]  relative mb-[1.8vw]'>
                       <img
                         className='transform origin-bottom-left w-[35.68125vw]'
-                        src='https://fanart.tv/fanart/movies/299534/hdmovielogo/avengers-infinity-war---part-ii-5c12c9cb63356.png'
+                        src={imageUrl}
                         alt='cool'
+                        loading='eager'
                       />
                     </div>
                   ) : (
-                    <h1 className={styles.title}>Avengers</h1>
+                    <h1 className={styles.title}>{fallBackTitle}</h1>
                   )}
                 </div>
                 <div
@@ -148,11 +132,7 @@ function VideoBanner({ data, type }) {
                   style={transitionStyles.infoWrapper}
                 >
                   <div className={`fade `} style={transitionStyles.infoFade}>
-                    <div className={styles.description}>
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Ullam pariatur labore vitae distinctio rerum in voluptatum
-                      quos laborum voluptate id.
-                    </div>
+                    <div className={styles.description}>{description}</div>
                   </div>
                 </div>
                 <div className='buttons justify-center md:justify-start mt-[0.55vw] whitespace-nowrap flex line-height: 88%'>
@@ -173,7 +153,7 @@ function VideoBanner({ data, type }) {
           {(width <= 1024 || hasVideoEnded || !isPlaying) && (
             <img
               className='max-w-full absolute top-0 z-0 object-cover h-[99%] w-full'
-              src='https://image.tmdb.org/t/p/w1280/dq18nCTTLpy9PmtzZI6Y2yAgdw5.jpg'
+              src={`${FEATURED_URL}${backdrop_path}`}
               alt='ok'
             />
           )}
@@ -194,6 +174,9 @@ function VideoBanner({ data, type }) {
               <span className={styles.maturity_rating}>13+</span>
             </div>
           )}
+        </div>
+        <div className='absolute z-10 left-0 right-0 bottom-[2%]'>
+          {children}
         </div>
       </div>
     </>

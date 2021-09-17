@@ -5,22 +5,21 @@ const tmdb_key = process.env.tmdb_key;
 const ENG = process.env.ENG;
 const WATCH_REGION = process.env.WATCH_REGION;
 
-const { netflix, primevideo, voot, hotstar } = watchProvidersList;
+const { netflix, primeVideo, disneyPlus, hotstar } = watchProvidersList;
 
 const ONEMONTHAGO = getOneMonthAgoReleaseDate();
 
 const requests = {
   fetchSearchQuery: `/search/multi?api_key=${tmdb_key}&language=${ENG}&query=`,
-  fetchTrendingAll: `/trending/all/week?api_key=${tmdb_key}&sort_by=popularity.desc&language=${ENG}`,
-
-  getMovieDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,release_dates,recommendations,credits`,
-  getTVDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits`,
+  trendingAll: `/trending/all/week?api_key=${tmdb_key}`,
+  movieDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,release_dates,recommendations,credits`,
+  tvDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits`,
   // Movies
   // watchProviders
-  popularNetflixMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${netflix}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate`,
-  popularPrimeMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${primevideo}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate`,
-  popularHotstarMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${hotstar}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate`,
-  popularVootMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${voot}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate`,
+  popularNetflixMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${netflix}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  popularPrimeMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${primeVideo}|9&watch_region=US&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  popularHotstarMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${hotstar}&watch_region=IN&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  popularDisneyPlus: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${disneyPlus}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
 
   // Popular Movies
   popularMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,

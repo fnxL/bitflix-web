@@ -3,7 +3,7 @@
 }
 
 .slider_mask {
-  @apply absolute top-0 flex items-center justify-center text-[#f2f2f2] w-[4%] h-full bg-[rgba(16,16,17,.5)] z-10;
+  @apply absolute top-0 flex items-center justify-center text-[#f2f2f2] w-[4%] h-full z-10;
 }
 .slider_mask_icon {
   opacity: 0;

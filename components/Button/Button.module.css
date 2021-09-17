@@ -48,7 +48,7 @@
   -webkit-box-pack: center;
   justify-content: center;
   opacity: 1;
-  padding: 0.6vw;
+  padding: 8px;
   position: relative;
   user-select: none;
   will-change: background-color, color;

@@ -1,4 +1,4 @@
-import { genresList } from '../utils/dataConfig';
+import { genresList } from '../utils/rowConfig';
 
 const useGenreConversion = (genreIds) => {
   const genresConvertedList = [];

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { FaCaretDown, FaSearch } from 'react-icons/fa';
@@ -7,8 +6,8 @@ import useOutSideClick from '../../hooks/useOutsideClick';
 import useScroll from '../../hooks/useScroll';
 import useViewPort from '../../hooks/useViewport';
 import { NavItems } from '../../utils/NavItems';
-import styles from './Navbar.module.css';
 import ActiveLink from '../ActiveLink/ActiveLink';
+import styles from './Navbar.module.css';
 
 function Navbar() {
   const { width } = useViewPort();
@@ -32,11 +31,11 @@ function Navbar() {
       >
         <div className={styles.navbar__left}>
           <div className='navbar__logo'>
-            <Image
+            <img
               src='https://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png'
               alt='logo'
-              width={150}
-              height={75}
+              width='150px'
+              height='75px'
             />
           </div>
           <div className={styles.navbar__items}>
@@ -99,12 +98,12 @@ function Navbar() {
             onClick={() => setProfileNav(!profileNav)}
             className='relative flex items-center cursor-pointer'
           >
-            <Image
+            <img
               className='rounded'
               src='https://ih1.redbubble.net/image.618427277.3222/flat,800x800,075,f.u2.jpg'
               alt='profile'
-              width={35}
-              height={35}
+              width='35'
+              height='35'
             />
             <FaCaretDown
               className={`ml-3 ${styles.navbar_profile_caret} ${
