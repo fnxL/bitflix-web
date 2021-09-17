@@ -1,0 +1,147 @@
+@keyframes shine {
+  0% {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes pulse {
+  25% {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  50% {
+    background-color: #2d2d2d;
+  }
+}
+
+.Skeleton {
+  background-color: rgba(109, 109, 110, 0.8);
+  margin: 10px 0;
+  border-radius: 4px;
+}
+.title {
+  width: 70%;
+  height: 35px;
+  margin-bottom: 15px;
+  background: linear-gradient(
+    270deg,
+    #333,
+    rgba(66, 66, 66, 0.2),
+    rgba(66, 66, 66, 0.2),
+    #333
+  );
+  background-size: 400% 100%;
+  border-radius: 4px;
+  animation: shine 5s ease-in-out infinite;
+}
+
+.button {
+  display: inline-block;
+  width: 20%;
+  height: 40px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+  background: linear-gradient(
+    270deg,
+    #333,
+    rgba(66, 66, 66, 0.2),
+    rgba(66, 66, 66, 0.2),
+    #333
+  );
+  background-size: 400% 100%;
+  border-radius: 4px;
+  animation: shine 5s ease-in-out infinite;
+}
+
+.text {
+  width: 90%;
+  height: 15px;
+  background: linear-gradient(
+    270deg,
+    #333,
+    rgba(66, 66, 66, 0.2),
+    rgba(66, 66, 66, 0.2),
+    #333
+  );
+  background-size: 400% 100%;
+  border-radius: 4px;
+  animation: shine 5s ease-in-out infinite;
+}
+
+.poster {
+  animation: pulse 2.5s ease-in-out 0s infinite;
+  @apply relative inline-block w-full min-h-[110px] bg-[#2d2d2d] whitespace-normal align-top border-l-2 border-solid border-[#141414] border-r-2 mb-[4vw] rounded-[4px];
+}
+
+.poster:nth-child(1) {
+  animation-delay: 1 * (2.5s/18);
+}
+.poster:nth-child(2) {
+  animation-delay: 2 * (2.5s/18);
+}
+.poster:nth-child(3) {
+  animation-delay: 3 * (2.5s/18);
+}
+.poster:nth-child(4) {
+  animation-delay: 4 * (2.5s/18);
+}
+.poster:nth-child(5) {
+  animation-delay: 5 * (2.5s/18);
+}
+.poster:nth-child(6) {
+  animation-delay: 6 * (2.5s/18);
+}
+
+@media screen and (min-width: 330px) {
+  .poster {
+    width: 50%;
+    min-height: 130px;
+  }
+}
+
+@media screen and (min-width: 625px) {
+  .poster {
+    width: 33.3%;
+    min-height: 150px;
+  }
+}
+@media screen and (min-width: 998px) {
+  .poster {
+    width: 25%;
+  }
+}
+
+@media screen and (min-width: 1378px) {
+  .poster {
+    width: 16.6%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .title {
+    width: 55%;
+  }
+  .text {
+    width: 70%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .title {
+    width: 25%;
+    height: 40px;
+    margin-bottom: 20px;
+  }
+  .button {
+    width: 10%;
+    height: 45px;
+    margin-bottom: 20px;
+  }
+  .text {
+    width: 40%;
+    height: 20px;
+  }
+}

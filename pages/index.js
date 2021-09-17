@@ -11,7 +11,7 @@ import { useQuery } from 'react-query';
 import { useEffect, useState } from 'react';
 import useViewport from '../hooks/useViewport';
 
-const url = requests.popularHotstarMovies;
+const url = requests.popularMovies;
 
 function Home() {
   const homeRowData = useStore((state) => state.homeRowData);
@@ -23,7 +23,7 @@ function Home() {
   const { width } = useViewport();
 
   const { data, error } = useQuery(
-    ['Popular on Hotstar', url],
+    ['Popular Movies', url],
     () => fetcher(url),
     { enabled: isMount }
   );
