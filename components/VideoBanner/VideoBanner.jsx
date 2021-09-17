@@ -48,9 +48,16 @@ function VideoBanner({ children, data, type }) {
     replay,
   } = useVideoBanner(playerRef);
 
-  const fallBackTitle = getFallBackTitle(data);
-  const description = truncate(data?.overview, 150);
-  const { id, backdrop_path } = data;
+  let fallBackTitle;
+  let description;
+  let id;
+  let backdrop_path;
+  if (data) {
+    fallBackTitle = getFallBackTitle(data);
+    description = truncate(data?.overview, 150);
+    id = data.id;
+    backdrop_path = data.id;
+  }
 
   const url =
     type === 'movie'
@@ -105,7 +112,7 @@ function VideoBanner({ children, data, type }) {
   return (
     <>
       <div className='banner relative w-full h-[90vh] 2xl:h-[56.25vw] max-w-full'>
-        {(isLoading || isLoadingImage) && <SkeletonBanner />}
+        {(isLoading || isLoadingImage || !data) && <SkeletonBanner />}
 
         {!isLoading && !isLoadingImage && (
           <div className='wrapper absolute w-full overflow-hidden items-end h-[90vh] 2xl:h-[56.25vw] max-w-full'>
