@@ -11,6 +11,10 @@
   transition: opacity 0.2s ease-out, transform 0.2s ease-out;
 }
 
+.loading {
+  padding: 0 4%;
+}
+
 .left {
   @apply left-0 rounded-r-md rounded-b-md;
 }

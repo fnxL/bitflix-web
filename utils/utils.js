@@ -23,3 +23,17 @@ export const getRuntime = (n) => {
 
 export const getFallBackTitle = (data) =>
   data?.title || data?.name || data?.original_name;
+
+export const getMaturityRating = (data) => {
+  const releases = data?.releases?.countries;
+  if (!releases.length) return;
+
+  let filterUS = releases.filter(
+    (item) => item?.iso_3166_1 === 'US' && item?.certification
+  );
+  let filterGB = releases.filter(
+    (item) => item?.iso_3166_1 === 'GB' && item.certification
+  );
+  if (filterUS.length) return filterUS[0].certification;
+  if (filterGB.length) return filterGB[0].certification;
+};

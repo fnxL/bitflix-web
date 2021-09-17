@@ -12,7 +12,7 @@ const ONEMONTHAGO = getOneMonthAgoReleaseDate();
 const requests = {
   fetchSearchQuery: `/search/multi?api_key=${tmdb_key}&language=${ENG}&query=`,
   trendingAll: `/trending/all/week?api_key=${tmdb_key}`,
-  movieDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,release_dates,recommendations,credits`,
+  movieDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,releases,recommendations,credits`,
   tvDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits`,
   // Movies
   // watchProviders

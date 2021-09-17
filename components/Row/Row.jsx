@@ -7,6 +7,8 @@ import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import useViewport from '../../hooks/useViewport';
 import { useRef } from 'react';
+import SkeletonElement from '../SkeletonElement/SkeletonElement';
+import SkeletonPoster from '../SkeletonPoster/SkeletonPoster';
 
 function Row({ results, title, isLarge, url, type }) {
   const { width } = useViewport();
@@ -78,56 +80,66 @@ function Row({ results, title, isLarge, url, type }) {
 
   return (
     <div className='Row block py-[1.5vh] md:py-[3vh]'>
-      <div className={`${styles.Row_header}`}>
-        <a className='flex items-center text-center h-[1vw] cursor-pointer'>
-          <div>{title}</div>
-          <div className={styles.explore_all}>Explore all</div>
-          <div className={`${styles.chevron}`}></div>
-        </a>
-      </div>
-      <div className='poster_wrap flex relative'>
-        <div
-          className={`${styles.slider_mask} ${styles.left} left`}
-          ref={navigationPrevRef}
-        >
-          <MdChevronLeft
-            className={styles.slider_mask_icon}
-            size='3em'
-            style={{ color: 'white' }}
-          />
+      {!results ? (
+        <div className={styles.loading}>
+          <SkeletonElement type='title' />
+          <SkeletonPoster />
         </div>
-        <div
-          className={`${styles.slider_mask} ${styles.right} right`}
-          ref={navigationNextRef}
-        >
-          <MdChevronRight
-            size='3em'
-            style={{ color: 'white' }}
-            className={styles.slider_mask_icon}
-          />
+      ) : (
+        <div className={`${styles.Row_header}`}>
+          <a className='flex items-center text-center h-[1vw] cursor-pointer'>
+            <div>{title}</div>
+            <div className={styles.explore_all}>Explore all</div>
+            <div className={`${styles.chevron}`}></div>
+          </a>
         </div>
-        <Swiper
-          modules={[Navigation, Pagination]}
-          {...customSwiperParams}
-          spaceBetween={5}
-          onBeforeInit={(swiper) => {
-            swiper.params.navigation.prevEl = navigationPrevRef.current;
-            swiper.params.navigation.nextEl = navigationNextRef.current;
-          }}
-        >
-          {results &&
-            results.map((result, i) => (
-              <SwiperSlide
-                key={result.id}
-                className={insertPositionClassName(i)}
-                onMouseOver={rightMouseOver}
-                onMouseOut={rightMouseOut}
-              >
-                <RowPoster item={result} isLarge={isLarge} />
-              </SwiperSlide>
-            ))}
-        </Swiper>
-      </div>
+      )}
+
+      {results && (
+        <div className='poster_wrap flex relative'>
+          <div
+            className={`${styles.slider_mask} ${styles.left} left`}
+            ref={navigationPrevRef}
+          >
+            <MdChevronLeft
+              className={styles.slider_mask_icon}
+              size='3em'
+              style={{ color: 'white' }}
+            />
+          </div>
+          <div
+            className={`${styles.slider_mask} ${styles.right} right`}
+            ref={navigationNextRef}
+          >
+            <MdChevronRight
+              size='3em'
+              style={{ color: 'white' }}
+              className={styles.slider_mask_icon}
+            />
+          </div>
+          <Swiper
+            modules={[Navigation, Pagination]}
+            {...customSwiperParams}
+            spaceBetween={5}
+            onBeforeInit={(swiper) => {
+              swiper.params.navigation.prevEl = navigationPrevRef.current;
+              swiper.params.navigation.nextEl = navigationNextRef.current;
+            }}
+          >
+            {results &&
+              results.map((result, i) => (
+                <SwiperSlide
+                  key={result.id}
+                  className={insertPositionClassName(i)}
+                  onMouseOver={rightMouseOver}
+                  onMouseOut={rightMouseOut}
+                >
+                  <RowPoster item={result} isLarge={isLarge} />
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </div>
+      )}
     </div>
   );
 }
