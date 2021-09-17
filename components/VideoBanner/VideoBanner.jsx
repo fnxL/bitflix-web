@@ -73,7 +73,7 @@ function VideoBanner({ children, data, type }) {
     ['fanart', id],
     async () => {
       const { data } = await axios.get(
-        `http://webservice.fanart.tv/v3/${
+        `https://webservice.fanart.tv/v3/${
           type === 'movie' ? 'movies' : 'tv'
         }/${id}?api_key=${fanart}`
       );
