@@ -142,7 +142,9 @@ function VideoBanner({ children, data, type }) {
                         />
                       </div>
                     ) : (
-                      <h1 className={styles.title}>{fallBackTitle}</h1>
+                      <h1 className={`${styles.title} mb-4`}>
+                        {fallBackTitle}
+                      </h1>
                     )}
                   </div>
                   <div
