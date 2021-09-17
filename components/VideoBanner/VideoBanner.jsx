@@ -207,7 +207,7 @@ function VideoBanner({ children, data, type }) {
             )}
           </div>
         )}
-        <div className='absolute z-10 left-0 right-0 bottom-[2%]'>
+        <div className='absolute left-0 z-[2] right-0 bottom-[2%]'>
           {children}
         </div>
       </div>
