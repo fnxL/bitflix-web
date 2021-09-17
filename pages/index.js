@@ -8,7 +8,8 @@ import requests from '../query/requests';
 import fetcher from '../query/fetcher';
 import { randomize } from '../utils/utils';
 import { useQuery } from 'react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import useViewport from '../hooks/useViewport';
 
 const url = requests.popularHotstarMovies;
 
@@ -18,10 +19,18 @@ function Home() {
   const homeHandleNext = useStore((state) => state.homeHandleNext);
   const featured = useStore((state) => state.homeFeatured);
   const setFeatured = useStore((state) => state.setHomeFeatured);
+  const [isMount, setIsMount] = useState(false);
+  const { width } = useViewport();
 
-  const { data, error } = useQuery(['Popular on Hotstar', url], () =>
-    fetcher(url)
+  const { data, error } = useQuery(
+    ['Popular on Hotstar', url],
+    () => fetcher(url),
+    { enabled: isMount }
   );
+
+  useEffect(() => {
+    setIsMount(true);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -36,9 +45,11 @@ function Home() {
       <Navbar />
       {featured && (
         <VideoBanner data={featured} type='movie'>
-          <Row {...HomePageRows[0]} />
+          {width > 1024 && <Row {...HomePageRows[0]} />}
         </VideoBanner>
       )}
+
+      {width <= 1024 && <Row {...HomePageRows[0]} />}
 
       <InfiniteScroll
         dataLength={homeRowData.length}

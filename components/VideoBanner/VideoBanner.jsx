@@ -58,7 +58,7 @@ function VideoBanner({ children, data, type }) {
   const { data: trailer, error: trailerError } = useQuery(
     [type, id],
     () => fetcher(url),
-    { enabled: !data?.videos }
+    { enabled: !data?.videos && width > 1024 }
   );
 
   let videoKey;
@@ -78,6 +78,9 @@ function VideoBanner({ children, data, type }) {
         }/${id}?api_key=${fanart}`
       );
       return data;
+    },
+    {
+      enabled: width > 1024,
     }
   );
   let imageUrl;
@@ -88,7 +91,6 @@ function VideoBanner({ children, data, type }) {
 
   return (
     <>
-      {imageError && JSON.stringify(imageError)}
       <div className='banner relative w-full h-[90vh] 2xl:h-[56.25vw] max-w-full'>
         <div className='wrapper absolute w-full overflow-hidden items-end h-[90vh] 2xl:h-[56.25vw] max-w-full'>
           <div className='fill-container absolute top-0 left-0 right-0 bottom-0'>
