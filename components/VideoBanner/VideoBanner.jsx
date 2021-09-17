@@ -56,7 +56,7 @@ function VideoBanner({ children, data, type }) {
     fallBackTitle = getFallBackTitle(data);
     description = truncate(data?.overview, 150);
     id = data.id;
-    backdrop_path = data.id;
+    backdrop_path = data.backdrop_path;
   }
 
   const url =
@@ -181,7 +181,7 @@ function VideoBanner({ children, data, type }) {
               <img
                 className='max-w-full absolute top-0 z-0 object-cover h-[99%] w-full'
                 src={`${FEATURED_URL}${backdrop_path}`}
-                alt='ok'
+                alt='backdrop'
               />
             )}
             {width >= 1024 && (
