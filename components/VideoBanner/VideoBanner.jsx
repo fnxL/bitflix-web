@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { BiInfoCircle } from 'react-icons/bi';
 import { BsArrowClockwise, BsVolumeMute, BsVolumeUp } from 'react-icons/bs';
 import { FaPlay } from 'react-icons/fa';

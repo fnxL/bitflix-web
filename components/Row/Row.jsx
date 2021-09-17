@@ -3,8 +3,8 @@ import fetcher from '../../query/fetcher';
 import styles from './Row.module.css';
 import RowPoster from '../RowPoster/RowPoster';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import useViewport from '../../hooks/useViewport';
 import { useRef } from 'react';
 
