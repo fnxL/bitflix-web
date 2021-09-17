@@ -134,7 +134,7 @@ function Row({ results, title, isLarge, url, type }) {
                   onMouseOver={rightMouseOver}
                   onMouseOut={rightMouseOut}
                 >
-                  <RowPoster item={result} isLarge={isLarge} />
+                  <RowPoster item={result} type={type} isLarge={isLarge} />
                 </SwiperSlide>
               ))}
           </Swiper>

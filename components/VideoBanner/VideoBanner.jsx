@@ -46,6 +46,7 @@ function VideoBanner({ children, data, type }) {
     onPlay,
     onEnd,
     replay,
+    onReady,
   } = useVideoBanner(playerRef);
 
   let fallBackTitle;
@@ -76,13 +77,15 @@ function VideoBanner({ children, data, type }) {
   let videoKey;
   let trailersList;
   let maturityRating;
+  let tvdb_id;
   if (trailer || data?.videos) {
     trailersList = trailer ? trailer?.videos?.results : data?.videos?.results;
     trailersList = trailersList.filter((video) => video.type === 'Trailer');
     videoKey = trailersList ? trailersList[0]?.key : undefined;
-
-    maturityRating = getMaturityRating(trailer ? trailer : data);
+    maturityRating = getMaturityRating(trailer ? trailer : data, type);
   }
+  if (data) tvdb_id = data?.external_ids?.tvdb_id;
+  if (trailer) tvdb_id = trailer?.external_ids?.tvdb_id;
 
   // fetch title logo only for desktop view;
   const {
@@ -95,7 +98,7 @@ function VideoBanner({ children, data, type }) {
       const { data } = await axios.get(
         `https://webservice.fanart.tv/v3/${
           type === 'movie' ? 'movies' : 'tv'
-        }/${id}?api_key=${fanart}`
+        }/${type === 'movie' ? id : tvdb_id}?api_key=${fanart}`
       );
       return data;
     },
@@ -105,8 +108,13 @@ function VideoBanner({ children, data, type }) {
   );
   let imageUrl;
   if (image) {
-    const check = image?.hdmovielogo;
-    if (check) imageUrl = check[0].url;
+    if (type === 'movie') {
+      const check = image?.hdmovielogo;
+      if (check.length) imageUrl = check[0].url;
+    } else {
+      const check = image?.hdtvlogo;
+      if (check.length) imageUrl = check[0].url;
+    }
   }
 
   return (
@@ -125,11 +133,12 @@ function VideoBanner({ children, data, type }) {
                 >
                   <YouTube
                     ref={playerRef}
-                    className={type === 'movie' && styles.movie}
+                    className={`${type === 'movie' && styles.movie}`}
                     videoId={videoKey}
                     opts={playerOptions}
                     onPlay={onPlay}
                     onEnd={onEnd}
+                    onReady={onReady}
                   />
                 </div>
               )}

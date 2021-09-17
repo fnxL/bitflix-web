@@ -13,7 +13,8 @@ const requests = {
   fetchSearchQuery: `/search/multi?api_key=${tmdb_key}&language=${ENG}&query=`,
   trendingAll: `/trending/all/week?api_key=${tmdb_key}`,
   movieDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,releases,recommendations,credits`,
-  tvDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits`,
+  tvDetails: `?api_key=${tmdb_key}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits,external_ids`,
+  apiKey: `?api_key=${tmdb_key}&language=en-US`,
   // Movies
   // watchProviders
   popularNetflixMovies: `/discover/movie?api_key=${tmdb_key}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${netflix}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,

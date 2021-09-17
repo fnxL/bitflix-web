@@ -153,17 +153,18 @@ export const HomePageRows = [
     type: 'movie',
   },
   {
-    id: 6,
-    title: 'Hindi Movies',
-    url: requests.hindiMovies,
-    type: 'movie',
-  },
-  {
     id: 2,
     title: 'Popular on DisneyPlus',
     url: requests.popularDisneyPlus,
     type: 'movie',
     isLarge: true,
+  },
+
+  {
+    id: 6,
+    title: 'Hindi Movies',
+    url: requests.hindiMovies,
+    type: 'movie',
   },
 
   {
@@ -178,7 +179,6 @@ export const HomePageRows = [
     id: 7,
     title: 'Hindi Series',
     url: requests.hindiSeries,
-    isLarge: true,
     type: 'tv',
   },
 ];

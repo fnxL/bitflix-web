@@ -1,0 +1,95 @@
+.poster_container {
+  border-bottom: 1px solid #404040;
+  padding: 1em;
+  border-radius: 0.25em;
+  min-height: 10em;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.poster_container:hover .playSVG {
+  opacity: 1;
+}
+
+.poster_container:first-of-type {
+  border-top: 1px solid #404040;
+}
+
+.number {
+  font-size: 1.5em;
+  color: #d2d2d2;
+  display: flex;
+  justify-content: center;
+  flex: 0 0 7%;
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 18%;
+  border-radius: 4px;
+  max-width: fit-content;
+}
+
+.playIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(
+    195deg,
+    rgba(24, 24, 24, 0.7) 0,
+    rgba(24, 24, 24, 0.5) 10%,
+    transparent 25%
+  );
+}
+
+.imagediv img {
+  display: block;
+  max-width: fit-content;
+}
+
+.playSVG {
+  width: 3em;
+  height: 3em;
+  border: 1px solid #fff;
+  padding: 0.5em;
+  border-radius: 2em;
+  opacity: 0;
+  background-color: rgba(30, 30, 20, 0.5);
+  transition: opacity 0.2s ease-in;
+}
+
+.progress {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  color: #e50914;
+  background-color: grey;
+  height: 0.25em;
+  padding: 0;
+  margin: 0;
+}
+
+.metadataWrapper {
+  min-height: 100%;
+  flex: 0 0 70%;
+  font-size: 1em;
+}
+
+.title_text {
+  overflow-wrap: anywhere;
+}
+
+.description {
+  padding: 0 1em 1em;
+  margin: 0;
+  color: #d2d2d2;
+}

@@ -10,8 +10,9 @@ import { randomize } from '../utils/utils';
 import { useQuery } from 'react-query';
 import { useEffect, useState } from 'react';
 import useViewport from '../hooks/useViewport';
+import Head from 'next/head';
 
-const url = requests.popularMovies;
+const url = requests.popularHotstarMovies;
 
 function Home() {
   const homeRowData = useStore((state) => state.homeRowData);
@@ -23,7 +24,7 @@ function Home() {
   const { width } = useViewport();
 
   const { data, error } = useQuery(
-    ['Popular Movies', url],
+    ['Popular on Hotstar', url],
     () => fetcher(url),
     { enabled: isMount }
   );
@@ -41,23 +42,28 @@ function Home() {
   }, [data]);
 
   return (
-    <div className='overflow-hidden'>
-      <Navbar />
-      <VideoBanner data={featured} type='movie'>
-        {width > 1024 && <Row {...HomePageRows[0]} />}
-      </VideoBanner>
+    <>
+      <Head>
+        <title>Bitflix</title>
+      </Head>
+      <div className='overflow-hidden'>
+        <Navbar />
+        <VideoBanner data={featured} type='movie'>
+          {width > 1024 && <Row {...HomePageRows[0]} />}
+        </VideoBanner>
 
-      {width <= 1024 && <Row {...HomePageRows[0]} />}
-
-      <InfiniteScroll
-        dataLength={homeRowData.length}
-        next={() => homeHandleNext(HomePageRows.slice(1))}
-        hasMore={homeHasMore}
-        style={{ overflow: 'hidden' }}
-      >
-        {homeRowData}
-      </InfiniteScroll>
-    </div>
+        {width <= 1024 && <Row {...HomePageRows[0]} />}
+        <Row {...HomePageRows[1]} />
+        <InfiniteScroll
+          dataLength={homeRowData.length}
+          next={() => homeHandleNext(HomePageRows.slice(2))}
+          hasMore={homeHasMore}
+          style={{ overflow: 'hidden' }}
+        >
+          {homeRowData}
+        </InfiniteScroll>
+      </div>
+    </>
   );
 }
 

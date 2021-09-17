@@ -22,16 +22,20 @@ function RowPoster(result) {
       genre_ids,
       poster_path,
       backdrop_path,
+      media_type,
     },
     isLarge,
     isFavourite,
     type,
   } = result;
+
   let fallbackTitle = getFallBackTitle(item);
   const genresConverted = useGenreConversion(genre_ids);
 
   const handleRedirect = () => {
-    router.push(`/${type}/${id}`);
+    if (type === 'all') {
+      router.push(`/${media_type}/${id}`);
+    } else router.push(`/${type}/${id}`);
   };
 
   return (
