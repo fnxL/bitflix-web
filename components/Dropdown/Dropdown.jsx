@@ -5,12 +5,10 @@ function Dropdown({ options, selected, setSelected }) {
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <button
         onClick={() => setIsActive(!isActive)}
-        className={`${styles.dropdown_btn} ${
-          isActive && styles.dropdown_active
-        }`}
+        className={`${styles.dropdown_btn} ${isActive && styles.dropdown_active}`}
       >
         {selected.name}
       </button>
@@ -25,11 +23,9 @@ function Dropdown({ options, selected, setSelected }) {
               }}
               className={`${styles.dropdown_item}`}
             >
-              <div className='season flex items-center'>
+              <div className="season flex items-center">
                 {item.name} &nbsp;&nbsp;
-                <span className='episodeLabel font-normal'>
-                  ({item.episode_count} Episodes)
-                </span>
+                <span className="episodeLabel font-normal">({item.episode_count} Episodes)</span>
               </div>
             </li>
           ))}

@@ -13,23 +13,13 @@ function RowPoster(result) {
 
   const {
     item,
-    item: {
-      id,
-      title,
-      original_name,
-      original_title,
-      name,
-      genre_ids,
-      poster_path,
-      backdrop_path,
-      media_type,
-    },
+    item: { id, genre_ids, poster_path, backdrop_path, media_type },
     isLarge,
     isFavourite,
     type,
   } = result;
 
-  let fallbackTitle = getFallBackTitle(item);
+  const fallbackTitle = getFallBackTitle(item);
   const genresConverted = useGenreConversion(genre_ids);
 
   const handleRedirect = () => {
@@ -40,33 +30,27 @@ function RowPoster(result) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className={`${styles.row_poster} relative cursor-pointer`}
       onClick={handleRedirect}
     >
       {isLarge ? (
         poster_path ? (
-          <img
-            loading='lazy'
-            src={`${POSTER_URL}${poster_path}`}
-            alt={fallbackTitle}
-          />
+          <img loading="lazy" src={`${POSTER_URL}${poster_path}`} alt={fallbackTitle} />
         ) : (
           ''
         )
       ) : backdrop_path ? (
-        <img
-          loading='lazy'
-          src={`${BACKDROP_URL}${backdrop_path}`}
-          alt={fallbackTitle}
-        />
+        <img loading="lazy" src={`${BACKDROP_URL}${backdrop_path}`} alt={fallbackTitle} />
       ) : (
-        <img loading='lazy' src={FALLBACK_URL} alt={fallbackTitle} />
+        <img loading="lazy" src={FALLBACK_URL} alt={fallbackTitle} />
       )}
 
       <div className={`${styles.poster_info}`}>
         <div className={`${styles.icon_wrapper}`}>
           <button className={`${styles.icon}`}>
-            <div className='flex ml-[2px] items-center justify-center'>
+            <div className="flex ml-[2px] items-center justify-center">
               <FaPlay />
             </div>
           </button>

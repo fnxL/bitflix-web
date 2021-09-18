@@ -1,14 +1,15 @@
-import { useQuery } from 'react-query';
-import fetcher from '../../query/fetcher';
-import styles from './Row.module.css';
-import RowPoster from '../RowPoster/RowPoster';
+import { useRef } from 'react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import { useQuery } from 'react-query';
 import { Navigation, Pagination } from 'swiper';
+// eslint-disable-next-line import/no-unresolved
 import { Swiper, SwiperSlide } from 'swiper/react';
 import useViewport from '../../hooks/useViewport';
-import { useRef } from 'react';
+import fetcher from '../../query/fetcher';
+import RowPoster from '../RowPoster/RowPoster';
 import SkeletonElement from '../SkeletonElement/SkeletonElement';
 import SkeletonPoster from '../SkeletonPoster/SkeletonPoster';
+import styles from './Row.module.css';
 
 function Row({ results, title, isLarge, url, type }) {
   const { width } = useViewport();
@@ -16,7 +17,7 @@ function Row({ results, title, isLarge, url, type }) {
   const navigationPrevRef = useRef(null);
   const navigationNextRef = useRef(null);
 
-  const { data, error } = useQuery([title, url], () => fetcher(url), {
+  const { data } = useQuery([title, url], () => fetcher(url), {
     enabled: !!url,
   });
 
@@ -36,8 +37,7 @@ function Row({ results, title, isLarge, url, type }) {
       330: { slidesPerView: 2, slidesPerGroup: 2 },
       0: { slidesPerView: 1.5, slidesPerGroup: 1.5 },
     },
-    loopAdditionalSlides:
-      width >= 1378 ? 5 : width >= 998 ? 3 : width >= 625 ? 2 : 2,
+    loopAdditionalSlides: width >= 1378 ? 5 : width >= 998 ? 3 : width >= 625 ? 2 : 2,
     pagination: true,
     loop: false,
     grabCursor: false,
@@ -79,40 +79,34 @@ function Row({ results, title, isLarge, url, type }) {
   };
 
   return (
-    <div className='Row block py-[1.5vh] md:py-[3vh]'>
+    <div className="Row block py-[1.5vh] md:py-[3vh]">
       {!results ? (
         <div className={styles.loading}>
-          <SkeletonElement type='title' />
+          <SkeletonElement type="title" />
           <SkeletonPoster />
         </div>
       ) : (
         <div className={`${styles.Row_header}`}>
-          <a className='flex items-center text-center h-[1vw] cursor-pointer'>
+          <a className="flex items-center text-center h-[1vw] cursor-pointer">
             <div>{title}</div>
             <div className={styles.explore_all}>Explore all</div>
-            <div className={`${styles.chevron}`}></div>
+            <div className={`${styles.chevron}`} />
           </a>
         </div>
       )}
 
       {results && (
-        <div className='poster_wrap flex relative'>
-          <div
-            className={`${styles.slider_mask} ${styles.left} left`}
-            ref={navigationPrevRef}
-          >
+        <div className="poster_wrap flex relative">
+          <div className={`${styles.slider_mask} ${styles.left} left`} ref={navigationPrevRef}>
             <MdChevronLeft
               className={styles.slider_mask_icon}
-              size='3em'
+              size="3em"
               style={{ color: 'white' }}
             />
           </div>
-          <div
-            className={`${styles.slider_mask} ${styles.right} right`}
-            ref={navigationNextRef}
-          >
+          <div className={`${styles.slider_mask} ${styles.right} right`} ref={navigationNextRef}>
             <MdChevronRight
-              size='3em'
+              size="3em"
               style={{ color: 'white' }}
               className={styles.slider_mask_icon}
             />

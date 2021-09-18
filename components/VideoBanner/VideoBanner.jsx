@@ -9,11 +9,10 @@ import useVideoBanner from '../../hooks/useVideoBanner';
 import useViewport from '../../hooks/useViewport';
 import fetcher from '../../query/fetcher';
 import requests from '../../query/requests';
-import { getFallBackTitle, truncate } from '../../utils/utils';
+import { getFallBackTitle, getMaturityRating, truncate } from '../../utils/utils';
 import Button from '../Button/Button';
 import SkeletonBanner from '../SkeletonBanner/SkeletonBanner';
 import styles from './VideoBanner.module.css';
-import { getMaturityRating } from '../../utils/utils';
 
 const fanart = process.env.fanart;
 const FEATURED_URL = process.env.FEATURED_URL;
@@ -61,16 +60,10 @@ function VideoBanner({ children, data, type }) {
   }
 
   const url =
-    type === 'movie'
-      ? `/movie/${id}${requests.movieDetails}`
-      : `/tv/${id}${requests.tvDetails}`;
+    type === 'movie' ? `/movie/${id}${requests.movieDetails}` : `/tv/${id}${requests.tvDetails}`;
 
   // fetch only if videos[] not in data and width > 1024 (trailers for desktop only)
-  const {
-    data: trailer,
-    error: trailerError,
-    isLoading,
-  } = useQuery([type, id], () => fetcher(url), {
+  const { data: trailer, isLoading } = useQuery([type, id], () => fetcher(url), {
     enabled: !data?.videos && width > 1024,
   });
 
@@ -88,17 +81,13 @@ function VideoBanner({ children, data, type }) {
   if (trailer) tvdb_id = trailer?.external_ids?.tvdb_id;
 
   // fetch title logo only for desktop view;
-  const {
-    data: image,
-    error: imageError,
-    isLoading: isLoadingImage,
-  } = useQuery(
+  const { data: image, isLoading: isLoadingImage } = useQuery(
     ['fanart', id],
     async () => {
       const { data } = await axios.get(
-        `https://webservice.fanart.tv/v3/${
-          type === 'movie' ? 'movies' : 'tv'
-        }/${type === 'movie' ? id : tvdb_id}?api_key=${fanart}`
+        `https://webservice.fanart.tv/v3/${type === 'movie' ? 'movies' : 'tv'}/${
+          type === 'movie' ? id : tvdb_id
+        }?api_key=${fanart}`
       );
       return data;
     },
@@ -119,12 +108,12 @@ function VideoBanner({ children, data, type }) {
 
   return (
     <>
-      <div className='banner relative w-full h-[90vh] 2xl:h-[56.25vw] max-w-full'>
+      <div className="banner relative w-full h-[90vh] 2xl:h-[56.25vw] max-w-full">
         {(isLoading || isLoadingImage || !data) && <SkeletonBanner />}
 
         {!isLoading && !isLoadingImage && (
-          <div className='wrapper absolute w-full overflow-hidden items-end h-[90vh] 2xl:h-[56.25vw] max-w-full'>
-            <div className='fill-container absolute top-0 left-0 right-0 bottom-0'>
+          <div className="wrapper absolute w-full overflow-hidden items-end h-[90vh] 2xl:h-[56.25vw] max-w-full">
+            <div className="fill-container absolute top-0 left-0 right-0 bottom-0">
               {width > 1024 && videoKey && (
                 <div
                   className={`${styles.frame_container} ${
@@ -142,72 +131,60 @@ function VideoBanner({ children, data, type }) {
                   />
                 </div>
               )}
-              <div className='info absolute bottom-[15%] text-center md:text-left items-center left-[4%] md:bottom-[36.5%] 2xl:left-[60px] z-[2] flex md:justify-end flex-col'>
+              <div className="info absolute bottom-[15%] text-center md:text-left items-center left-[4%] md:bottom-[36.5%] 2xl:left-[60px] z-[2] flex md:justify-end flex-col">
                 <div className={`${styles.logo_text} w-full`}>
-                  <div
-                    className='titleWrapper'
-                    style={transitionStyles.titleWrapper}
-                  >
+                  <div className="titleWrapper" style={transitionStyles.titleWrapper}>
                     {width > 1024 && imageUrl ? (
-                      <div className='titleLogo min-h-[13.2vw]  relative mb-[1.8vw]'>
+                      <div className="titleLogo min-h-[13.2vw]  relative mb-[1.8vw]">
                         <img
-                          className='transform origin-bottom-left w-[35.68125vw]'
+                          className="transform origin-bottom-left w-[35.68125vw]"
                           src={imageUrl}
-                          alt='cool'
-                          loading='eager'
+                          alt="cool"
+                          loading="eager"
                         />
                       </div>
                     ) : (
-                      <h1 className={`${styles.title} mb-4`}>
-                        {fallBackTitle}
-                      </h1>
+                      <h1 className={`${styles.title} mb-4`}>{fallBackTitle}</h1>
                     )}
                   </div>
-                  <div
-                    className='info_wrapper'
-                    style={transitionStyles.infoWrapper}
-                  >
+                  <div className="info_wrapper" style={transitionStyles.infoWrapper}>
                     <div className={`fade `} style={transitionStyles.infoFade}>
                       <div className={styles.description}>{description}</div>
                     </div>
                   </div>
-                  <div className='buttons justify-center md:justify-start mt-[0.55vw] whitespace-nowrap flex line-height: 88%'>
-                    <Button text='Play' variant='white'>
+                  <div className="buttons justify-center md:justify-start mt-[0.55vw] whitespace-nowrap flex line-height: 88%">
+                    <Button text="Play" variant="white">
                       <FaPlay />
-                      <div className='w-[1.2rem]'></div>
+                      <div className="w-[1.2rem]" />
                     </Button>
-                    <Button text='More Info'>
-                      <BiInfoCircle className='text-[1.5rem] lg:text-[2vw] xl:text-[1.75vw]' />
-                      <div className='w-[1rem]'></div>
+                    <Button text="More Info">
+                      <BiInfoCircle className="text-[1.5rem] lg:text-[2vw] xl:text-[1.75vw]" />
+                      <div className="w-[1rem]" />
                     </Button>
                   </div>
                 </div>
               </div>
             </div>
-            <div className={styles.banner_vignette}></div>
-            <div className={styles.banner_panel}></div>
+            <div className={styles.banner_vignette} />
+            <div className={styles.banner_panel} />
             {(width <= 1024 || hasVideoEnded || !isPlaying || !videoKey) && (
               <img
-                className='max-w-full absolute top-0 z-0 object-cover h-[99%] w-full'
+                className="max-w-full absolute top-0 z-0 object-cover h-[99%] w-full"
                 src={`${FEATURED_URL}${backdrop_path}`}
-                alt='backdrop'
+                alt="backdrop"
               />
             )}
             {width >= 1024 && (
               <div className={styles.maturity}>
-                <span className='action_button w-[2.9vw] relative lg:mr-[1.5rem] xl:mr-[1.1vw]'>
+                <span className="action_button w-[2.9vw] relative lg:mr-[1.5rem] xl:mr-[1.1vw]">
                   {hasVideoEnded && !isPlaying ? (
-                    <Button onClick={replay} type='circular' variant='white'>
-                      <BsArrowClockwise size='1.75vw' />
+                    <Button onClick={replay} type="circular" variant="white">
+                      <BsArrowClockwise size="1.75vw" />
                     </Button>
                   ) : (
-                    <Button
-                      onClick={toggleMute}
-                      type='circular'
-                      variant='white'
-                    >
-                      {isMuted && <BsVolumeMute size='1.8rem' />}
-                      {!isMuted && <BsVolumeUp size='1.8rem' />}
+                    <Button onClick={toggleMute} type="circular" variant="white">
+                      {isMuted && <BsVolumeMute size="1.8rem" />}
+                      {!isMuted && <BsVolumeUp size="1.8rem" />}
                     </Button>
                   )}
                 </span>
@@ -216,9 +193,7 @@ function VideoBanner({ children, data, type }) {
             )}
           </div>
         )}
-        <div className='absolute left-0 z-[2] right-0 bottom-[2%]'>
-          {children}
-        </div>
+        <div className="absolute left-0 z-[2] right-0 bottom-[2%]">{children}</div>
       </div>
     </>
   );

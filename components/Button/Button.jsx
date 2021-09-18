@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import styles from './Button.module.css';
 
 function Button({ onClick, type, variant = 'dark', text, children }) {
@@ -5,12 +6,10 @@ function Button({ onClick, type, variant = 'dark', text, children }) {
     return (
       <button
         onClick={onClick}
-        className={`${styles.circular} ${
-          variant === 'white' && styles.cwhite
-        } `}
+        className={`${styles.circular} ${variant === 'white' && styles.cwhite} `}
       >
         {children}
-        {text && <span className='font-bold'>{text}</span>}
+        {text && <span className="font-bold">{text}</span>}
       </button>
     );
   }
@@ -20,7 +19,7 @@ function Button({ onClick, type, variant = 'dark', text, children }) {
       className={`${styles.default} ${variant === 'white' && styles.white} `}
     >
       {children}
-      <span className=''>{text}</span>
+      <span className="">{text}</span>
     </button>
   );
 }

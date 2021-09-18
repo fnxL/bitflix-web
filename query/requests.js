@@ -1,13 +1,10 @@
-import { getOneMonthAgoReleaseDate } from '../utils/utils';
 import { watchProvidersList } from '../utils/watchProviders';
 
-const tmdb_key = process.env.tmdb_key;
-const ENG = process.env.ENG;
-const WATCH_REGION = process.env.WATCH_REGION;
+const { tmdb_key } = process.env;
+const { ENG } = process.env;
+const { WATCH_REGION } = process.env;
 
 const { netflix, primeVideo, disneyPlus, hotstar } = watchProvidersList;
-
-const ONEMONTHAGO = getOneMonthAgoReleaseDate();
 
 const requests = {
   fetchSearchQuery: `/search/multi?api_key=${tmdb_key}&language=${ENG}&query=`,

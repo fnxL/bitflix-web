@@ -1,16 +1,16 @@
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useQuery } from 'react-query';
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
 import VideoBanner from '../components/VideoBanner/VideoBanner';
 import Navbar from '../components/Navbar/Navbar';
 import { HomePageRows } from '../utils/rowConfig';
 import useStore from '../store/store';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import Row from '../components/Row/Row';
 import requests from '../query/requests';
 import fetcher from '../query/fetcher';
 import { randomize } from '../utils/utils';
-import { useQuery } from 'react-query';
-import { useEffect, useState } from 'react';
 import useViewport from '../hooks/useViewport';
-import Head from 'next/head';
 
 const url = requests.popularHotstarMovies;
 
@@ -23,11 +23,9 @@ function Home() {
   const [isMount, setIsMount] = useState(false);
   const { width } = useViewport();
 
-  const { data, error } = useQuery(
-    ['Popular on Hotstar', url],
-    () => fetcher(url),
-    { enabled: isMount }
-  );
+  const { data } = useQuery(['Popular on Hotstar', url], () => fetcher(url), {
+    enabled: isMount,
+  });
 
   useEffect(() => {
     setIsMount(true);
@@ -46,9 +44,9 @@ function Home() {
       <Head>
         <title>Bitflix</title>
       </Head>
-      <div className='overflow-hidden'>
+      <div className="overflow-hidden">
         <Navbar />
-        <VideoBanner data={featured} type='movie'>
+        <VideoBanner data={featured} type="movie">
           {width > 1024 && <Row {...HomePageRows[0]} />}
         </VideoBanner>
 

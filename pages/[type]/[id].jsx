@@ -16,11 +16,9 @@ function DetailPage() {
   const { type, id } = router.query;
 
   const url =
-    type === 'movie'
-      ? `/movie/${id}${requests.movieDetails}`
-      : `/tv/${id}${requests.tvDetails}`;
+    type === 'movie' ? `/movie/${id}${requests.movieDetails}` : `/tv/${id}${requests.tvDetails}`;
 
-  const { data, error } = useQuery([type, Number(id)], () => fetcher(url), {
+  const { data } = useQuery([type, Number(id)], () => fetcher(url), {
     enabled: !!id,
   });
 
@@ -40,9 +38,9 @@ function DetailPage() {
       {data && (
         <>
           <VideoBanner data={data} type={type} />
-          <hr className='border-[rgba(0,0,0,0.8)]' />
+          <hr className="border-[rgba(0,0,0,0.8)]" />
           <Information data={data} type={type} />
-          {type == 'tv' && <EpisodesContainer id={id} seasons={data.seasons} />}
+          {type === 'tv' && <EpisodesContainer id={id} seasons={data.seasons} />}
           <Recommendations type={type} data={data.recommendations} />
         </>
       )}

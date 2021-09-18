@@ -9,11 +9,11 @@ function EpisodePoster({ data }) {
       <div className={styles.number}>{episode_number}</div>
       <div className={styles.imageWrapper}>
         <div className={styles.imagediv}>
-          <img src={`${BACKDROP_URL}${still_path}`} alt='ok' />
+          <img src={`${BACKDROP_URL}${still_path}`} alt="ok" />
         </div>
         <div className={styles.playIcon}>
-          <svg viewBox='0 0 24 24' className={styles.playSVG}>
-            <path d='M6 4l15 8-15 8z' fill='currentColor'></path>
+          <svg viewBox="0 0 24 24" className={styles.playSVG}>
+            <path d="M6 4l15 8-15 8z" fill="currentColor" />
           </svg>
         </div>
         {/* to do ! <progress
@@ -23,12 +23,8 @@ function EpisodePoster({ data }) {
         ></progress> */}
       </div>
       <div className={styles.metadataWrapper}>
-        <div className='title p-[1em] pb-[0.5em] flex justify-between'>
-          <span
-            className={`${styles.title_text} text-white text-[1em] font-bold`}
-          >
-            {name}
-          </span>
+        <div className="title p-[1em] pb-[0.5em] flex justify-between">
+          <span className={`${styles.title_text} text-white text-[1em] font-bold`}>{name}</span>
         </div>
         <p className={styles.description}>{overview}</p>
       </div>

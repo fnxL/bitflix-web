@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const useVideoBanner = (playerRef) => {
   const [isMuted, setIsMuted] = useState(true);
@@ -10,7 +10,7 @@ const useVideoBanner = (playerRef) => {
     infoFade: {},
   });
 
-  const toggleMute = (e) => {
+  const toggleMute = () => {
     const player = playerRef.current.getInternalPlayer();
     if (isMuted) {
       player.unMute();
