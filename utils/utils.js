@@ -46,3 +46,11 @@ export const getMaturityRating = (data, type) => {
     if (data?.content_ratings?.results.length) return data?.content_ratings?.results[0]?.rating;
   }
 };
+
+export const watchProviders = {
+  netflix: 8,
+  hotstar: 122,
+  primeVideo: 119,
+  voot: 121,
+  disneyPlus: 337,
+};

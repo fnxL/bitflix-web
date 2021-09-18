@@ -1,10 +1,10 @@
-import { watchProvidersList } from '../utils/watchProviders';
+import { watchProviders } from '../utils/utils';
 
 const { tmdb_key } = process.env;
 const { ENG } = process.env;
 const { WATCH_REGION } = process.env;
 
-const { netflix, primeVideo, disneyPlus, hotstar } = watchProvidersList;
+const { netflix, primeVideo, disneyPlus, hotstar } = watchProviders;
 
 const requests = {
   fetchSearchQuery: `/search/multi?api_key=${tmdb_key}&language=${ENG}&query=`,

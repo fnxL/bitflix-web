@@ -1,12 +1,14 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-import EpisodesContainer from '../../components/EpisodesContainer/EpisodesContainer';
-import Information from '../../components/Information/Information';
-import Navbar from '../../components/Navbar/Navbar';
-import Recommendations from '../../components/Recommendations/Recommendations';
-import SkeletonBanner from '../../components/SkeletonBanner/SkeletonBanner';
-import VideoBanner from '../../components/VideoBanner/VideoBanner';
+import {
+  EpisodesContainer,
+  Information,
+  Navbar,
+  Recommendations,
+  SkeletonBanner,
+  VideoBanner,
+} from '../../components';
 import fetcher from '../../query/fetcher';
 import requests from '../../query/requests';
 import { getFallBackTitle } from '../../utils/utils';

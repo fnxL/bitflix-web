@@ -38,7 +38,19 @@
   overflow: auto;
   padding: 1rem 0px;
   font-weight: 700;
+  transition: all 0.3s ease;
+  transform: translateY(-3em);
+  visibility: hidden;
+  opacity: 0;
   @apply md:text-[16px] lg:text-[18px] min-w-[4em] absolute right-0 cursor-pointer text-white;
+}
+
+.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+  transform: translateY(0);
+  transition-delay: 0s, 0s, 0.3s;
 }
 
 .dropdown_item {

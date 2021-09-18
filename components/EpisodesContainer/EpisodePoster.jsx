@@ -1,6 +1,6 @@
 import styles from './EpisodePoster.module.css';
 
-const BACKDROP_URL = process.env.BACKDROP_URL;
+const { BACKDROP_URL } = process.env;
 
 function EpisodePoster({ data }) {
   const { still_path, episode_number, name, overview } = data;

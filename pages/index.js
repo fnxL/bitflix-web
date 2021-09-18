@@ -1,16 +1,14 @@
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useQuery } from 'react-query';
-import { useEffect, useState } from 'react';
-import Head from 'next/head';
-import VideoBanner from '../components/VideoBanner/VideoBanner';
-import Navbar from '../components/Navbar/Navbar';
-import { HomePageRows } from '../utils/rowConfig';
-import useStore from '../store/store';
-import Row from '../components/Row/Row';
-import requests from '../query/requests';
-import fetcher from '../query/fetcher';
-import { randomize } from '../utils/utils';
+import { Navbar, Row, VideoBanner } from '../components';
 import useViewport from '../hooks/useViewport';
+import fetcher from '../query/fetcher';
+import requests from '../query/requests';
+import useStore from '../store/store';
+import { HomePageRows } from '../utils/rowConfig';
+import { randomize } from '../utils/utils';
 
 const url = requests.popularHotstarMovies;
 

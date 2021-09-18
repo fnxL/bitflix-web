@@ -1,4 +1,4 @@
-import Row from '../components/Row/Row';
+import { Row } from '../components';
 
 export const homeRowSlice = (set, get) => ({
   homeFeatured: undefined,
