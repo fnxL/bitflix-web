@@ -1,20 +1,20 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import { BiInfoCircle } from 'react-icons/bi';
 import { BsArrowClockwise, BsVolumeMute, BsVolumeUp } from 'react-icons/bs';
 import { FaPlay } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import YouTube from 'react-youtube';
+import config from '../../config';
 import useVideoBanner from '../../hooks/useVideoBanner';
 import useViewport from '../../hooks/useViewport';
 import fetcher from '../../query/fetcher';
 import requests from '../../query/requests';
-import { getFallBackTitle, getMaturityRating, truncate } from '../../utils/utils';
+import { dateToYearOnly, getFallBackTitle, getMaturityRating, truncate } from '../../utils/utils';
 import Button from '../Button/Button';
 import SkeletonBanner from '../SkeletonBanner/SkeletonBanner';
 import styles from './VideoBanner.module.css';
-
-import config from '../../config';
 
 const { FANART, FEATURED_URL } = config;
 
@@ -53,11 +53,14 @@ function VideoBanner({ children, data, type }) {
   let description;
   let id;
   let backdrop_path;
+  let release_date;
   if (data) {
     fallBackTitle = getFallBackTitle(data);
     description = truncate(data?.overview, 150);
     id = data.id;
     backdrop_path = data.backdrop_path;
+    release_date = data.release_date;
+    reducedDate = dateToYearOnly(release_date);
   }
 
   const url =
@@ -72,11 +75,17 @@ function VideoBanner({ children, data, type }) {
   let trailersList;
   let maturityRating;
   let tvdb_id;
+  let reducedDate;
   if (trailer || data?.videos) {
     trailersList = trailer ? trailer?.videos?.results : data?.videos?.results;
     trailersList = trailersList.filter((video) => video.type === 'Trailer');
+
     videoKey = trailersList ? trailersList[0]?.key : undefined;
+
     maturityRating = getMaturityRating(trailer || data, type);
+
+    release_date = trailer.release_date;
+    reducedDate = dateToYearOnly(release_date);
   }
   if (data) tvdb_id = data?.external_ids?.tvdb_id;
   if (trailer) tvdb_id = trailer?.external_ids?.tvdb_id;
@@ -106,6 +115,23 @@ function VideoBanner({ children, data, type }) {
       if (check.length) imageUrl = check[0].url;
     }
   }
+  const router = useRouter();
+  const searchTerm = `${fallBackTitle?.toLowerCase()} ${
+    type === 'movie' ? reducedDate : 'S01 E01'
+  }`;
+
+  const play = () => {
+    router.push(
+      {
+        pathname: '/watch/[id]',
+        query: {
+          id,
+          fileName: searchTerm,
+        },
+      },
+      `/watch/${id}`
+    );
+  };
 
   return (
     <>
@@ -154,7 +180,7 @@ function VideoBanner({ children, data, type }) {
                     </div>
                   </div>
                   <div className="buttons justify-center md:justify-start mt-[0.55vw] whitespace-nowrap flex line-height: 88%">
-                    <Button text="Play" variant="white">
+                    <Button text="Play" onClick={play} variant="white">
                       <FaPlay />
                       <div className="w-[1.2rem]" />
                     </Button>
