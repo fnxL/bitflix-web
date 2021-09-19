@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import { BiPlus } from 'react-icons/bi';
 import { dateToYearOnly, getFallBackTitle, truncate } from '../../utils/utils';
 import Button from '../Button/Button';
+import config from '../../config';
 
-const BACKDROP_URL = process.env.BACKDROP_URL;
-const FALLBACK_URL = process.env.FALLBACK_URL;
+const { FALLBACK_URL, BACKDROP_URL } = config;
 
 function RecomPoster({ data }) {
   const { id, backdrop_path, overview, release_date, first_air_date, vote_average } = data;

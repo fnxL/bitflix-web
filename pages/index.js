@@ -7,7 +7,7 @@ import useViewport from '../hooks/useViewport';
 import fetcher from '../query/fetcher';
 import requests from '../query/requests';
 import useStore from '../store/store';
-import { HomePageRows } from '../utils/rowConfig';
+import { HomePageRows } from '../config/rowConfig';
 import { randomize } from '../utils/utils';
 
 const url = requests.popularHotstarMovies;

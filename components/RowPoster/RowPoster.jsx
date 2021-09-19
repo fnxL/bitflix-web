@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router';
 import { FaChevronDown, FaPlay, FaPlus } from 'react-icons/fa';
+import config from '../../config';
 import useGenreConversion from '../../hooks/useGenreConversion';
 import { getFallBackTitle } from '../../utils/utils';
 import styles from './rowposter.module.css';
 
-const BACKDROP_URL = process.env.BACKDROP_URL;
-const POSTER_URL = process.env.POSTER_URL;
-const FALLBACK_URL = process.env.FALLBACK_URL;
+const { BACKDROP_URL, POSTER_URL, FALLBACK_URL } = config;
 
 function RowPoster(result) {
   const router = useRouter();

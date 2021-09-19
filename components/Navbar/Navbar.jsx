@@ -5,7 +5,7 @@ import { IoMdNotifications as FaNotif } from 'react-icons/io';
 import useOutSideClick from '../../hooks/useOutsideClick';
 import useScroll from '../../hooks/useScroll';
 import useViewPort from '../../hooks/useViewport';
-import NavItems from '../../utils/NavItems';
+import NavItems from '../../config/NavItems';
 import ActiveLink from '../ActiveLink/ActiveLink';
 import styles from './Navbar.module.css';
 

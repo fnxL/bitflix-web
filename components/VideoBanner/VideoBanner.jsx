@@ -14,8 +14,9 @@ import Button from '../Button/Button';
 import SkeletonBanner from '../SkeletonBanner/SkeletonBanner';
 import styles from './VideoBanner.module.css';
 
-const fanart = process.env.fanart;
-const FEATURED_URL = process.env.FEATURED_URL;
+import config from '../../config';
+
+const { FANART, FEATURED_URL } = config;
 
 const playerOptions = {
   playerVars: {
@@ -75,7 +76,7 @@ function VideoBanner({ children, data, type }) {
     trailersList = trailer ? trailer?.videos?.results : data?.videos?.results;
     trailersList = trailersList.filter((video) => video.type === 'Trailer');
     videoKey = trailersList ? trailersList[0]?.key : undefined;
-    maturityRating = getMaturityRating(trailer ? trailer : data, type);
+    maturityRating = getMaturityRating(trailer || data, type);
   }
   if (data) tvdb_id = data?.external_ids?.tvdb_id;
   if (trailer) tvdb_id = trailer?.external_ids?.tvdb_id;
@@ -87,7 +88,7 @@ function VideoBanner({ children, data, type }) {
       const { data } = await axios.get(
         `https://webservice.fanart.tv/v3/${type === 'movie' ? 'movies' : 'tv'}/${
           type === 'movie' ? id : tvdb_id
-        }?api_key=${fanart}`
+        }?api_key=${FANART}`
       );
       return data;
     },
