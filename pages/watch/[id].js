@@ -7,7 +7,6 @@ function Watch() {
 
   return (
     <div>
-      {JSON.stringify({ id, fileName }, null, 4)}
       <VideoPlayer />
     </div>
   );
