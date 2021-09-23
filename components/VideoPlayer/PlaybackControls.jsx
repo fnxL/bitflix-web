@@ -36,21 +36,32 @@ function ValueLabelComponent(props) {
 }
 
 const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
-  const [playing, duration, played, loaded, togglePlayback, muted, toggleMute, setVolume, volume] =
-    useVideoPlayerStore(
-      (state) => [
-        state.playing,
-        state.duration,
-        state.played,
-        state.loaded,
-        state.togglePlayback,
-        state.muted,
-        state.toggleMute,
-        state.setVolume,
-        state.volume,
-      ],
-      shallow
-    );
+  const [
+    playing,
+    elapsedTime,
+    duration,
+    played,
+    loaded,
+    togglePlayback,
+    muted,
+    toggleMute,
+    setVolume,
+    volume,
+  ] = useVideoPlayerStore(
+    (state) => [
+      state.playing,
+      state.elapsedTime,
+      state.duration,
+      state.played,
+      state.loaded,
+      state.togglePlayback,
+      state.muted,
+      state.toggleMute,
+      state.setVolume,
+      state.volume,
+    ],
+    shallow
+  );
 
   const handleSeekForward = () => {
     const notif = useVideoPlayerStore.getState().notification;
@@ -89,7 +100,8 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
   };
 
   const handleSeekChange = (e, value) => {
-    useVideoPlayerStore.setState({ played: parseFloat(value / 100) });
+    const valueInSeconds = formatTime((value / 100) * duration);
+    useVideoPlayerStore.setState({ played: parseFloat(value / 100), elapsedTime: valueInSeconds });
   };
 
   const handleSeekMouseDown = () => {
@@ -100,12 +112,8 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
     useVideoPlayerStore.setState({ seeking: false });
     ref.current.seekTo(value / 100);
   };
-
   const currentTime = ref.current ? ref.current.getCurrentTime() : '00:00';
-
-  const elapsedTime = formatTime(currentTime);
   const timeLeft = formatTime(duration - currentTime);
-
   return (
     <>
       <div className="bottom_controls_container relative w-full flex min-h-0 min-w-0 items-end justify-center">

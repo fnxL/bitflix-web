@@ -12,7 +12,8 @@ const useVideoPlayerStore = create(
     played: 0,
     loaded: 0,
     seeking: false,
-    duration: '00:00',
+    duration: 0,
+    elapsedTime: '00:00',
 
     pause: () => set({ playing: false }),
     togglePlayback: () =>

@@ -5,6 +5,7 @@ import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import shallow from 'zustand/shallow';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
+import { formatTime } from '../../utils/utils';
 import { Back } from './Icons';
 import PlaybackControls from './PlaybackControls';
 import PlaybackNotification from './PlaybackNotification';
@@ -25,6 +26,12 @@ function VideoPlayer() {
     screenfull.toggle(fullscreenRef.current);
   };
   const handleProgress = ({ played, loaded }) => {
+    // Update CurrentTime;
+    const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : '00:00';
+    const elapsedTime = formatTime(currentTime);
+
+    useVideoPlayerStore.setState({ elapsedTime });
+
     if (count > 3) {
       controlsRef.current.style.visibility = 'hidden';
       document.body.style.cursor = 'none';

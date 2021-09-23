@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+/public/video.mp4
+/public/dual.mkv
