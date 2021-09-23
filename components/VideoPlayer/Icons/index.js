@@ -8,3 +8,4 @@ export { default as VolumeFull } from './VolumeFull';
 export { default as VolumeMuted } from './VolumeMuted';
 export { default as Back } from './Back';
 export { default as Pause } from './Pause';
+export { default as Selected } from './Selected';

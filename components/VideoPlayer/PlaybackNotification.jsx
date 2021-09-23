@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import useStore from '../../store/store';
-import { Pause, Play, SeekBack, SeekForward } from './Icons';
+import { memo } from 'react';
+import useVideoPlayerStore from '../../store/videoPlayerStore';
+import { Pause, Play, SeekBack, SeekForward, VolumeFull, VolumeMuted } from './Icons';
 
 const styles = `
 @keyframes buttonFader {
@@ -43,51 +43,60 @@ const styles = `
 }
 `;
 
-function PlaybackNotification({ state }) {
-  if (!state) return null;
-  return (
-    <div
-      style={{
-        right:
-          typeof state === 'number' && state < 0
-            ? 'auto'
-            : typeof state === 'number' && state > 0
-            ? '40px'
-            : null,
-        left:
-          typeof state === 'number' && state < 0
-            ? '160px'
-            : typeof state === 'number' && state > 0
-            ? 'auto'
-            : '50%',
-      }}
-      key={Math.random()}
-      className={`playback-notification content-center ${
-        state === 'seekback' && 'right-auto left-[160px]'
-      } ${
-        state === 'seekforward' && 'left-auto right-[40px]'
-      } items-center h-[100px] w-[100px] left-[50%] pointer-events-none absolute top-[50%]`}
-    >
-      <div className="playback-background" />
+const notificationSelector = (state) => state.notification;
+
+function PlaybackNotification() {
+  const state = useVideoPlayerStore(notificationSelector);
+
+  if (state)
+    return (
       <div
-        className="playback-icon flex items-center justify-center h-[38px] w-[38px]"
-        role="presentation"
+        style={{
+          right:
+            typeof state === 'number' && state < 0
+              ? 'auto'
+              : typeof state === 'number' && state > 0
+              ? '40px'
+              : null,
+          left:
+            typeof state === 'number' && state < 0
+              ? '160px'
+              : typeof state === 'number' && state > 0
+              ? 'auto'
+              : '50%',
+        }}
+        key={Math.random()}
+        className={`playback-notification content-center ${
+          state === 'seekback' && 'right-auto left-[160px]'
+        } ${
+          state === 'seekforward' && 'left-auto right-[40px]'
+        } items-center h-[100px] w-[100px] left-[50%] pointer-events-none absolute top-[50%]`}
       >
-        {state === 'play' ? (
-          <Pause />
-        ) : state === 'pause' ? (
-          <Play />
-        ) : state < 0 ? (
-          <SeekBack />
-        ) : state > 0 ? (
-          <SeekForward />
-        ) : (
-          ''
-        )}
+        <div className="playback-background" />
+        <div
+          className="playback-icon flex items-center justify-center h-[38px] w-[38px]"
+          role="presentation"
+        >
+          {state === 'play' ? (
+            <Pause />
+          ) : state === 'pause' ? (
+            <Play />
+          ) : state < 0 ? (
+            <SeekBack />
+          ) : state > 0 ? (
+            <SeekForward />
+          ) : state === 'muted' ? (
+            <VolumeMuted />
+          ) : state === 'unmuted' ? (
+            <VolumeFull />
+          ) : (
+            ''
+          )}
+        </div>
+        <style jsx>{styles}</style>
       </div>
-      <style jsx>{styles}</style>
-    </div>
-  );
+    );
+  return null;
 }
 
-export default PlaybackNotification;
+export default memo(PlaybackNotification);

@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import TestRange from '../../components/VideoPlayer/TestRange';
 
 const VideoPlayer = dynamic(() => import('../../components/VideoPlayer/VideoPlayer'), {
   ssr: false,

@@ -6,17 +6,28 @@ const useVideoPlayerStore = create(
     playing: true,
     notification: false,
     muted: false,
-    fullscreen: false,
+    volume: 1,
     controls: false,
     mouseMoving: true,
+    played: 0,
+    loaded: 0,
+    seeking: false,
+    duration: '00:00',
 
     pause: () => set({ playing: false }),
-    togglePlaying: () => set((state) => ({ playing: !state.playing })),
-    toggleMute: () => set((state) => ({ muted: !state.muted })),
-    toggleFullscreen: () => set((state) => ({ fullscreen: !state.fullscreen })),
+    togglePlayback: () =>
+      set((state) => ({ playing: !state.playing, notification: state.playing ? 'play' : 'pause' })),
+    toggleMute: () =>
+      set((state) => ({ muted: !state.muted, notification: state.muted ? 'unmuted' : 'muted' })),
+
+    setVolume: (value) =>
+      set((state) => ({
+        volume: value,
+        muted: value === 0,
+        notification: value === 0 ? 'muted' : 'unmuted',
+      })),
+
     setNotification: (notification) => set({ notification }),
-    setControls: (bool) => set({ controls: bool }),
-    setMouseMoving: (bool) => set({ mouseMoving: bool }),
   }))
 );
 export default useVideoPlayerStore;

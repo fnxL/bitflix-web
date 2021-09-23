@@ -42,6 +42,10 @@ a {
   text-decoration: none;
 }
 
+.MuiTooltip-tooltip {
+  background-color: rgb(38, 38, 38) !important;
+}
+
 * {
   box-sizing: border-box;
 }

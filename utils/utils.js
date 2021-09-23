@@ -48,6 +48,7 @@ export const getMaturityRating = (data, type) => {
 };
 
 export const formatTime = (seconds) => {
+  if (Number.isNaN(seconds)) return '00:00';
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = Math.round(seconds % 60);
@@ -61,4 +62,51 @@ export const watchProviders = {
   primeVideo: 119,
   voot: 121,
   disneyPlus: 337,
+};
+
+export const VolumeSliderStyles = {
+  color: 'red',
+  paddingLeft: '11.25px',
+  paddingRight: '11.25px',
+  borderRadius: 0,
+  width: '11.25px',
+  '& .MuiSlider-thumb': {
+    height: '22.5px',
+    width: '22.5px',
+    '&:hover, &.Mui-focusVisible': {
+      boxShadow: 'none',
+    },
+    '& .Mui-active': {
+      boxShadow: 'none',
+    },
+  },
+};
+
+export const ProgressBarStyles = {
+  borderRadius: '0px',
+  color: 'red',
+  transition: 'height 0.2s ease 0s',
+  height: '3.75px',
+  '&:hover': {
+    height: '7.5px',
+  },
+  '& .MuiSlider-rail': {
+    color: 'lightgray',
+  },
+  '& .MuiSlider-track': {
+    transition:
+      'left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,width 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,bottom 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,height 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;',
+  },
+  '& .MuiSlider-thumb': {
+    height: '15px',
+    width: '15px',
+    '&:hover, &.Mui-focusVisible': {
+      height: '18px',
+      width: '18px',
+      boxShadow: 'none',
+    },
+    '& .Mui-active': {
+      boxShadow: 'none',
+    },
+  },
 };
