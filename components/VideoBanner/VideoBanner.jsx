@@ -34,7 +34,7 @@ const playerOptions = {
   },
 };
 
-function VideoBanner({ children, data, type }) {
+function VideoBanner({ children, data, type, imdb }) {
   const playerRef = useRef();
   const { width } = useViewport();
   const {
@@ -60,7 +60,6 @@ function VideoBanner({ children, data, type }) {
     id = data.id;
     backdrop_path = data.backdrop_path;
     release_date = data.release_date;
-    reducedDate = dateToYearOnly(release_date);
   }
 
   const url =
@@ -75,7 +74,6 @@ function VideoBanner({ children, data, type }) {
   let trailersList;
   let maturityRating;
   let tvdb_id;
-  let reducedDate;
   if (trailer || data?.videos) {
     trailersList = trailer ? trailer?.videos?.results : data?.videos?.results;
     trailersList = trailersList.filter((video) => video.type === 'Trailer');
@@ -85,7 +83,6 @@ function VideoBanner({ children, data, type }) {
     maturityRating = getMaturityRating(trailer || data, type);
 
     release_date = trailer.release_date;
-    reducedDate = dateToYearOnly(release_date);
   }
   if (data) tvdb_id = data?.external_ids?.tvdb_id;
   if (trailer) tvdb_id = trailer?.external_ids?.tvdb_id;
@@ -109,24 +106,29 @@ function VideoBanner({ children, data, type }) {
   if (image) {
     if (type === 'movie') {
       const check = image?.hdmovielogo;
-      if (check.length) imageUrl = check[0].url;
+      if (check?.length) imageUrl = check[0].url;
     } else {
       const check = image?.hdtvlogo;
-      if (check.length) imageUrl = check[0].url;
+      if (check?.length) imageUrl = check[0].url;
     }
   }
   const router = useRouter();
-  const searchTerm = `${fallBackTitle?.toLowerCase()} ${
-    type === 'movie' ? reducedDate : 'S01 E01'
-  }`;
 
   const play = () => {
+    const reducedDate = dateToYearOnly(release_date);
+
+    const searchTerm = `${fallBackTitle?.toLowerCase()} ${
+      type === 'movie' ? reducedDate : 'S01 E01'
+    }`;
+
     router.push(
       {
         pathname: '/watch/[id]',
         query: {
           id,
           fileName: searchTerm,
+          title: fallBackTitle,
+          imdb,
         },
       },
       `/watch/${id}`

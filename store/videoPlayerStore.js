@@ -7,13 +7,19 @@ const useVideoPlayerStore = create(
     notification: false,
     muted: false,
     volume: 1,
-    controls: false,
-    mouseMoving: true,
     played: 0,
     loaded: 0,
     seeking: false,
     duration: 0,
     elapsedTime: '00:00',
+    sourceLoaded: false,
+    currentSource: '',
+    sourceList: [],
+    title: '',
+    buffering: false,
+    subsEnabled: true,
+    srtURL: false,
+    vttURL: '',
 
     pause: () => set({ playing: false }),
     togglePlayback: () =>
@@ -29,6 +35,26 @@ const useVideoPlayerStore = create(
       })),
 
     setNotification: (notification) => set({ notification }),
+
+    resetVideoPlayer: () =>
+      set({
+        playing: true,
+        notification: false,
+        muted: false,
+        played: 0,
+        loaded: 0,
+        seeking: false,
+        duration: 0,
+        elapsedTime: '00:00',
+        sourceLoaded: false,
+        currentSource: '',
+        sourceList: [],
+        title: '',
+        buffering: false,
+        subsEnabled: true,
+        srtURL: false,
+        vttURL: '',
+      }),
   }))
 );
 export default useVideoPlayerStore;

@@ -9,6 +9,7 @@ import requests from '../query/requests';
 import useStore from '../store/store';
 import { HomePageRows } from '../config/rowConfig';
 import { randomize } from '../utils/utils';
+import useVideoPlayerStore from '../store/videoPlayerStore';
 
 const url = requests.popularHotstarMovies;
 
@@ -20,7 +21,7 @@ function Home() {
   const setFeatured = useStore((state) => state.setHomeFeatured);
   const [isMount, setIsMount] = useState(false);
   const { width } = useViewport();
-
+  useVideoPlayerStore.getState().resetVideoPlayer();
   const { data } = useQuery(['Popular on Hotstar', url], () => fetcher(url), {
     enabled: isMount,
   });

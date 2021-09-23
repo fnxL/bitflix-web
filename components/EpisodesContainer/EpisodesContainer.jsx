@@ -6,7 +6,7 @@ import Dropdown from '../Dropdown/Dropdown';
 import SkeletonElement from '../SkeletonElement/SkeletonElement';
 import EpisodePoster from './EpisodePoster';
 
-function EpisodesContainer({ seasons, id }) {
+function EpisodesContainer({ seasons, id, title, imdb }) {
   const options = seasons
     .filter((season) => season.season_number !== 0)
     .map(({ episode_count, id, name, season_number }) => ({
@@ -43,7 +43,16 @@ function EpisodesContainer({ seasons, id }) {
             </div>
           ))}
 
-        {episodes && episodes.map((episode) => <EpisodePoster key={episode.id} data={episode} />)}
+        {episodes &&
+          episodes.map((episode) => (
+            <EpisodePoster
+              key={episode.id}
+              data={episode}
+              season={selected.season_number}
+              title={title}
+              imdb={imdb}
+            />
+          ))}
       </div>
     </div>
   );

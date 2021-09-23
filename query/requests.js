@@ -8,7 +8,7 @@ const { netflix, primeVideo, disneyPlus, hotstar } = watchProviders;
 const requests = {
   fetchSearchQuery: `/search/multi?api_key=${TMDB}&language=${ENG}&query=`,
   trendingAll: `/trending/all/week?api_key=${TMDB}`,
-  movieDetails: `?api_key=${TMDB}&language=en-US&append_to_response=videos,releases,recommendations,credits`,
+  movieDetails: `?api_key=${TMDB}&language=en-US&append_to_response=videos,releases,recommendations,credits,external_ids`,
   tvDetails: `?api_key=${TMDB}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits,external_ids`,
   apiKey: `?api_key=${TMDB}&language=en-US`,
   // Movies

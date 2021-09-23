@@ -36,8 +36,11 @@ function ValueLabelComponent(props) {
 }
 
 const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
+  const { playerRef, fullscreenRef } = ref;
+
   const [
     playing,
+    vttURL,
     elapsedTime,
     duration,
     played,
@@ -47,9 +50,13 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
     toggleMute,
     setVolume,
     volume,
+    title,
+    sourceList,
+    subsEnabled,
   ] = useVideoPlayerStore(
     (state) => [
       state.playing,
+      state.vttURL,
       state.elapsedTime,
       state.duration,
       state.played,
@@ -59,6 +66,9 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
       state.toggleMute,
       state.setVolume,
       state.volume,
+      state.title,
+      state.sourceList,
+      state.subsEnabled,
     ],
     shallow
   );
@@ -66,7 +76,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
   const handleSeekForward = () => {
     const notif = useVideoPlayerStore.getState().notification;
     let value;
-    if (typeof notif === 'string') {
+    if (typeof notif === 'string' || typeof notif === 'boolean') {
       value = 1;
     }
     if (notif < 0) {
@@ -76,7 +86,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
       value = notif + 1;
     }
     useVideoPlayerStore.setState({ notification: value });
-    ref.current.seekTo(ref.current.getCurrentTime() + 10);
+    playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
   };
 
   const handleSeekBack = () => {
@@ -92,7 +102,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
       value = notif - 1;
     }
     useVideoPlayerStore.setState({ notification: value });
-    ref.current.seekTo(ref.current.getCurrentTime() - 10);
+    playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
   };
 
   const handleVolumeChange = (e, value) => {
@@ -110,10 +120,28 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
 
   const handleSeekCommited = (e, value) => {
     useVideoPlayerStore.setState({ seeking: false });
-    ref.current.seekTo(value / 100);
+    playerRef.current.seekTo(value / 100);
   };
-  const currentTime = ref.current ? ref.current.getCurrentTime() : '00:00';
+  const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : '00:00';
   const timeLeft = formatTime(duration - currentTime);
+
+  const handleSubChange = () => {
+    const videoElement = playerRef.current.getInternalPlayer();
+    if (!subsEnabled) {
+      videoElement.textTracks[0].mode = 'showing';
+
+      useVideoPlayerStore.setState({ subsEnabled: true });
+    }
+  };
+
+  const handleTurnOffSub = () => {
+    const videoElement = playerRef.current.getInternalPlayer();
+    if (subsEnabled) {
+      videoElement.textTracks[0].mode = 'hidden';
+      useVideoPlayerStore.setState({ subsEnabled: false });
+    }
+  };
+
   return (
     <>
       <div className="bottom_controls_container relative w-full flex min-h-0 min-w-0 items-end justify-center">
@@ -166,6 +194,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                   <Spacing />
 
                   <ToolTip
+                    PopperProps={{ container: fullscreenRef.current }}
                     title={
                       <div className="rounded-[3px] text-[8px] p-0 h-[20vh] max-h-[200px] min-h-[100px] py-[20px]">
                         <Slider
@@ -193,7 +222,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                     className="overflow-hidden text-center overflow-ellipsis whitespace-nowrap w-full text-[20px]"
                     data-uia="video-title"
                   >
-                    Fast &amp; Furious Presents: Hobbs &amp; Shaw
+                    {title}
                   </div>
                 </div>
                 <div className="buttons_right flex min-h-0 min-w-0 relative justify-end">
@@ -204,29 +233,35 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                   <Spacing />
 
                   <ToolTip
+                    PopperProps={{ container: fullscreenRef.current }}
                     title={
                       <div className="menu pb-40 inline-flex overflow-hidden rounded-[0.8rem] whitespace-nowrap">
                         <div className="quality flex-grow flex-shrink">
                           <h3 className="menu_title">Quality</h3>
                           <ul>
-                            <li>2160p</li>
-                            <li>
-                              <Selected />
-                              1080p
-                            </li>
-                            <li>720p</li>
+                            {sourceList.map((item) => {
+                              if (item.url) {
+                                return (
+                                  <li key={item.id}>
+                                    {item.selected && <Selected />} {item.quality}
+                                  </li>
+                                );
+                              }
+                              return null;
+                            })}
                           </ul>
                         </div>
-                        <div className="subtitles quality flex-grow flex-shrink">
-                          <h3 className="menu_title">Subtitles</h3>
-                          <ul>
-                            <li>
-                              <Selected />
-                              English [CC]
-                            </li>
-                            <li>Off</li>
-                          </ul>
-                        </div>
+                        {vttURL && (
+                          <div className="subtitles quality flex-grow flex-shrink">
+                            <h3 className="menu_title">Subtitles</h3>
+                            <ul>
+                              <li onClick={handleSubChange}>
+                                {subsEnabled && <Selected />}English
+                              </li>
+                              <li onClick={handleTurnOffSub}>{!subsEnabled && <Selected />} Off</li>
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     }
                   >

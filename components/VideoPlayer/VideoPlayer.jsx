@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/self-closing-comp */
+import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import shallow from 'zustand/shallow';
+import { Spinner } from '..';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
 import { formatTime } from '../../utils/utils';
 import { Back } from './Icons';
@@ -12,19 +14,23 @@ import PlaybackNotification from './PlaybackNotification';
 
 let count = 0;
 
-function VideoPlayer() {
-  const [playing, muted, volume] = useVideoPlayerStore(
-    (state) => [state.playing, state.muted, state.volume],
+const VideoPlayer = () => {
+  const [playing, muted, volume, currentSource, buffering, vttURL] = useVideoPlayerStore(
+    (state) => [
+      state.playing,
+      state.muted,
+      state.volume,
+      state.currentSource,
+      state.buffering,
+      state.vttURL,
+    ],
     shallow
   );
-
+  const router = useRouter();
   const playerRef = useRef();
-  const fullscreenRef = useRef();
   const controlsRef = useRef();
+  const fullscreenRef = useRef();
 
-  const toggleFullscreen = () => {
-    screenfull.toggle(fullscreenRef.current);
-  };
   const handleProgress = ({ played, loaded }) => {
     // Update CurrentTime;
     const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : '00:00';
@@ -51,7 +57,7 @@ function VideoPlayer() {
   };
 
   const handleDuration = (duration) => {
-    useVideoPlayerStore.setState({ duration });
+    useVideoPlayerStore.setState({ duration, sourceLoaded: true });
   };
 
   const handleVisibility = () => {
@@ -61,40 +67,79 @@ function VideoPlayer() {
     count = 0;
   };
 
+  const toggleFullscreen = () => {
+    screenfull.toggle(fullscreenRef.current);
+  };
+
+  const ref = {
+    playerRef,
+    fullscreenRef,
+  };
+
   return (
     <div
       ref={fullscreenRef}
       onMouseMove={handleVisibility}
       className="video_player w-[100vw] h-[100vh]"
     >
+      {buffering && <Spinner />}
       <div className="video_container w-full h-full left-0 absolute m-0 overflow-hidden p-0 top-0">
-        <ReactPlayer
-          ref={playerRef}
-          url="/dual.mkv"
-          playing={playing}
-          muted={muted}
-          width="100%"
-          height="100%"
-          volume={volume}
-          onDuration={handleDuration}
-          onProgress={handleProgress}
-        />
+        {vttURL && (
+          <ReactPlayer
+            className="video"
+            ref={playerRef}
+            url={currentSource}
+            config={{
+              file: {
+                attributes: {
+                  crossOrigin: 'anonymous',
+                },
+                tracks: [
+                  {
+                    kind: 'subtitles',
+                    src: `${vttURL}`,
+                    srcLang: 'en',
+                    default: true,
+                  },
+                ],
+              },
+            }}
+            playing={playing}
+            muted={muted}
+            width="100%"
+            height="100%"
+            volume={volume}
+            onBuffer={() => useVideoPlayerStore.setState({ buffering: true })}
+            onBufferEnd={() => useVideoPlayerStore.setState({ buffering: false })}
+            onDuration={handleDuration}
+            onProgress={handleProgress}
+          />
+        )}
       </div>
       <div className="parentContainer z-10 w-full h-full">
         <div
           ref={controlsRef}
           className="controls_container flex flex-end relative flex-col h-full w-full"
         >
-          <div className="back_button min-h-0 min-w-0 px-[19.8px] pt-[19.8px] lg:px-[24px] lg:pt-[24px] xl:px-[30px] xl:pt-[30px] items-start justify-start flex-grow">
+          <div
+            onClick={useVideoPlayerStore.getState().togglePlayback}
+            className="back_button min-h-0 min-w-0 px-[19.8px] pt-[19.8px] lg:px-[24px] lg:pt-[24px] xl:px-[30px] xl:pt-[30px] items-start justify-start flex-grow"
+          >
             <div className="div">
-              <button className="h-[44px] w-[44px]">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.back();
+                }}
+                className="h-[44px] w-[44px]"
+              >
                 <Back />
               </button>
             </div>
           </div>
 
           <PlaybackControls
-            ref={playerRef}
+            ref={ref}
             onToggleFullscreen={toggleFullscreen}
             onProgress={handleProgress}
           />
@@ -117,6 +162,7 @@ function VideoPlayer() {
       `}</style>
     </div>
   );
-}
+};
 
+VideoPlayer.displayName = 'VideoPlayer';
 export default VideoPlayer;

@@ -1,14 +1,38 @@
-import styles from './EpisodePoster.module.css';
+import { useRouter } from 'next/router';
 import config from '../../config';
+import styles from './EpisodePoster.module.css';
 
 const { BACKDROP_URL } = config;
 
-function EpisodePoster({ data }) {
-  const { still_path, episode_number, name, overview } = data;
+function EpisodePoster({ data, season, title, imdb }) {
+  const router = useRouter();
+  const { still_path, episode_number, name, overview, id } = data;
+
+  const handleClick = () => {
+    const searchTerm = `${title} S${season < 10 ? `0${season}` : season}E${
+      episode_number < 10 ? `0${episode_number}` : episode_number
+    }`;
+    console.log(searchTerm);
+    router.push(
+      {
+        pathname: '/watch/[id]',
+        query: {
+          id,
+          fileName: searchTerm,
+          title: `${title}: ${name}`,
+          episode_number,
+          season_number: season,
+          imdb,
+        },
+      },
+      `/watch/${id}`
+    );
+  };
+
   return (
     <div className={`${styles.poster_container}`}>
       <div className={styles.number}>{episode_number}</div>
-      <div className={styles.imageWrapper}>
+      <div onClick={handleClick} className={styles.imageWrapper}>
         <div className={styles.imagediv}>
           <img src={`${BACKDROP_URL}${still_path}`} alt="ok" />
         </div>

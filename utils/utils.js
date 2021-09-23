@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 export const getOneMonthAgoReleaseDate = () => {
   const date = new Date();
   date.setMonth(date.getMonth() - 1);
@@ -105,7 +106,7 @@ export const ProgressBarStyles = {
       width: '18px',
       boxShadow: 'none',
     },
-    '& .Mui-active': {
+    '&.Mui-active': {
       boxShadow: 'none',
     },
   },
