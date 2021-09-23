@@ -2,47 +2,6 @@ import { memo } from 'react';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
 import { Pause, Play, SeekBack, SeekForward, VolumeFull, VolumeMuted } from './Icons';
 
-const styles = `
-@keyframes buttonFader {
-  0% {
-    transform: translateY(-50%) translateX(-50%) scale(1);
-    opacity: 1;
-    visibility: 'visible';
-  }
-  100% {
-    transform: translateY(-50%) translateX(-50%) scale(1.3);
-    opacity: 0;
-    visiblility: 'hidden';
-  }
-}
-
-.playback-background {
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.4);
-  width: 100%;
-  height: 100%;
-  position: absolute;
-}
-
-.playback-icon {
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%) translateX(-50%);
-}
-
-.playback-icon svg {
-  height: 100%;
-  width: 100%;
-}
-
-.playback-notification {
-  user-select: none;
-  transform: translateY(-50%) translateX(-50%);
-  animation: buttonFader 650ms normal forwards ease-out;  
-}
-`;
-
 const notificationSelector = (state) => state.notification;
 
 function PlaybackNotification() {
@@ -93,7 +52,46 @@ function PlaybackNotification() {
             ''
           )}
         </div>
-        <style jsx>{styles}</style>
+        <style jsx>{`
+          @keyframes buttonFader {
+            0% {
+              transform: translateY(-50%) translateX(-50%) scale(1);
+              opacity: 1;
+              visibility: 'visible';
+            }
+            100% {
+              transform: translateY(-50%) translateX(-50%) scale(1.3);
+              opacity: 0;
+              visiblility: 'hidden';
+            }
+          }
+
+          .playback-background {
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+          }
+
+          .playback-icon {
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%) translateX(-50%);
+          }
+
+          .playback-icon svg {
+            height: 100%;
+            width: 100%;
+          }
+
+          .playback-notification {
+            user-select: none;
+            transform: translateY(-50%) translateX(-50%);
+            animation: buttonFader 650ms normal forwards ease-out;
+          }
+        `}</style>
       </div>
     );
   return null;
