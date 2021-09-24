@@ -45,7 +45,8 @@ function Home() {
       </Head>
       <div className="overflow-hidden">
         <Navbar />
-        <VideoBanner data={featured} type="movie">
+
+        <VideoBanner id={featured?.id} type="movie">
           {width > 1024 && <Row {...HomePageRows[0]} />}
         </VideoBanner>
 

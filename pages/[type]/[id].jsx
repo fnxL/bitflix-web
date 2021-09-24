@@ -17,6 +17,8 @@ import { getFallBackTitle } from '../../utils/utils';
 function DetailPage() {
   const router = useRouter();
   const { type, id } = router.query;
+
+  // Reset VideoPlayerState
   useVideoPlayerStore.getState().resetVideoPlayer();
 
   const url =
@@ -41,7 +43,7 @@ function DetailPage() {
       )}
       {data && (
         <>
-          <VideoBanner data={data} type={type} imdb={data.external_ids.imdb_id} />
+          <VideoBanner id={data.id} type={type} />
           <hr className="border-[rgba(0,0,0,0.8)]" />
           <Information data={data} type={type} />
           {type === 'tv' && (
@@ -49,7 +51,7 @@ function DetailPage() {
               id={id}
               seasons={data.seasons}
               title={fallBackTitle}
-              imdb={data.external_ids.imdb_id}
+              imdb_id={data.external_ids.imdb_id}
             />
           )}
           <Recommendations type={type} data={data.recommendations} />

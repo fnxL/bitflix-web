@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/self-closing-comp */
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import shallow from 'zustand/shallow';
@@ -15,17 +15,19 @@ import PlaybackNotification from './PlaybackNotification';
 let count = 0;
 
 const VideoPlayer = () => {
-  const [playing, muted, volume, currentSource, buffering, vttURL] = useVideoPlayerStore(
-    (state) => [
-      state.playing,
-      state.muted,
-      state.volume,
-      state.currentSource,
-      state.buffering,
-      state.vttURL,
-    ],
-    shallow
-  );
+  const [playing, muted, volume, currentSource, currentTime, buffering, vttURL] =
+    useVideoPlayerStore(
+      (state) => [
+        state.playing,
+        state.muted,
+        state.volume,
+        state.currentSource,
+        state.currentTime,
+        state.buffering,
+        state.vttURL,
+      ],
+      shallow
+    );
   const router = useRouter();
   const playerRef = useRef();
   const controlsRef = useRef();
@@ -36,7 +38,7 @@ const VideoPlayer = () => {
     const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : '00:00';
     const elapsedTime = formatTime(currentTime);
 
-    useVideoPlayerStore.setState({ elapsedTime });
+    useVideoPlayerStore.setState({ elapsedTime, currentTime });
 
     if (count > 3) {
       controlsRef.current.style.visibility = 'hidden';
@@ -76,6 +78,10 @@ const VideoPlayer = () => {
     fullscreenRef,
   };
 
+  useEffect(() => {
+    if (playerRef.current) playerRef.current.seekTo(currentTime);
+  }, [currentSource]);
+
   return (
     <div
       ref={fullscreenRef}
@@ -88,7 +94,7 @@ const VideoPlayer = () => {
           <ReactPlayer
             className="video"
             ref={playerRef}
-            url={currentSource}
+            url={currentSource.url}
             config={{
               file: {
                 attributes: {

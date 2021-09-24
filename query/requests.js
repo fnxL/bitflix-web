@@ -7,20 +7,20 @@ const { netflix, primeVideo, disneyPlus, hotstar } = watchProviders;
 
 const requests = {
   fetchSearchQuery: `/search/multi?api_key=${TMDB}&language=${ENG}&query=`,
-  trendingAll: `/trending/all/week?api_key=${TMDB}`,
+  trendingAll: `/trending/all/day?api_key=${TMDB}`,
   movieDetails: `?api_key=${TMDB}&language=en-US&append_to_response=videos,releases,recommendations,credits,external_ids`,
   tvDetails: `?api_key=${TMDB}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits,external_ids`,
   apiKey: `?api_key=${TMDB}&language=en-US`,
   // Movies
   // watchProviders
   popularNetflixMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${netflix}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
-  popularPrimeMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${primeVideo}|9&watch_region=US&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  popularPrimeMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${primeVideo}|9&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
   popularHotstarMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${hotstar}&watch_region=IN&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
   popularDisneyPlus: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${disneyPlus}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
 
   // Popular Movies
   popularMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
-  hindiMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&include_video=false&with_original_language=hi&watch_region=IN&with_watch_monetization_types=flatrate`,
+  hindiMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&include_video=false&with_original_language=hi&watch_region=IN&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
 
   // TV Shows
   popularTVShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_null_first_air_dates=false&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,

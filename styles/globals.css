@@ -57,7 +57,7 @@ video::cue {
 }
 
 video::-webkit-media-text-track-container {
-  transform: translateY(-13%);
+  transform: translateY(-8%);
 }
 
 * {

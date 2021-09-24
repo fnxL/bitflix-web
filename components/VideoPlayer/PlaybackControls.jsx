@@ -4,10 +4,11 @@ import Slider from '@mui/material/Slider';
 import { forwardRef } from 'react';
 import shallow from 'zustand/shallow';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
-import { formatTime, ProgressBarStyles, VolumeSliderStyles } from '../../utils/utils';
+import { formatBytes, formatTime, ProgressBarStyles, VolumeSliderStyles } from '../../utils/utils';
 import Button from './Button';
 import {
   FullScreen,
+  Info,
   Pause,
   Play,
   PlaybackSpeed,
@@ -53,6 +54,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
     title,
     sourceList,
     subsEnabled,
+    currentSource,
   ] = useVideoPlayerStore(
     (state) => [
       state.playing,
@@ -69,6 +71,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
       state.title,
       state.sourceList,
       state.subsEnabled,
+      state.currentSource,
     ],
     shallow
   );
@@ -140,6 +143,16 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
       videoElement.textTracks[0].mode = 'hidden';
       useVideoPlayerStore.setState({ subsEnabled: false });
     }
+  };
+
+  const handleSourceChange = (quality) => {
+    const modifiedList = sourceList.map((item) => ({
+      ...item,
+      selected: item.quality === quality,
+    }));
+
+    const selected = modifiedList.find((item) => item.selected);
+    useVideoPlayerStore.setState({ sourceList: modifiedList, currentSource: selected });
   };
 
   return (
@@ -235,6 +248,23 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                   <ToolTip
                     PopperProps={{ container: fullscreenRef.current }}
                     title={
+                      <div className="menu pb-[8px] max-w-[350px] flex flex-col overflow-hidden rounded-[0.8rem] ">
+                        <h3 className="menu_title">Information</h3>
+                        <ul>
+                          <li>{currentSource?.name}</li>
+                          <li>Size: {formatBytes(currentSource?.size)}</li>
+                        </ul>
+                      </div>
+                    }
+                  >
+                    <Button icon={<Info />} />
+                  </ToolTip>
+
+                  <Spacing />
+
+                  <ToolTip
+                    PopperProps={{ container: fullscreenRef.current }}
+                    title={
                       <div className="menu pb-40 inline-flex overflow-hidden rounded-[0.8rem] whitespace-nowrap">
                         <div className="quality flex-grow flex-shrink">
                           <h3 className="menu_title">Quality</h3>
@@ -242,7 +272,10 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                             {sourceList.map((item) => {
                               if (item.url) {
                                 return (
-                                  <li key={item.id}>
+                                  <li
+                                    onClick={(e) => handleSourceChange(item.quality)}
+                                    key={item.id}
+                                  >
                                     {item.selected && <Selected />} {item.quality}
                                   </li>
                                 );
@@ -267,10 +300,6 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                   >
                     <Button icon={<Subtitles />} />
                   </ToolTip>
-
-                  <Spacing />
-
-                  <Button icon={<PlaybackSpeed />} />
 
                   <Spacing />
 

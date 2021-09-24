@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { encode } from 'js-base64';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import { BiInfoCircle } from 'react-icons/bi';
@@ -11,7 +12,13 @@ import useVideoBanner from '../../hooks/useVideoBanner';
 import useViewport from '../../hooks/useViewport';
 import fetcher from '../../query/fetcher';
 import requests from '../../query/requests';
-import { dateToYearOnly, getFallBackTitle, getMaturityRating, truncate } from '../../utils/utils';
+import {
+  dateToYearOnly,
+  getFallBackTitle,
+  getMaturityRating,
+  getSearchTerm,
+  truncate,
+} from '../../utils/utils';
 import Button from '../Button/Button';
 import SkeletonBanner from '../SkeletonBanner/SkeletonBanner';
 import styles from './VideoBanner.module.css';
@@ -34,7 +41,8 @@ const playerOptions = {
   },
 };
 
-function VideoBanner({ children, data, type, imdb }) {
+function VideoBanner({ children, id, type }) {
+  const router = useRouter();
   const playerRef = useRef();
   const { width } = useViewport();
   const {
@@ -48,44 +56,35 @@ function VideoBanner({ children, data, type, imdb }) {
     replay,
     onReady,
   } = useVideoBanner(playerRef);
-
-  let fallBackTitle;
-  let description;
-  let id;
-  let backdrop_path;
-  let release_date;
-  if (data) {
-    fallBackTitle = getFallBackTitle(data);
-    description = truncate(data?.overview, 150);
-    id = data.id;
-    backdrop_path = data.backdrop_path;
-    release_date = data.release_date;
-  }
-
   const url =
     type === 'movie' ? `/movie/${id}${requests.movieDetails}` : `/tv/${id}${requests.tvDetails}`;
 
-  // fetch only if videos[] not in data and width > 1024 (trailers for desktop only)
-  const { data: trailer, isLoading } = useQuery([type, id], () => fetcher(url), {
-    enabled: !data?.videos && width > 1024,
+  const { data, isLoading } = useQuery([type, id], () => fetcher(url), {
+    enabled: !!id,
   });
 
+  let fallBackTitle;
+  let description;
+  let backdrop_path;
+  let release_date;
   let videoKey;
   let trailersList;
   let maturityRating;
   let tvdb_id;
-  if (trailer || data?.videos) {
-    trailersList = trailer ? trailer?.videos?.results : data?.videos?.results;
-    trailersList = trailersList.filter((video) => video.type === 'Trailer');
+  let imdb_id;
+  let imageUrl;
 
+  if (data) {
+    fallBackTitle = getFallBackTitle(data);
+    description = truncate(data?.overview, 150);
+    backdrop_path = data?.backdrop_path;
+    release_date = data?.release_date;
+    trailersList = data?.videos?.results.filter((video) => video.type === 'Trailer');
     videoKey = trailersList ? trailersList[0]?.key : undefined;
-
-    maturityRating = getMaturityRating(trailer || data, type);
-
-    release_date = trailer.release_date;
+    maturityRating = getMaturityRating(data, type);
+    tvdb_id = data?.external_ids?.tvdb_id;
+    imdb_id = data?.external_ids?.imdb_id;
   }
-  if (data) tvdb_id = data?.external_ids?.tvdb_id;
-  if (trailer) tvdb_id = trailer?.external_ids?.tvdb_id;
 
   // fetch title logo only for desktop view;
   const { data: image, isLoading: isLoadingImage } = useQuery(
@@ -98,41 +97,37 @@ function VideoBanner({ children, data, type, imdb }) {
       );
       return data;
     },
-    {
-      enabled: width > 1024,
-    }
+    { enabled: !!(data && type) }
   );
-  let imageUrl;
+
+  // check & get image Logo
   if (image) {
     if (type === 'movie') {
       const check = image?.hdmovielogo;
-      if (check?.length) imageUrl = check[0].url;
+      if (check?.length) imageUrl = check[0]?.url;
     } else {
       const check = image?.hdtvlogo;
-      if (check?.length) imageUrl = check[0].url;
+      if (check?.length) imageUrl = check[0]?.url;
     }
   }
-  const router = useRouter();
 
-  const play = () => {
+  const handlePlay = () => {
     const reducedDate = dateToYearOnly(release_date);
 
-    const searchTerm = `${fallBackTitle?.toLowerCase()} ${
-      type === 'movie' ? reducedDate : 'S01 E01'
-    }`;
-
-    router.push(
-      {
-        pathname: '/watch/[id]',
-        query: {
-          id,
-          fileName: searchTerm,
-          title: fallBackTitle,
-          imdb,
-        },
-      },
-      `/watch/${id}`
+    const searchTerm = getSearchTerm(fallBackTitle, type, {
+      date: reducedDate,
+      season_number: 1,
+      episode_number: 1,
+    });
+    console.log(release_date);
+    const metadata = encode(
+      JSON.stringify({ fileName: searchTerm, title: fallBackTitle, imdb_id })
     );
+
+    router.push({
+      pathname: '/watch/[id]',
+      query: { id, metadata },
+    });
   };
 
   return (
@@ -182,7 +177,7 @@ function VideoBanner({ children, data, type, imdb }) {
                     </div>
                   </div>
                   <div className="buttons justify-center md:justify-start mt-[0.55vw] whitespace-nowrap flex line-height: 88%">
-                    <Button text="Play" onClick={play} variant="white">
+                    <Button text="Play" onClick={handlePlay} variant="white">
                       <FaPlay />
                       <div className="w-[1.2rem]" />
                     </Button>
@@ -199,7 +194,7 @@ function VideoBanner({ children, data, type, imdb }) {
             {(width <= 1024 || hasVideoEnded || !isPlaying || !videoKey) && (
               <img
                 className="max-w-full absolute top-0 z-0 object-cover h-[99%] w-full"
-                src={`${FEATURED_URL}${backdrop_path}`}
+                src={backdrop_path && `${FEATURED_URL}${backdrop_path}`}
                 alt="backdrop"
               />
             )}

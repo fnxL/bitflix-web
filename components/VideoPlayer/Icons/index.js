@@ -9,3 +9,4 @@ export { default as VolumeMuted } from './VolumeMuted';
 export { default as Back } from './Back';
 export { default as Pause } from './Pause';
 export { default as Selected } from './Selected';
+export { default as Info } from './Info';

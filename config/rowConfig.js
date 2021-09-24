@@ -3,8 +3,8 @@ import requests from '../query/requests';
 export const HomePageRows = [
   {
     id: 0,
-    title: 'Popular on Netflix',
-    url: requests.popularNetflixMovies,
+    title: 'Popular Movies',
+    url: requests.popularMovies,
     type: 'movie',
   },
   {
@@ -13,7 +13,6 @@ export const HomePageRows = [
     url: requests.trendingAll,
     type: 'all',
   },
-
   {
     id: 4,
     title: 'Popular TV Shows',
@@ -27,35 +26,12 @@ export const HomePageRows = [
     url: requests.popularPrimeMovies,
     type: 'movie',
   },
-
-  {
-    id: 3,
-    title: 'Netflix Originals',
-    url: requests.netflixOriginals,
-    isLarge: true,
-    type: 'tv',
-  },
-  {
-    id: 10,
-    title: 'Popular on Hotstar',
-    url: requests.popularHotstarMovies,
-    type: 'movie',
-  },
-  {
-    id: 2,
-    title: 'Popular on DisneyPlus',
-    url: requests.popularDisneyPlus,
-    type: 'movie',
-    isLarge: true,
-  },
-
   {
     id: 6,
     title: 'Hindi Movies',
     url: requests.hindiMovies,
     type: 'movie',
   },
-
   {
     id: 5,
     title: 'Amazon Originals',
@@ -63,7 +39,6 @@ export const HomePageRows = [
     isLarge: true,
     type: 'tv',
   },
-
   {
     id: 7,
     title: 'Hindi Series',

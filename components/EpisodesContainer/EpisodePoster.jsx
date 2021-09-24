@@ -1,32 +1,39 @@
+import { encode } from 'js-base64';
 import { useRouter } from 'next/router';
 import config from '../../config';
+import { getSearchTerm } from '../../utils/utils';
 import styles from './EpisodePoster.module.css';
 
 const { BACKDROP_URL } = config;
 
-function EpisodePoster({ data, season, title, imdb }) {
+function EpisodePoster({ data, season, title, imdb_id }) {
   const router = useRouter();
   const { still_path, episode_number, name, overview, id } = data;
 
   const handleClick = () => {
-    const searchTerm = `${title} S${season < 10 ? `0${season}` : season}E${
-      episode_number < 10 ? `0${episode_number}` : episode_number
-    }`;
+    const searchTerm = getSearchTerm(title, 'tv', {
+      season_number: season,
+      episode_number,
+    });
     console.log(searchTerm);
-    router.push(
-      {
-        pathname: '/watch/[id]',
-        query: {
-          id,
-          fileName: searchTerm,
-          title: `${title}: ${name}`,
-          episode_number,
-          season_number: season,
-          imdb,
-        },
-      },
-      `/watch/${id}`
+
+    const metadata = encode(
+      JSON.stringify({
+        fileName: searchTerm,
+        title: `${searchTerm}: ${name}`,
+        episode_number,
+        season_number: season,
+        imdb_id,
+      })
     );
+
+    router.push({
+      pathname: '/watch/[id]',
+      query: {
+        id,
+        metadata,
+      },
+    });
   };
 
   return (

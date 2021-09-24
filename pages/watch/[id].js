@@ -1,5 +1,6 @@
 /* eslint-disable react/self-closing-comp */
 import axios from 'axios';
+import { decode, encode } from 'js-base64';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -15,12 +16,18 @@ const VideoPlayer = dynamic(() => import('../../components/VideoPlayer/VideoPlay
 
 function Watch() {
   const router = useRouter();
-  const { id, fileName, title, imdb, season_number, episode_number } = router.query;
+
+  const { id, metadata } = router.query;
+
+  const { fileName, title, imdb_id, season_number, episode_number } = JSON.parse(decode(metadata));
+
   useVideoPlayerStore.setState({ title });
+
   const sourceLoaded = useVideoPlayerStore((state) => state.sourceLoaded);
   const srtURL = useVideoPlayerStore((state) => state.srtURL);
+  const quality = useVideoPlayerStore((state) => state.quality);
 
-  const { data, error } = useQuery(
+  const { data } = useQuery(
     ['streamlinks', id],
     async () => {
       const { data } = await axios.get(
@@ -33,22 +40,22 @@ function Watch() {
 
   let sources;
   let obj;
-  if (data) {
-    sources = [
-      { id: 0, quality: '2160p', url: data?.['2160'][0]?.link, selected: false },
-      { id: 1, quality: '1080p', url: data?.['1080'][0]?.link, selected: true },
-      { id: 2, quality: '720p', url: data?.['720'][0]?.link, selected: false },
-    ];
 
-    obj = btoa(
+  if (data) {
+    sources = [data?.['2160'][0], data?.['1080'][0], data?.['720'][0]].map((item) => ({
+      ...item,
+      selected: item?.quality === `${quality}p`,
+    }));
+
+    obj = encode(
       JSON.stringify({
         sublanguageid: 'eng',
-        filename: data?.['1080'][0]?.name,
-        filesize: data?.['1080'][0]?.size,
+        filename: data?.[quality][0]?.name,
+        filesize: data?.[quality][0]?.size,
         season: season_number,
         episode: episode_number,
         extensions: ['srt', 'vtt'],
-        imdbid: imdb,
+        imdbid: imdb_id,
       })
     );
   }
@@ -62,7 +69,8 @@ function Watch() {
     { enabled: !!data }
   );
 
-  if (sources) useVideoPlayerStore.setState({ sourceList: sources, currentSource: sources[1].url });
+  if (sources) useVideoPlayerStore.setState({ sourceList: sources, currentSource: sources[1] });
+
   if (subst) {
     useVideoPlayerStore.setState({ srtURL: `${subst?.subs?.en?.url}` });
   }
@@ -75,6 +83,7 @@ function Watch() {
       const newBlob = new Blob([blob], { type: 'text/vtt' });
       return newBlob;
     };
+
     const srtToVtt = async () => {
       const vttConverter = new VTTConverter(await createFileObject());
       const url = await vttConverter.getURL();

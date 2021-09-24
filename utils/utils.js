@@ -7,7 +7,10 @@ export const getOneMonthAgoReleaseDate = () => {
   return formattedDate;
 };
 
-export const dateToYearOnly = (date) => date.slice(0, 4);
+export const dateToYearOnly = (date) => {
+  if (date) return date.slice(0, 4);
+  return undefined;
+};
 
 export const capitalizeFirstLetter = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
@@ -83,6 +86,15 @@ export const VolumeSliderStyles = {
   },
 };
 
+export const getSearchTerm = (title, type, options = {}) => {
+  const { date, season_number, episode_number } = options;
+  if (type === 'tv')
+    return `${title} S${season_number < 10 ? `0${season_number}` : season_number}E${
+      episode_number < 10 ? `0${episode_number}` : episode_number
+    }`;
+  return `${title} ${date}`;
+};
+
 export const ProgressBarStyles = {
   borderRadius: '0px',
   color: 'red',
@@ -111,3 +123,17 @@ export const ProgressBarStyles = {
     },
   },
 };
+
+export function formatBytes(bytes, decimals = 2) {
+  if (!bytes) return undefined;
+
+  if (bytes === 0) return '0 Bytes';
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
