@@ -6,9 +6,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import VTTConverter from 'srt-webvtt';
 import { Spinner } from '../../components';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
+
+let VTTConverter = '';
 
 const VideoPlayer = dynamic(() => import('../../components/VideoPlayer/VideoPlayer'), {
   ssr: false,
@@ -18,8 +19,10 @@ function Watch() {
   const router = useRouter();
 
   const { id, metadata } = router.query;
-
-  const { fileName, title, imdb_id, season_number, episode_number } = JSON.parse(decode(metadata));
+  console.log(metadata);
+  const { fileName, title, imdb_id, season_number, episode_number } = JSON.parse(
+    decode(metadata || 'e30=')
+  );
 
   useVideoPlayerStore.setState({ title });
 
@@ -85,6 +88,8 @@ function Watch() {
     };
 
     const srtToVtt = async () => {
+      const imp = await import('srt-webvtt');
+      VTTConverter = imp.default;
       const vttConverter = new VTTConverter(await createFileObject());
       const url = await vttConverter.getURL();
       return url;
