@@ -17,6 +17,10 @@ const requests = {
   popularPrimeMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${primeVideo}|9&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
   popularHotstarMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${hotstar}&watch_region=IN&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
   popularDisneyPlus: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${disneyPlus}&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  // movie genres
+  horrorMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=tru&with_genres=27&watch_region=US&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  scifiMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=tru&with_genres=878&watch_region=US&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  crimeMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=tru&with_genres=80&watch_region=US&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
 
   // Popular Movies
   popularMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,

@@ -1,6 +1,6 @@
 import requests from '../query/requests';
 
-export const HomePageRows = [
+export const genreConfig = [
   {
     id: 0,
     title: 'Popular Movies',

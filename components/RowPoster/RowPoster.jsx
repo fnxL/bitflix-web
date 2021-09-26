@@ -14,7 +14,6 @@ function RowPoster(result) {
     item,
     item: { id, genre_ids, poster_path, backdrop_path, media_type },
     isLarge,
-    isFavourite,
     type,
   } = result;
 

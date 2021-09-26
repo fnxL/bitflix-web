@@ -62,6 +62,7 @@ const useVideoPlayerStore = create(
         srtURL: false,
         vttURL: '',
         subName: '',
+        error: '',
       }),
   }))
 );

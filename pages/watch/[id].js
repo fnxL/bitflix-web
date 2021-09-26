@@ -1,5 +1,4 @@
 /* eslint-disable react/self-closing-comp */
-import { Alert } from '@mui/material';
 import axios from 'axios';
 import { decode, encode } from 'js-base64';
 import dynamic from 'next/dynamic';

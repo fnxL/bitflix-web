@@ -2,6 +2,7 @@ import genreList from '../utils/genreList';
 
 const useGenreConversion = (genreIds) => {
   const genresConvertedList = [];
+  if (!genreIds) return;
   genreIds
     .slice(0, 3)
     .map((genreId) =>

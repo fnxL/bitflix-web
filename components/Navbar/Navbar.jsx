@@ -29,12 +29,7 @@ function Navbar() {
       <nav className={`${styles.navbar__primary} ${isScrolled && styles.scrolled}`}>
         <div className={styles.navbar__left}>
           <div className="navbar__logo">
-            <img
-              src="https://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png"
-              alt="logo"
-              width="150px"
-              height="75px"
-            />
+            <img src="/logo.png" alt="logo" width="150px" height="75px" />
           </div>
           <div className={styles.navbar__items}>
             <ul className="flex space-x-8">

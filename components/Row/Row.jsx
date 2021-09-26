@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRef } from 'react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { useQuery } from 'react-query';
@@ -11,7 +12,7 @@ import SkeletonElement from '../SkeletonElement/SkeletonElement';
 import SkeletonPoster from '../SkeletonPoster/SkeletonPoster';
 import styles from './Row.module.css';
 
-function Row({ results, title, isLarge, url, type }) {
+function Row({ results, title, isLarge, url, type, genre }) {
   const { width } = useViewport();
 
   const navigationPrevRef = useRef(null);
@@ -87,11 +88,13 @@ function Row({ results, title, isLarge, url, type }) {
         </div>
       ) : (
         <div className={`${styles.Row_header}`}>
-          <a className="flex items-center text-center h-[1vw] cursor-pointer">
-            <div>{title}</div>
-            <div className={styles.explore_all}>Explore all</div>
-            <div className={`${styles.chevron}`} />
-          </a>
+          <Link href={`/browse/${type}/${genre}`}>
+            <a className="flex items-center text-center h-[1vw] cursor-pointer">
+              <div>{title}</div>
+              <div className={styles.explore_all}>Explore all</div>
+              <div className={`${styles.chevron}`} />
+            </a>
+          </Link>
         </div>
       )}
 
