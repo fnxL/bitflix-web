@@ -1,7 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';

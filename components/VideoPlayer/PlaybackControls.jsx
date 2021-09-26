@@ -1,7 +1,8 @@
 /* eslint-disable no-sparse-arrays */
-import { Tooltip } from '@mui/material';
+import { Menu, MenuItem, Tooltip } from '@mui/material';
+import MButton from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import shallow from 'zustand/shallow';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
 import { formatBytes, formatTime, ProgressBarStyles, VolumeSliderStyles } from '../../utils/utils';
@@ -11,7 +12,6 @@ import {
   Info,
   Pause,
   Play,
-  PlaybackSpeed,
   SeekBack,
   SeekForward,
   Selected,
@@ -55,6 +55,8 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
     sourceList,
     subsEnabled,
     currentSource,
+    subName,
+    selectedSourceList,
   ] = useVideoPlayerStore(
     (state) => [
       state.playing,
@@ -72,6 +74,8 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
       state.sourceList,
       state.subsEnabled,
       state.currentSource,
+      state.subName,
+      state.selectedSourceList,
     ],
     shallow
   );
@@ -154,6 +158,17 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
     const selected = modifiedList.find((item) => item.selected);
     useVideoPlayerStore.setState({ sourceList: modifiedList, currentSource: selected });
   };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClick = (source) => {
+    source.selected = true;
+    useVideoPlayerStore.setState({ currentSource: source });
+    setAnchorEl(null);
+  };
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <>
@@ -241,8 +256,36 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                 <div className="buttons_right flex min-h-0 min-w-0 relative justify-end">
                   <Spacing />
 
-                  <Button icon="source" />
-
+                  <MButton
+                    id="basic-button"
+                    aria-controls="basic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClick}
+                  >
+                    Source
+                  </MButton>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    sx={{
+                      '.MuiMenu-paper': {
+                        backgroundColor: 'rgb(38, 38, 38)',
+                        color: 'white',
+                      },
+                    }}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                  >
+                    {selectedSourceList.map((source) => (
+                      <MenuItem key={source.size} onClick={() => handleMenuClick(source)}>
+                        {source.name}
+                      </MenuItem>
+                    ))}
+                  </Menu>
                   <Spacing />
 
                   <ToolTip
@@ -253,6 +296,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                         <ul>
                           <li>{currentSource?.name}</li>
                           <li>Size: {formatBytes(currentSource?.size)}</li>
+                          <li>Sub: {subName}</li>
                         </ul>
                       </div>
                     }

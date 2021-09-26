@@ -114,14 +114,8 @@ function VideoBanner({ children, id, type }) {
   const handlePlay = () => {
     const reducedDate = dateToYearOnly(release_date);
 
-    const searchTerm = getSearchTerm(fallBackTitle, type, {
-      date: reducedDate,
-      season_number: 1,
-      episode_number: 1,
-    });
-    console.log(release_date);
     const metadata = encode(
-      JSON.stringify({ fileName: searchTerm, title: fallBackTitle, imdb_id })
+      JSON.stringify({ title: fallBackTitle, imdb_id, year: reducedDate, type })
     );
 
     router.push({

@@ -1,4 +1,5 @@
 /* eslint-disable react/self-closing-comp */
+import { Alert } from '@mui/material';
 import axios from 'axios';
 import { decode, encode } from 'js-base64';
 import dynamic from 'next/dynamic';
@@ -8,6 +9,7 @@ import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Spinner } from '../../components';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
+import { getSearchTerm } from '../../utils/utils';
 
 let VTTConverter = '';
 
@@ -19,12 +21,16 @@ function Watch() {
   const router = useRouter();
 
   const { id, metadata } = router.query;
-  console.log(metadata);
-  const { fileName, title, imdb_id, season_number, episode_number } = JSON.parse(
+  const { title, imdb_id, episode_name, type, season_number, episode_number } = JSON.parse(
     decode(metadata || 'e30=')
   );
 
-  useVideoPlayerStore.setState({ title });
+  const showDisplayName =
+    type === 'tv' && getSearchTerm(title, type, { episode_number, season_number });
+
+  useVideoPlayerStore.setState({
+    title: `${type === 'movie' ? title : `${showDisplayName}: ${episode_name}`}`,
+  });
 
   const sourceLoaded = useVideoPlayerStore((state) => state.sourceLoaded);
   const srtURL = useVideoPlayerStore((state) => state.srtURL);
@@ -34,17 +40,20 @@ function Watch() {
     ['streamlinks', id],
     async () => {
       const { data } = await axios.get(
-        `http://localhost:5000/api/media/streamlinks?fileName=${encodeURI(fileName)}`
+        `http://localhost:5000/api/media/streamlinks?metadata=${metadata}`
       );
       return data;
     },
-    { enabled: !!fileName }
+    { enabled: !!title }
   );
 
   let sources;
   let obj;
 
   if (data) {
+    if (data?.['2160']?.length === 0 && data?.['1080']?.length === 0 && data?.['720']?.length === 0)
+      useVideoPlayerStore.setState({ error: 'No sources found!' });
+
     sources = [data?.['2160'][0], data?.['1080'][0], data?.['720'][0]].map((item) => ({
       ...item,
       selected: item?.quality === `${quality}p`,
@@ -72,11 +81,37 @@ function Watch() {
     { enabled: !!data }
   );
 
-  if (sources) useVideoPlayerStore.setState({ sourceList: sources, currentSource: sources[1] });
+  if (sources)
+    useVideoPlayerStore.setState({
+      sourceList: sources,
+      currentSource: sources[1],
+      selectedSourceList: data?.[quality],
+    });
 
   if (subst) {
-    useVideoPlayerStore.setState({ srtURL: `${subst?.subs?.en?.url}` });
+    useVideoPlayerStore.setState({
+      srtURL: `${subst?.en?.url}`,
+      subName: `${subst?.en?.filename}`,
+    });
   }
+
+  const onError = () => {
+    const sourceLix = useVideoPlayerStore.getState().selectedSourceList;
+    const tryCount = useVideoPlayerStore.getState().tryCount;
+
+    if (tryCount < sourceLix.length) {
+      useVideoPlayerStore.setState({
+        currentSource: sourceLix[tryCount],
+      });
+      useVideoPlayerStore.setState({
+        tryCount: tryCount + 1,
+      });
+    } else {
+      useVideoPlayerStore.setState({
+        error: 'No source is playable right now!',
+      });
+    }
+  };
 
   // Convert SRT subs to VTT on the Fly!
   useEffect(() => {
@@ -101,9 +136,10 @@ function Watch() {
   return (
     <>
       <Head></Head>
+
       <div className="bg-black">
         {(!data || !sourceLoaded) && <Spinner />}
-        <VideoPlayer />
+        <VideoPlayer onError={onError} />
       </div>
     </>
   );

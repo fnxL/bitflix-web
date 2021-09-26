@@ -11,19 +11,14 @@ function EpisodePoster({ data, season, title, imdb_id }) {
   const { still_path, episode_number, name, overview, id } = data;
 
   const handleClick = () => {
-    const searchTerm = getSearchTerm(title, 'tv', {
-      season_number: season,
-      episode_number,
-    });
-    console.log(searchTerm);
-
     const metadata = encode(
       JSON.stringify({
-        fileName: searchTerm,
-        title: `${searchTerm}: ${name}`,
+        title,
+        episode_name: name,
         episode_number,
         season_number: season,
         imdb_id,
+        type: 'tv',
       })
     );
 

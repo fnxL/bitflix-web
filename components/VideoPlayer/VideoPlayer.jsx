@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/self-closing-comp */
+import { Alert } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
@@ -14,8 +15,8 @@ import PlaybackNotification from './PlaybackNotification';
 
 let count = 0;
 
-const VideoPlayer = () => {
-  const [playing, muted, volume, currentSource, currentTime, buffering, vttURL] =
+const VideoPlayer = ({ onError }) => {
+  const [playing, muted, volume, currentSource, currentTime, buffering, vttURL, error] =
     useVideoPlayerStore(
       (state) => [
         state.playing,
@@ -25,6 +26,7 @@ const VideoPlayer = () => {
         state.currentTime,
         state.buffering,
         state.vttURL,
+        state.error,
       ],
       shallow
     );
@@ -90,6 +92,11 @@ const VideoPlayer = () => {
     >
       {buffering && <Spinner />}
       <div className="video_container w-full h-full left-0 absolute m-0 overflow-hidden p-0 top-0">
+        {error && (
+          <Alert variant="filled" severity="error">
+            {error}
+          </Alert>
+        )}
         {vttURL && (
           <ReactPlayer
             className="video"
@@ -118,6 +125,7 @@ const VideoPlayer = () => {
             onBuffer={() => useVideoPlayerStore.setState({ buffering: true })}
             onBufferEnd={() => useVideoPlayerStore.setState({ buffering: false })}
             onDuration={handleDuration}
+            onError={onError}
             onProgress={handleProgress}
           />
         )}

@@ -21,7 +21,11 @@ const useVideoPlayerStore = create(
     subsEnabled: true,
     srtURL: false,
     vttURL: '',
+    subName: '',
     quality: '1080',
+    selectedSourceList: [],
+    tryCount: 1,
+    error: '',
 
     pause: () => set({ playing: false }),
     togglePlayback: () =>
@@ -57,6 +61,7 @@ const useVideoPlayerStore = create(
         subsEnabled: true,
         srtURL: false,
         vttURL: '',
+        subName: '',
       }),
   }))
 );

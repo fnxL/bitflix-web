@@ -33,13 +33,6 @@ export const HomePageRows = [
     type: 'movie',
   },
   {
-    id: 5,
-    title: 'Amazon Originals',
-    url: requests.amazonOriginals,
-    isLarge: true,
-    type: 'tv',
-  },
-  {
     id: 7,
     title: 'Hindi Series',
     url: requests.hindiSeries,
