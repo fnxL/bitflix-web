@@ -20,4 +20,5 @@ module.exports = {
     POSTER_URL: 'https://image.tmdb.org/t/p/w342',
     FALLBACK_URL: 'https://i.stack.imgur.com/y9DpT.jpg',
   },
+  trailingSlash: true,
 };
