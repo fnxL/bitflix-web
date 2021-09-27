@@ -39,7 +39,7 @@ function Watch() {
     ['streamlinks', id],
     async () => {
       const { data } = await axios.get(
-        `http://localhost:5000/api/media/streamlinks?metadata=${metadata}`
+        `https://bit-flix.herokuapp.com/api/media/streamlinks?metadata=${metadata}`
       );
       return data;
     },
@@ -74,7 +74,9 @@ function Watch() {
   const { data: subst } = useQuery(
     ['subtitles', id],
     async () => {
-      const { data } = await axios.get(`http://localhost:5000/api/media/subtitles?metadata=${obj}`);
+      const { data } = await axios.get(
+        `https://bit-flix.herokuapp.com/api/media/subtitles?metadata=${obj}`
+      );
       return data;
     },
     { enabled: !!data }
