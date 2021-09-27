@@ -66,3 +66,63 @@ export const HomePageRows = [
     genre: 'hindi',
   },
 ];
+
+export const tvPageRows = [
+  {
+    id: 0,
+    title: 'Popular TV Shows',
+    url: requests.popularTVShows,
+    genre: 'popular',
+    type: 'tv',
+  },
+  {
+    id: 1,
+    title: 'Trending Now',
+    url: requests.trendingAll,
+    genre: 'trending',
+    type: 'all',
+  },
+  {
+    id: 3,
+    title: 'Popular on Prime',
+    url: requests.popularPrimeShows,
+    genre: 'prime',
+    type: 'tv',
+  },
+  {
+    id: 4,
+    title: 'Popular on Netflix',
+    url: requests.popularNetflixShows,
+    type: 'tv',
+    genre: 'netflix',
+    isLarge: true,
+  },
+  {
+    id: 3,
+    title: 'Popular on Hotstar',
+    url: requests.popularHotstarShows,
+    genre: 'hotstar',
+    type: 'tv',
+  },
+  {
+    id: 10759,
+    title: 'Action & Adventure',
+    url: requests.actionAdventureShows,
+    type: 'tv',
+    genre: 'action-adventure',
+  },
+  {
+    id: 10765,
+    title: 'Sci-Fi & Fantasy',
+    url: requests.scifiShows,
+    type: 'tv',
+    genre: 'scifi-fantasy',
+  },
+  {
+    id: 5,
+    title: 'Hindi Series',
+    url: requests.hindiSeries,
+    type: 'tv',
+    genre: 'hindi',
+  },
+];

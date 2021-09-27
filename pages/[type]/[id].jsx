@@ -35,7 +35,6 @@ function DetailPage() {
       <Head>
         <title>{fallBackTitle}</title>
       </Head>
-      <Navbar />
       {!data && (
         <>
           <SkeletonBanner />

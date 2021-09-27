@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '../styles/globals.css';
+import Layout from '../components/Layout';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,12 +19,24 @@ const queryClient = new QueryClient({
 });
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
-      <ReactQueryDevtools />
-    </QueryClientProvider>
-  );
+  switch (Component.name) {
+    case 'Watch':
+      return (
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      );
+    default:
+      return (
+        <QueryClientProvider client={queryClient}>
+          <Layout>
+            <Component {...pageProps} />
+            <ReactQueryDevtools />
+          </Layout>
+        </QueryClientProvider>
+      );
+  }
 }
 
 export default MyApp;

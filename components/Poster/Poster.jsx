@@ -1,15 +1,18 @@
+import { encode } from 'js-base64';
 import { useRouter } from 'next/router';
 import { FaPlay, FaPlus } from 'react-icons/fa';
 import config from '../../config';
 import useGenreConversion from '../../hooks/useGenreConversion';
-import { getFallBackTitle } from '../../utils/utils';
+import { dateToYearOnly, getFallBackTitle } from '../../utils/utils';
 import rowposter from '../RowPoster/rowposter.module.css';
 import styles from './poster.module.css';
+import axios from '../../query/tmdbAxiosInstance';
+import requests from '../../query/requests';
 
 const { BACKDROP_URL, FALLBACK_URL } = config;
 
 function Poster({ result, type }) {
-  const { genre_ids, backdrop_path, id } = result;
+  const { genre_ids, backdrop_path, id, release_date } = result;
   const router = useRouter();
   const fallBackTitle = getFallBackTitle(result);
   const genresConverted = useGenreConversion(genre_ids);
@@ -18,6 +21,34 @@ function Poster({ result, type }) {
     if (type === 'all') {
       router.push(`/${type}/${id}`);
     } else router.push(`/${type}/${id}`);
+  };
+
+  const handlePlay = (e) => {
+    e.stopPropagation();
+
+    const reducedDate = dateToYearOnly(release_date);
+
+    const url =
+      type === 'movie' ? `/movie/${id}${requests.movieDetails}` : `/tv/${id}${requests.tvDetails}`;
+
+    axios.get(url).then((res) => {
+      const imdb_id = res.data?.external_ids?.imdb_id;
+      const metadata = encode(
+        JSON.stringify({
+          title: fallBackTitle,
+          imdb_id,
+          year: reducedDate,
+          type,
+          episode_number: 1,
+          season_number: 1,
+          episode_name: 'Pilot',
+        })
+      );
+      router.push({
+        pathname: '/watch/[id]',
+        query: { id, metadata },
+      });
+    });
   };
 
   return (
@@ -34,7 +65,10 @@ function Poster({ result, type }) {
       )}
       <div className={styles.poster_info}>
         <div className="icon_wrap flex items-center justify-center">
-          <button className={`${rowposter.icon} flex ml-[2px] items-center justify-center`}>
+          <button
+            onClick={handlePlay}
+            className={`${rowposter.icon} flex ml-[2px] items-center justify-center`}
+          >
             <FaPlay />
           </button>
 

@@ -44,8 +44,6 @@ function Home() {
         <title>Bitflix</title>
       </Head>
       <div className="overflow-hidden">
-        <Navbar />
-
         <VideoBanner id={featured?.id} type="movie">
           {width > 1024 && <Row {...HomePageRows[0]} />}
         </VideoBanner>

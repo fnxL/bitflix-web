@@ -8,10 +8,6 @@ const NavItems = [
     name: 'TV Shows',
   },
   {
-    path: '/movies',
-    name: 'Movies',
-  },
-  {
     path: '/popular',
     name: 'New & Popular',
   },

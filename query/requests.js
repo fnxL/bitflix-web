@@ -6,7 +6,7 @@ const { TMDB, ENG, WATCH_REGION } = config;
 const { netflix, primeVideo, disneyPlus, hotstar } = watchProviders;
 
 const requests = {
-  fetchSearchQuery: `/search/multi?api_key=${TMDB}&language=${ENG}&query=`,
+  searchAll: `/search/multi?api_key=${TMDB}&query=`,
   trendingAll: `/trending/all/day?api_key=${TMDB}`,
   movieDetails: `?api_key=${TMDB}&language=en-US&append_to_response=videos,releases,recommendations,credits,external_ids`,
   tvDetails: `?api_key=${TMDB}&language=en-US&append_to_response=videos,content_ratings,recommendations,credits,external_ids`,
@@ -27,10 +27,14 @@ const requests = {
   hindiMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&include_video=false&with_original_language=hi&watch_region=IN&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
 
   // TV Shows
-  popularTVShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_null_first_air_dates=false&watch_region=${WATCH_REGION}&with_watch_monetization_types=flatrate|free|ads|rent|buy`,
+  popularTVShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_null_first_air_dates=false&watch_region=${WATCH_REGION}`,
+  popularPrimeShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${primeVideo}|9&watch_region=${WATCH_REGION}`,
+  popularNetflixShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${netflix}&watch_region=${WATCH_REGION}`,
+  popularHotstarShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_adult=true&with_watch_providers=${hotstar}&watch_region=${WATCH_REGION}`,
   hindiSeries: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&with_networks=1024|213&include_null_first_air_dates=false&with_original_language=hi&watch_region=IN&with_watch_monetization_types=flatrate`,
-  netflixOriginals: `/discover/tv?api_key=${TMDB}&with_networks=213&sort_by=popularity.desc`,
-  amazonOriginals: `/discover/tv?api_key=${TMDB}&with_networks=1024&sort_by=popularity.desc`,
+
+  actionAdventureShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_null_first_air_dates=false&watch_region=${WATCH_REGION}&with_genres=10759`,
+  scifiShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_null_first_air_dates=false&watch_region=${WATCH_REGION}&with_genres=10765`,
 
   // waste
   fetchActionMovies: `/discover/movie?api_key=${TMDB}&with_genres=28&sort_by=popularity.desc&language=${ENG}`,

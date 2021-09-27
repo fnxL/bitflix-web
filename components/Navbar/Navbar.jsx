@@ -8,6 +8,7 @@ import useViewPort from '../../hooks/useViewport';
 import NavItems from '../../config/NavItems';
 import ActiveLink from '../ActiveLink/ActiveLink';
 import styles from './Navbar.module.css';
+import Search from '../Search/Search';
 
 function Navbar() {
   const { width } = useViewPort();
@@ -79,7 +80,7 @@ function Navbar() {
           )}
         </div>
         <div className={styles.navbar__right}>
-          <FaSearch size={22} />
+          <Search />
           <FaNotif size={27} className="cursor-pointer" />
           <div
             role="button"

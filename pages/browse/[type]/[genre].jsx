@@ -35,7 +35,6 @@ function Genre() {
     <p>Error: {error.message}</p>
   ) : (
     <>
-      <Navbar />
       <div className="category py-[2em] px-[4vw] mt-[7em]">
         <h2 className="mb-4 leading-[1.25vw] text-left inline-block font-bold md:text-[22px] xl:text-[1.4vw]">
           {genreObject.title}

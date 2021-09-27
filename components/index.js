@@ -11,3 +11,5 @@ export { default as SkeletonBanner } from './SkeletonBanner/SkeletonBanner';
 export { default as SkeletonElement } from './SkeletonElement/SkeletonElement';
 export { default as VideoBanner } from './VideoBanner/VideoBanner';
 export { default as Spinner } from './Spinner/Spinner';
+export { default as Search } from './Search/Search';
+export { default as Poster } from './Poster/Poster';
