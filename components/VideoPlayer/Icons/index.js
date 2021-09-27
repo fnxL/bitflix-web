@@ -1,0 +1,12 @@
+export { default as FullScreen } from './FullScreen';
+export { default as Play } from './Play';
+export { default as PlaybackSpeed } from './PlaybackSpeed';
+export { default as SeekBack } from './SeekBack';
+export { default as SeekForward } from './SeekForward';
+export { default as Subtitles } from './Subtitles';
+export { default as VolumeFull } from './VolumeFull';
+export { default as VolumeMuted } from './VolumeMuted';
+export { default as Back } from './Back';
+export { default as Pause } from './Pause';
+export { default as Selected } from './Selected';
+export { default as Info } from './Info';

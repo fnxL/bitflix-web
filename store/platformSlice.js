@@ -1,5 +1,6 @@
-const isFirefox = typeof InstallTrigger !== 'undefined';
+const isFireFox = typeof InstallTrigger !== 'undefined';
 
 export const platformSlice = (set, get) => ({
-  isFirefox,
+  isFireFox,
+  dataSaver: false,
 });

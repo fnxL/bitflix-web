@@ -10,14 +10,15 @@ module.exports = {
     ],
   },
   env: {
-    tmdb_key: 'e47e6864261ea10181fc486b7cf6aba5',
-    fanart: '3a565b507ab4255eb92cb933687f1064',
+    TMDB: 'e47e6864261ea10181fc486b7cf6aba5',
+    FANART: '3a565b507ab4255eb92cb933687f1064',
     ENG: 'en-US',
     HINDI: 'hi',
-    WATCH_REGION: 'US',
+    WATCH_REGION: 'IN',
     FEATURED_URL: 'https://image.tmdb.org/t/p/w1280',
     BACKDROP_URL: 'https://image.tmdb.org/t/p/w300',
     POSTER_URL: 'https://image.tmdb.org/t/p/w342',
     FALLBACK_URL: 'https://i.stack.imgur.com/y9DpT.jpg',
   },
+  trailingSlash: true,
 };

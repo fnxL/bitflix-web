@@ -1,68 +1,84 @@
+import { encode } from 'js-base64';
 import { useRouter } from 'next/router';
 import { FaChevronDown, FaPlay, FaPlus } from 'react-icons/fa';
+import config from '../../config';
 import useGenreConversion from '../../hooks/useGenreConversion';
-import { getFallBackTitle } from '../../utils/utils';
+import requests from '../../query/requests';
+import axios from '../../query/tmdbAxiosInstance';
+import { dateToYearOnly, getFallBackTitle } from '../../utils/utils';
 import styles from './rowposter.module.css';
 
-const BACKDROP_URL = process.env.BACKDROP_URL;
-const POSTER_URL = process.env.POSTER_URL;
-const FALLBACK_URL = process.env.FALLBACK_URL;
+const { BACKDROP_URL, POSTER_URL, FALLBACK_URL } = config;
 
 function RowPoster(result) {
   const router = useRouter();
 
   const {
     item,
-    item: {
-      id,
-      title,
-      original_name,
-      original_title,
-      name,
-      genre_ids,
-      poster_path,
-      backdrop_path,
-    },
+    item: { id, genre_ids, poster_path, backdrop_path, media_type, release_date },
     isLarge,
-    isFavourite,
     type,
   } = result;
-  let fallbackTitle = getFallBackTitle(item);
+
+  const fallbackTitle = getFallBackTitle(item);
   const genresConverted = useGenreConversion(genre_ids);
 
   const handleRedirect = () => {
-    router.push(`/${type}/${id}`);
+    if (type === 'all') {
+      router.push(`/${media_type}/${id}`);
+    } else router.push(`/${type}/${id}`);
+  };
+
+  const handlePlay = (e) => {
+    e.stopPropagation();
+    const reducedDate = dateToYearOnly(release_date);
+
+    const url =
+      type === 'movie' ? `/movie/${id}${requests.movieDetails}` : `/tv/${id}${requests.tvDetails}`;
+
+    axios.get(url).then((res) => {
+      const imdb_id = res.data?.external_ids?.imdb_id;
+      const metadata = encode(
+        JSON.stringify({
+          title: fallbackTitle,
+          imdb_id,
+          year: reducedDate,
+          type,
+          episode_number: type === 'tv' && 1,
+          season_number: type === 'tv' && 1,
+          episode_name: 'Pilot',
+        })
+      );
+      router.push({
+        pathname: '/watch/[id]',
+        query: { id, metadata },
+      });
+    });
   };
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className={`${styles.row_poster} relative cursor-pointer`}
       onClick={handleRedirect}
     >
       {isLarge ? (
         poster_path ? (
-          <img
-            loading='lazy'
-            src={`${POSTER_URL}${poster_path}`}
-            alt={fallbackTitle}
-          />
+          <img loading="lazy" src={`${POSTER_URL}${poster_path}`} alt={fallbackTitle} />
         ) : (
           ''
         )
       ) : backdrop_path ? (
-        <img
-          loading='lazy'
-          src={`${BACKDROP_URL}${backdrop_path}`}
-          alt={fallbackTitle}
-        />
+        <img loading="lazy" src={`${BACKDROP_URL}${backdrop_path}`} alt={fallbackTitle} />
       ) : (
-        <img loading='lazy' src={FALLBACK_URL} alt={fallbackTitle} />
+        <img loading="lazy" src={FALLBACK_URL} alt={fallbackTitle} />
       )}
 
       <div className={`${styles.poster_info}`}>
         <div className={`${styles.icon_wrapper}`}>
           <button className={`${styles.icon}`}>
-            <div className='flex ml-[2px] items-center justify-center'>
+            <div onClick={handlePlay} className="flex ml-[2px] items-center justify-center">
               <FaPlay />
             </div>
           </button>

@@ -1,4 +1,4 @@
-export const NavItems = [
+const NavItems = [
   {
     path: '/',
     name: 'Home',
@@ -6,10 +6,6 @@ export const NavItems = [
   {
     path: '/tv',
     name: 'TV Shows',
-  },
-  {
-    path: '/movies',
-    name: 'Movies',
   },
   {
     path: '/popular',
@@ -20,3 +16,5 @@ export const NavItems = [
     name: 'My List',
   },
 ];
+
+export default NavItems;

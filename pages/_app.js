@@ -1,11 +1,12 @@
+/* eslint-disable import/no-unresolved */
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '../styles/globals.css';
+import Layout from '../components/Layout';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +19,9 @@ const queryClient = new QueryClient({
 });
 
 function MyApp({ Component, pageProps }) {
-  return (
+  const getLayout = Component.getLayout || ((page) => page);
+
+  return getLayout(
     <QueryClientProvider client={queryClient}>
       <Component {...pageProps} />
       <ReactQueryDevtools />

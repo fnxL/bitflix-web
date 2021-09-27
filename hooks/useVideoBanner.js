@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const useVideoBanner = (playerRef) => {
   const [isMuted, setIsMuted] = useState(true);
@@ -10,7 +10,7 @@ const useVideoBanner = (playerRef) => {
     infoFade: {},
   });
 
-  const toggleMute = (e) => {
+  const toggleMute = () => {
     const player = playerRef.current.getInternalPlayer();
     if (isMuted) {
       player.unMute();
@@ -31,8 +31,8 @@ const useVideoBanner = (playerRef) => {
   const onPlay = () => {
     setIsPlaying(true);
     setHasVideoEnded(false);
-    setTransitionStyles({
-      ...transitionStyles,
+    setTransitionStyles((state) => ({
+      ...state,
       titleWrapper: {
         transformOrigin: 'left bottom',
         transform: 'scale(0.6) translate3d(0px, 13vw, 0px)',
@@ -50,12 +50,35 @@ const useVideoBanner = (playerRef) => {
         transitionDuration: '500ms',
         transitionDelay: '5000ms',
       },
-    });
+    }));
+  };
+
+  const onReady = () => {
+    setTransitionStyles((state) => ({
+      ...state,
+      titleWrapper: {
+        transformOrigin: 'left bottom',
+        transform: 'scale(0.6) translate3d(0px, 13vw, 0px)',
+        transitionDuration: '1300ms',
+        transitionDelay: '5000ms',
+      },
+      infoWrapper: {
+        transform: 'translate3d(0px, 100px, 0px)',
+        transitionDuration: '1300ms',
+        transitionDelay: '5000ms',
+        opacity: 1,
+      },
+      infoFade: {
+        opacity: 0,
+        transitionDuration: '500ms',
+        transitionDelay: '5000ms',
+      },
+    }));
   };
 
   const onEnd = () => {
-    setTransitionStyles({
-      ...transitionStyles,
+    setTransitionStyles((state) => ({
+      ...state,
       titleWrapper: {
         transformOrigin: 'left bottom',
         transform: 'scale(1) translate3d(0px, 0px, 0px)',
@@ -73,7 +96,7 @@ const useVideoBanner = (playerRef) => {
         transitionDuration: '600ms',
         transitionDelay: '200ms',
       },
-    });
+    }));
     setIsPlaying(false);
     setHasVideoEnded(true);
   };
@@ -87,6 +110,7 @@ const useVideoBanner = (playerRef) => {
     onPlay,
     onEnd,
     replay,
+    onReady,
   };
 };
 

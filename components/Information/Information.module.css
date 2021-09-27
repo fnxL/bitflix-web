@@ -1,0 +1,23 @@
+.maturity_rating {
+  display: inline-block;
+}
+
+.maturity_number {
+  text-transform: uppercase;
+  border: solid 1px rgba(255, 255, 255, 0.4);
+  padding: 0 0.4em;
+  unicode-bidi: normal;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.title {
+  line-height: 1;
+  text-shadow: 2px 2px 4px rgb(20 20 20 / 45%);
+  color: #f2f2f2;
+  user-select: none;
+  font-weight: bold;
+  font-size: 35px;
+}

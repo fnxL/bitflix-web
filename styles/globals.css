@@ -22,7 +22,7 @@
 
 @font-face {
   font-family: 'icomoon';
-  src: url('../fonts/icomoon.woff') format('woff');
+  src: url('../assets/fonts/icomoon.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -40,6 +40,24 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.MuiTooltip-tooltip {
+  background-color: rgb(38, 38, 38) !important;
+}
+
+video::cue {
+  background-color: transparent;
+  margin-bottom: 100px;
+  font-size: 43px;
+  color: #ffffff;
+  line-height: normal;
+  font-weight: bolder;
+  text-shadow: #000000 0px 0px 7px;
+}
+
+video::-webkit-media-text-track-container {
+  transform: translateY(-8%);
 }
 
 * {
