@@ -8,7 +8,21 @@ This is a fully functional video streaming OTT platform designed to have same th
 
 You can choose to click on any title/show/movie to stream in the highest possible quality (likes of 4K, REMUXES, Bluray, HDR 10bit, etc if available) with English Subtitles (if any).
 
+Since the WEB only supports video files which are encoded with x264 codec and firefox only supports .mp4 containers the search is limited to x264 video files so the WEB version has less content than the Android version.
+
 The files are sourced direclty from my Google Drive and sizes range anywhere from 10GB to 80GB.
+
+### Motive
+
+The main motive for this project is to watch content in highest possible quality on my 4K android TV, as quality is everything to make watching experience a feast to the eyes. Each movie release is different and its quality is defined by the SOURCE (REMUX, Bluray, WEBDL, WEBRip, etc), Bitrate, resolution and the audio quality and various other factors. Below is the order from highest quality to lowest ones.
+
+0. REMUXES
+1. Bluray/Blu-Ray encodes
+2. BDRip
+3. WEB-DL
+4. BRRip
+5. WEBRip
+6. HDRip
 
 ### Process Flow:
 
