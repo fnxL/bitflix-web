@@ -1,42 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bitflix
 
-## Getting Started
+A fullstack working clone of netflix built over Google Drive API & Next.js to stream any title in highest possible quality.
 
-First, run the development server:
+## 🎯 About
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+This is a fully functional video streaming OTT platform designed to have same the experience as Netflix.
 
-logo
-Home
-TV Shows
-Movies
-New & Popular
-My List
-profile
+You can choose to click on any title/show/movie to stream in the highest possible quality (likes of 4K, REMUXES, Bluray, HDR 10bit, etc if available) with English Subtitles (if any).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The files are sourced direclty from my Google Drive and sizes range anywhere from 10GB to 80GB.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Process Flow:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+User Clicks a movie/show  
+--> Client sends request to server with required details to fetch streamlinks  
+--> Server makes a search request under the hood to Google Drive to find video files corresponding to the title  
+--> Server then responds with stream links of that title in various qualities depending on the platform (android/web) sorted by file size in descending order.  
+--> Client requests for subtitles from the server and then converts the file to VTT (in memory Blob)  
+--> Client starts playing the media.
+This is possible because of the route which streams/serves the video files directly from google drive, it just needs the ID of the file in google drive.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+**This project is intended to be used for personal use only and will not be made public for obvious legal reasons.**
 
-## Learn More
+## ✨ Features
 
-To learn more about Next.js, take a look at the following resources:
+✔️ Real netflix experience.  
+✔️ Responsive Layout  
+✔️ Optimized for maximum performance and least api requests possible.  
+✔️ Search for movies and tv shows  
+✔️ Movie/TV Shows recommendations  
+✔️ Stream movies & tv show in highest possible quality.  
+✔️ Ability to change quality & video source.  
+✔️ VTT subtitles support from opensubtitles.org (SRT files are converted to VTT on the fly)  
+✔️ Awesome netflix like trailer video banner  
+✔️ Ability to sign up and sign in  
+✔️ Save watch progress and watch list.  
+✔️ Automatic Trailer Playback
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Technologies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Front End
 
-## Deploy on Vercel
+- [Next.js 11](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/docs/guides/create-react-app)
+- [React Query](https://react-query.tanstack.com/) - For DataFetching
+- [Zustand](https://github.com/pmndrs/zustand) - Simple and intuitive global state manager for react
+- [srt-webvtt](https://www.npmjs.com/package/srt-webvtt) - Convert SRT to VTT on the fly
+- [SwiperJS](https://swiperjs.com/) - Slider
+- [ReactPlayer](https://www.npmjs.com/package/react-player) - Main Player for Videos
+- [React-Youtube](https://www.npmjs.com/package/react-youtube) - Embedding youtube trailers as background
+- [js-base64](https://www.npmjs.com/package/js-base64) - base64 transcoder
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Back End
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [NodeJS > 14.17.5](http://nodejs.org)
+- [Express](http://expressjs.com/) - For Simple and Robust APIs
+- [PostgreSQL](https://www.postgresql.org/) - as RDB.
+- [Objection + Knex] - ORM for PostgreSQL
+- [GoogleAPIs](http://expressjs.com/) - To communicate with Drive API
+- [opensubtitles-api](https://www.npmjs.com/package/opensubtitles-api) - opensubtitles.org api wrapper for nodejs to get subtitles of specific titles.
+
+## Screenshots
+
+### Home Page
+
+![picture 2](https://i.imgur.com/lPta3s3.jpg)
+
+## Details Page
+
+![picture 5](https://i.imgur.com/xh2r0n4.jpg)
+
+## Video Player
+
+![picture 6](https://i.imgur.com/Pj53ojm.jpg)
+
+## To do
+
+- Setup Authentication System and Protect routes
+- Abstract Logic from Components , Clean and refactor existing code.
+- Multiple Profile System for each user.
+- Extract AudioTracks from VideoContainer using the experimental AudioTracks API.
+- Play next episode automatically.
+- Design a tracking system for tv/shows, watch progress or Integrate with trakt.tv
+- Resume video from where user last left off.
+
+## Acknowledgements
+
+- [Fakeflix](https://github.com/Th3Wall/Fakeflix) - Thanks to FakeFlix as many components like navbar, row slider, rowposter, skeletons have been taken directly from this repo.
+- [Cloudflare Pages](https://pages.cloudflare.com/) - To allow hosting on their fast global edge network
+- [Google Drive API reference](https://developers.google.com/drive/api/v3/reference)
+- [Heroku](https://heroku.com) - For backend deployment
+- [TMDB API](https://developers.themoviedb.org/3) - Th!
+  anks to their free open source api for movies/shows index.
+- [Fanart API](http://fanart.tv/) - For HD tv/movie logos
+- [Media Type and format guide](https://developer.mozilla.org/en-US/docs/Web/Media/Formats)
+- [Partial Content & Range Requests](https://medium.com/@vishal1909/how-to-handle-partial-content-in-node-js-8b0a5aea216)
