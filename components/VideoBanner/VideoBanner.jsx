@@ -197,7 +197,7 @@ function VideoBanner({ children, id, type }) {
               <img
                 className="max-w-full absolute top-0 z-0 object-cover h-[99%] w-full"
                 src={backdrop_path && `${FEATURED_URL}${backdrop_path}`}
-                alt="backdrop"
+                alt=""
               />
             )}
             {width >= 1024 && (
