@@ -23,7 +23,7 @@ function EpisodePoster({ data, season, title, imdb_id }) {
     );
 
     router.push({
-      pathname: '/watch/[id]',
+      pathname: '/watch',
       query: {
         id,
         metadata,

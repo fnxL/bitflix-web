@@ -6,13 +6,13 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { Spinner } from '../../components';
-import useVideoPlayerStore from '../../store/videoPlayerStore';
-import { getSearchTerm } from '../../utils/utils';
+import { Spinner } from '../components';
+import useVideoPlayerStore from '../store/videoPlayerStore';
+import { getSearchTerm } from '../utils/utils';
 
 let VTTConverter = '';
 
-const VideoPlayer = dynamic(() => import('../../components/VideoPlayer/VideoPlayer'), {
+const VideoPlayer = dynamic(() => import('../components/VideoPlayer/VideoPlayer'), {
   ssr: false,
 });
 

@@ -50,7 +50,7 @@ function RowPoster(result) {
         })
       );
       router.push({
-        pathname: '/watch/[id]',
+        pathname: '/watch',
         query: { id, metadata },
       });
     });

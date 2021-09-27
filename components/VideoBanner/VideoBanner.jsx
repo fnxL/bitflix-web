@@ -127,7 +127,7 @@ function VideoBanner({ children, id, type }) {
     );
 
     router.push({
-      pathname: '/watch/[id]',
+      pathname: '/watch',
       query: { id, metadata },
     });
   };
