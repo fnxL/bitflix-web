@@ -19,24 +19,14 @@ const queryClient = new QueryClient({
 });
 
 function MyApp({ Component, pageProps }) {
-  switch (Component.name) {
-    case 'Watch':
-      return (
-        <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      );
-    default:
-      return (
-        <QueryClientProvider client={queryClient}>
-          <Layout>
-            <Component {...pageProps} />
-            <ReactQueryDevtools />
-          </Layout>
-        </QueryClientProvider>
-      );
-  }
+  const getLayout = Component.getLayout || ((page) => page);
+
+  return getLayout(
+    <QueryClientProvider client={queryClient}>
+      <Component {...pageProps} />
+      <ReactQueryDevtools />
+    </QueryClientProvider>
+  );
 }
 
 export default MyApp;

@@ -9,6 +9,7 @@ import {
   SkeletonBanner,
   VideoBanner,
 } from '../../components';
+import Layout from '../../components/Layout';
 import fetcher from '../../query/fetcher';
 import requests from '../../query/requests';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
@@ -59,5 +60,9 @@ function DetailPage() {
     </>
   );
 }
+
+DetailPage.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 
 export default DetailPage;

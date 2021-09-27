@@ -10,6 +10,7 @@ import useStore from '../store/store';
 import { HomePageRows } from '../config/rowConfig';
 import { randomize } from '../utils/utils';
 import useVideoPlayerStore from '../store/videoPlayerStore';
+import Layout from '../components/Layout';
 
 const url = requests.popularHotstarMovies;
 
@@ -63,4 +64,7 @@ function Home() {
   );
 }
 
+Home.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 export default Home;

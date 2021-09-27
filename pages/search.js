@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { Poster } from '../components';
+import Layout from '../components/Layout';
 import fetcher from '../query/fetcher';
 import requests from '../query/requests';
 
@@ -61,5 +62,9 @@ function Search() {
     </>
   );
 }
+
+Search.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 
 export default Search;

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useQuery } from 'react-query';
 import { Navbar, Row, VideoBanner } from '../components';
+import Layout from '../components/Layout';
 import { tvPageRows } from '../config/rowConfig';
 import useViewport from '../hooks/useViewport';
 import fetcher from '../query/fetcher';
@@ -60,5 +61,9 @@ function Tv() {
     </>
   );
 }
+
+Tv.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 
 export default Tv;

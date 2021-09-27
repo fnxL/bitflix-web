@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { Navbar } from '../../../components';
+import Layout from '../../../components/Layout';
 import Poster from '../../../components/Poster/Poster';
 import { genreConfig } from '../../../config/genreConfig';
 import useIntersectionObserver from '../../../hooks/useIntersectionObserver';
@@ -67,5 +68,9 @@ function Genre() {
     </>
   );
 }
+
+Genre.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 
 export default Genre;
