@@ -39,8 +39,8 @@ function Poster({ result, type }) {
           imdb_id,
           year: reducedDate,
           type,
-          episode_number: 1,
-          season_number: 1,
+          episode_number: type === 'tv' && 1,
+          season_number: type === 'tv' && 1,
           episode_name: 'Pilot',
         })
       );

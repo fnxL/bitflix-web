@@ -1,13 +1,12 @@
+import { encode } from 'js-base64';
 import { useRouter } from 'next/router';
 import { FaChevronDown, FaPlay, FaPlus } from 'react-icons/fa';
 import config from '../../config';
 import useGenreConversion from '../../hooks/useGenreConversion';
 import requests from '../../query/requests';
+import axios from '../../query/tmdbAxiosInstance';
 import { dateToYearOnly, getFallBackTitle } from '../../utils/utils';
 import styles from './rowposter.module.css';
-
-import axios from '../../query/tmdbAxiosInstance';
-import { encode } from 'js-base64';
 
 const { BACKDROP_URL, POSTER_URL, FALLBACK_URL } = config;
 
@@ -45,8 +44,8 @@ function RowPoster(result) {
           imdb_id,
           year: reducedDate,
           type,
-          episode_number: 1,
-          season_number: 1,
+          episode_number: type === 'tv' && 1,
+          season_number: type === 'tv' && 1,
           episode_name: 'Pilot',
         })
       );
