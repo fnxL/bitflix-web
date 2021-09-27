@@ -35,3 +35,5 @@ yarn-error.log*
 
 /public/video.mp4
 /public/dual.mkv
+
+.env
