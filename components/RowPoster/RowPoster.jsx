@@ -34,7 +34,11 @@ function RowPoster(result) {
     const reducedDate = dateToYearOnly(release_date);
 
     const url =
-      type === 'movie' ? `/movie/${id}${requests.movieDetails}` : `/tv/${id}${requests.tvDetails}`;
+      type === 'movie'
+        ? `/movie/${id}${requests.movieDetails}`
+        : type === 'tv'
+        ? `/tv/${id}${requests.tvDetails}`
+        : `/${media_type}/${id}${requests.tvDetails}`;
 
     axios.get(url).then((res) => {
       const imdb_id = res.data?.external_ids?.imdb_id;

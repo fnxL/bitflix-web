@@ -1,14 +1,18 @@
+import Cookies from 'js-cookie';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
-import { FaCaretDown, FaSearch } from 'react-icons/fa';
+import { FaCaretDown } from 'react-icons/fa';
 import { IoMdNotifications as FaNotif } from 'react-icons/io';
+import NavItems from '../../config/NavItems';
 import useOutSideClick from '../../hooks/useOutsideClick';
 import useScroll from '../../hooks/useScroll';
 import useViewPort from '../../hooks/useViewport';
-import NavItems from '../../config/NavItems';
+import useStore from '../../store/store';
+import { logOut } from '../../utils/auth';
 import ActiveLink from '../ActiveLink/ActiveLink';
-import styles from './Navbar.module.css';
 import Search from '../Search/Search';
+import styles from './Navbar.module.css';
 
 function Navbar() {
   const { width } = useViewPort();
@@ -17,6 +21,7 @@ function Navbar() {
   const [profileNav, setProfileNav] = useState(false);
   const mobileNavRef = useRef();
   const profileNavRef = useRef();
+  const router = useRouter();
 
   useOutSideClick(mobileNavRef, () => {
     if (mobileNav) setMobileNav(false);
@@ -24,6 +29,16 @@ function Navbar() {
   useOutSideClick(profileNavRef, () => {
     if (profileNav) setProfileNav(false);
   });
+
+  const handleLogout = async () => {
+    const response = await logOut();
+    if (response.status === 'success') {
+      Cookies.remove('x-auth-token');
+      Cookies.remove('user');
+      useStore.setState({ user: null });
+      router.push('/login');
+    }
+  };
 
   return (
     <>
@@ -106,9 +121,9 @@ function Navbar() {
               {profileNav && (
                 <ul ref={profileNavRef} className="mx-[12px]">
                   <li className="text-[#f2f2f2] block px-[15px] py-[5px] hover:underline">
-                    <Link href="/">
-                      <a>Sign Out</a>
-                    </Link>
+                    <span onClick={handleLogout}>
+                      <a>Logout</a>
+                    </span>
                   </li>
                 </ul>
               )}

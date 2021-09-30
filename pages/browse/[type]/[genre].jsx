@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import { Navbar } from '../../../components';
+import { AuthGuard } from '../../../components';
 import Layout from '../../../components/Layout';
 import Poster from '../../../components/Poster/Poster';
 import { genreConfig } from '../../../config/genreConfig';
@@ -73,4 +73,4 @@ Genre.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export default Genre;
+export default AuthGuard(Genre);

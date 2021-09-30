@@ -8,6 +8,8 @@ const config = {
   BACKDROP_URL: process.env.BACKDROP_URL,
   POSTER_URL: process.env.POSTER_URL,
   FALLBACK_URL: process.env.FALLBACK_URL,
+  SERVER_URL: process.env.SERVER_URL,
+  TMDB_URL: process.env.TMDB_URl,
 };
 
 export default config;

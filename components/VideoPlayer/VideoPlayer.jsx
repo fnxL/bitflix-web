@@ -105,7 +105,7 @@ const VideoPlayer = ({ onError }) => {
             config={{
               file: {
                 attributes: {
-                  crossOrigin: 'anonymous',
+                  crossOrigin: 'use-credentials',
                 },
                 tracks: [
                   {

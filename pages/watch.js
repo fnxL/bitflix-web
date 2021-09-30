@@ -1,12 +1,12 @@
 /* eslint-disable react/self-closing-comp */
-import axios from 'axios';
 import { decode, encode } from 'js-base64';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { Spinner } from '../components';
+import { AuthGuard, Spinner } from '../components';
+import axios from '../query/serverAxiosInstance';
 import useVideoPlayerStore from '../store/videoPlayerStore';
 import { getSearchTerm } from '../utils/utils';
 
@@ -38,9 +38,7 @@ function Watch() {
   const { data } = useQuery(
     ['streamlinks', id],
     async () => {
-      const { data } = await axios.get(
-        `https://bit-flix.herokuapp.com/api/media/streamlinks?metadata=${metadata}`
-      );
+      const { data } = await axios.get(`/media/streamlinks?metadata=${metadata}`);
       return data;
     },
     { enabled: !!title }
@@ -74,9 +72,7 @@ function Watch() {
   const { data: subst } = useQuery(
     ['subtitles', id],
     async () => {
-      const { data } = await axios.get(
-        `https://bit-flix.herokuapp.com/api/media/subtitles?metadata=${obj}`
-      );
+      const { data } = await axios.get(`/media/subtitles?metadata=${obj}`);
       return data;
     },
     { enabled: !!data }
@@ -98,7 +94,7 @@ function Watch() {
 
   const onError = () => {
     const sourceLix = useVideoPlayerStore.getState().selectedSourceList;
-    const tryCount = useVideoPlayerStore.getState().tryCount;
+    const { tryCount } = useVideoPlayerStore.getState();
 
     if (tryCount < sourceLix.length) {
       useVideoPlayerStore.setState({
@@ -146,4 +142,4 @@ function Watch() {
   );
 }
 
-export default Watch;
+export default AuthGuard(Watch);

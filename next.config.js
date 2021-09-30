@@ -20,5 +20,14 @@ module.exports = {
     BACKDROP_URL: 'https://image.tmdb.org/t/p/w300',
     POSTER_URL: 'https://image.tmdb.org/t/p/w342',
     FALLBACK_URL: 'https://i.stack.imgur.com/y9DpT.jpg',
+    SERVER_URL: 'http://127.0.0.1:3000/api', // front end url
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:5000/api/:path*', // server url
+      },
+    ];
   },
 };

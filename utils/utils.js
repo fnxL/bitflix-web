@@ -14,7 +14,7 @@ export const dateToYearOnly = (date) => {
 
 export const capitalizeFirstLetter = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export const randomize = (data) => Math.floor(Math.random() * data.length);
+export const randomize = (data) => Math.floor(Math.random() * data?.length);
 
 export const truncate = (text, n) => (text?.length > n ? `${text.substr(0, n - 1)}...` : text);
 
@@ -135,5 +135,5 @@ export function formatBytes(bytes, decimals = 2) {
 
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
