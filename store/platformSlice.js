@@ -5,4 +5,5 @@ export const platformSlice = (set, get) => ({
   dataSaver: false,
   isLoggedin: false,
   user: null,
+  isToastOpen: false,
 });
