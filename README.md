@@ -64,6 +64,7 @@ This is possible because of the route which streams/serves the video files direc
 - [SwiperJS](https://swiperjs.com/) - Slider
 - [ReactPlayer](https://www.npmjs.com/package/react-player) - Main Player for Videos
 - [React-Youtube](https://www.npmjs.com/package/react-youtube) - Embedding youtube trailers as background
+- [React-Hook-Form](https://react-hook-form.com/) - For easy form validation/handling.
 - [js-base64](https://www.npmjs.com/package/js-base64) - base64 transcoder
 
 ### Back End
@@ -71,8 +72,11 @@ This is possible because of the route which streams/serves the video files direc
 - [NodeJS > 14.17.5](http://nodejs.org)
 - [Express](http://expressjs.com/) - For Simple and Robust APIs
 - [PostgreSQL](https://www.postgresql.org/) - as RDB.
-- [Objection + Knex] - ORM for PostgreSQL
+- [Prisma](https://www.prisma.io/) - Next-gen ORM for PostgreSQL
 - [GoogleAPIs](http://expressjs.com/) - To communicate with Drive API
+- [Celebrate](https://www.npmjs.com/package/celebrate) - For input validation
+- [typedi](https://www.npmjs.com/package/typedi) - Dependency Injection library and to cache class instances of services.
+- [Pino](https://getpino.io/#/) - Logging service
 - [opensubtitles-api](https://www.npmjs.com/package/opensubtitles-api) - opensubtitles.org api wrapper for nodejs to get subtitles of specific titles.
 
 ## Screenshots
