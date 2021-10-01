@@ -101,7 +101,6 @@ function SignUp({ setIsSignedUp }) {
             validate={{
               matchPassword: (value) => {
                 const { password } = getValues();
-                console.log(password);
                 return (value && password === value) || 'Passwords do not match!';
               },
             }}

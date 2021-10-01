@@ -3,9 +3,8 @@ import { Menu, MenuItem, Tooltip } from '@mui/material';
 import MButton from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
 import { forwardRef, useState } from 'react';
-import shallow from 'zustand/shallow';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
-import { formatBytes, formatTime, ProgressBarStyles, VolumeSliderStyles } from '../../utils/utils';
+import { formatBytes, ProgressBarStyles, VolumeSliderStyles } from '../../utils/utils';
 import Button from './Button';
 import {
   FullScreen,
@@ -21,6 +20,7 @@ import {
 } from './Icons';
 import Spacing from './Spacing';
 import ToolTip from './ToolTip';
+import usePlaybackControls from '../../hooks/usePlaybackControls';
 
 function ValueLabelComponent(props) {
   const { children, value } = props;
@@ -37,127 +37,36 @@ function ValueLabelComponent(props) {
 }
 
 const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
-  const { playerRef, fullscreenRef } = ref;
+  const { fullscreenRef } = ref;
 
-  const [
-    playing,
-    vttURL,
-    elapsedTime,
-    duration,
+  const {
+    handleSeekBack,
+    handleSeekChange,
+    handleSeekCommited,
+    handleSeekForward,
+    handleSeekMouseDown,
+    handleSourceChange,
+    handleSubChange,
+    handleTurnOffSub,
+    handleVolumeChange,
     played,
-    loaded,
+    elapsedTime,
+    timeLeft,
     togglePlayback,
-    muted,
-    toggleMute,
-    setVolume,
+    playing,
     volume,
+    toggleMute,
+    muted,
     title,
-    sourceList,
-    subsEnabled,
+    selectedSourceList,
     currentSource,
     subName,
-    selectedSourceList,
-  ] = useVideoPlayerStore(
-    (state) => [
-      state.playing,
-      state.vttURL,
-      state.elapsedTime,
-      state.duration,
-      state.played,
-      state.loaded,
-      state.togglePlayback,
-      state.muted,
-      state.toggleMute,
-      state.setVolume,
-      state.volume,
-      state.title,
-      state.sourceList,
-      state.subsEnabled,
-      state.currentSource,
-      state.subName,
-      state.selectedSourceList,
-    ],
-    shallow
-  );
+    vttURL,
+    subsEnabled,
+    loaded,
+    sourceList,
+  } = usePlaybackControls(ref);
 
-  const handleSeekForward = () => {
-    const notif = useVideoPlayerStore.getState().notification;
-    let value;
-    if (typeof notif === 'string' || typeof notif === 'boolean') {
-      value = 1;
-    }
-    if (notif < 0) {
-      value = 1;
-    }
-    if (notif > 0) {
-      value = notif + 1;
-    }
-    useVideoPlayerStore.setState({ notification: value });
-    playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
-  };
-
-  const handleSeekBack = () => {
-    const notif = useVideoPlayerStore.getState().notification;
-    let value;
-    if (typeof notif === 'string') {
-      value = -1;
-    }
-    if (notif > 0) {
-      value = -1;
-    }
-    if (notif < 0) {
-      value = notif - 1;
-    }
-    useVideoPlayerStore.setState({ notification: value });
-    playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
-  };
-
-  const handleVolumeChange = (e, value) => {
-    setVolume(parseFloat(value / 100));
-  };
-
-  const handleSeekChange = (e, value) => {
-    const valueInSeconds = formatTime((value / 100) * duration);
-    useVideoPlayerStore.setState({ played: parseFloat(value / 100), elapsedTime: valueInSeconds });
-  };
-
-  const handleSeekMouseDown = () => {
-    useVideoPlayerStore.setState({ seeking: true });
-  };
-
-  const handleSeekCommited = (e, value) => {
-    useVideoPlayerStore.setState({ seeking: false });
-    playerRef.current.seekTo(value / 100);
-  };
-  const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : '00:00';
-  const timeLeft = formatTime(duration - currentTime);
-
-  const handleSubChange = () => {
-    const videoElement = playerRef.current.getInternalPlayer();
-    if (!subsEnabled) {
-      videoElement.textTracks[0].mode = 'showing';
-
-      useVideoPlayerStore.setState({ subsEnabled: true });
-    }
-  };
-
-  const handleTurnOffSub = () => {
-    const videoElement = playerRef.current.getInternalPlayer();
-    if (subsEnabled) {
-      videoElement.textTracks[0].mode = 'hidden';
-      useVideoPlayerStore.setState({ subsEnabled: false });
-    }
-  };
-
-  const handleSourceChange = (quality) => {
-    const modifiedList = sourceList.map((item) => ({
-      ...item,
-      selected: item.quality === quality,
-    }));
-
-    const selected = modifiedList.find((item) => item.selected);
-    useVideoPlayerStore.setState({ sourceList: modifiedList, currentSource: selected });
-  };
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -269,6 +178,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                     id="basic-menu"
                     anchorEl={anchorEl}
                     open={open}
+                    container={fullscreenRef.current}
                     onClose={handleClose}
                     sx={{
                       '.MuiMenu-paper': {
@@ -280,8 +190,11 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                       'aria-labelledby': 'basic-button',
                     }}
                   >
-                    {selectedSourceList.map((source) => (
-                      <MenuItem key={source.size} onClick={() => handleMenuClick(source)}>
+                    {selectedSourceList.map((source, i) => (
+                      <MenuItem
+                        key={`menuItem-${i}_${source.size}`}
+                        onClick={() => handleMenuClick(source)}
+                      >
                         {source.name}
                       </MenuItem>
                     ))}
@@ -318,7 +231,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                                 return (
                                   <li
                                     onClick={(e) => handleSourceChange(item.quality)}
-                                    key={item.id}
+                                    key={item.url}
                                   >
                                     {item.selected && <Selected />} {item.quality}
                                   </li>

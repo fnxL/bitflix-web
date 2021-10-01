@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import { BiInfoCircle } from 'react-icons/bi';
 import { BsArrowClockwise, BsVolumeMute, BsVolumeUp } from 'react-icons/bs';
-import { FaPlay } from 'react-icons/fa';
+import { FaPlay, FaPlus } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import YouTube from 'react-youtube';
 import config from '../../config';
@@ -22,6 +22,8 @@ import {
 import Button from '../Button/Button';
 import SkeletonBanner from '../SkeletonBanner/SkeletonBanner';
 import styles from './VideoBanner.module.css';
+
+import rowposterstyles from '../RowPoster/rowposter.module.css';
 
 const { FANART, FEATURED_URL } = config;
 
@@ -159,7 +161,7 @@ function VideoBanner({ children, id, type }) {
               )}
               <div className="info absolute bottom-[15%] text-center md:text-left items-center left-[4%] md:bottom-[36.5%] 2xl:left-[60px] z-[2] flex md:justify-end flex-col">
                 <div className={`${styles.logo_text} w-full`}>
-                  <div className="titleWrapper" style={transitionStyles.titleWrapper}>
+                  <div className="titleWrapper mb-4" style={transitionStyles.titleWrapper}>
                     {width > 1024 && imageUrl ? (
                       <div className="titleLogo min-h-[13.2vw]  relative mb-[1.8vw]">
                         <img
@@ -170,7 +172,7 @@ function VideoBanner({ children, id, type }) {
                         />
                       </div>
                     ) : (
-                      <h1 className={`${styles.title} mb-4`}>{fallBackTitle}</h1>
+                      <h1 className={`${styles.title}`}>{fallBackTitle}</h1>
                     )}
                   </div>
                   <div className="info_wrapper" style={transitionStyles.infoWrapper}>
@@ -183,10 +185,17 @@ function VideoBanner({ children, id, type }) {
                       <FaPlay />
                       <div className="w-[1.2rem]" />
                     </Button>
-                    <Button text="More Info">
-                      <BiInfoCircle className="text-[1.5rem] lg:text-[2vw] xl:text-[1.75vw]" />
-                      <div className="w-[1rem]" />
-                    </Button>
+                    {children ? (
+                      <Button text="More Info">
+                        <BiInfoCircle className="text-[1.5rem] lg:text-[2vw] xl:text-[1.75vw]" />
+                        <div className="w-[1rem]" />
+                      </Button>
+                    ) : (
+                      <Button text="Add to list">
+                        <FaPlus />
+                        <div className="w-[1rem]" />
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

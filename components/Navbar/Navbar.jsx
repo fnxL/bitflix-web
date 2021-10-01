@@ -23,6 +23,8 @@ function Navbar() {
   const profileNavRef = useRef();
   const router = useRouter();
 
+  const user = JSON.parse(Cookies.get('user'));
+
   useOutSideClick(mobileNavRef, () => {
     if (mobileNav) setMobileNav(false);
   });
@@ -120,6 +122,20 @@ function Navbar() {
             >
               {profileNav && (
                 <ul ref={profileNavRef} className="mx-[12px]">
+                  {user.username === 'admin' && (
+                    <>
+                      <li className="text-[#f2f2f2] block px-[15px] py-[5px] hover:underline">
+                        <Link href="/api/auth/generatekey">
+                          <a>Generate Invite key</a>
+                        </Link>
+                      </li>
+                      <li className="text-[#f2f2f2] block px-[15px] py-[5px] hover:underline">
+                        <Link href="/api/auth/invitekeys">
+                          <a>Invite keys</a>
+                        </Link>
+                      </li>
+                    </>
+                  )}
                   <li className="text-[#f2f2f2] block px-[15px] py-[5px] hover:underline">
                     <span onClick={handleLogout}>
                       <a>Logout</a>

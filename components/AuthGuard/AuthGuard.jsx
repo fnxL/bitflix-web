@@ -19,7 +19,7 @@ const AuthGuard = (WrappedComponent) => (props) => {
       router.replace('/login');
       return null;
     }
-    useStore.setState({ user: JSON.parse(user) });
+    if (user) useStore.setState({ user: JSON.parse(user) });
 
     return getLayout(<WrappedComponent {...props} />);
   }

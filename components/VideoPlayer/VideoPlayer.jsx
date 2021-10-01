@@ -1,3 +1,4 @@
+/* eslint-disable react/no-this-in-sfc */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/self-closing-comp */
 import { Alert } from '@mui/material';
@@ -30,6 +31,7 @@ const VideoPlayer = ({ onError }) => {
       ],
       shallow
     );
+
   const router = useRouter();
   const playerRef = useRef();
   const controlsRef = useRef();
@@ -80,8 +82,23 @@ const VideoPlayer = ({ onError }) => {
     fullscreenRef,
   };
 
+  // update track visibility
   useEffect(() => {
-    if (playerRef.current) playerRef.current.seekTo(currentTime);
+    const videoElement = playerRef.current?.getInternalPlayer();
+    if (videoElement) {
+      if (videoElement?.textTracks[0]) videoElement.textTracks[0].mode = 'hidden';
+    }
+
+    const timeout = setTimeout(() => {
+      if (videoElement)
+        if (videoElement?.textTracks[0]) videoElement.textTracks[0].mode = 'showing';
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [currentSource, vttURL]);
+
+  useEffect(() => {
+    if (playerRef.current && currentTime !== 0) playerRef.current?.seekTo(currentTime);
   }, [currentSource]);
 
   return (
@@ -97,11 +114,37 @@ const VideoPlayer = ({ onError }) => {
             {error}
           </Alert>
         )}
-        {vttURL && (
+
+        {currentSource && !vttURL && (
           <ReactPlayer
             className="video"
             ref={playerRef}
-            url={currentSource.url}
+            url={currentSource?.url}
+            config={{
+              file: {
+                attributes: {
+                  crossOrigin: 'use-credentials',
+                },
+              },
+            }}
+            playing={playing}
+            muted={muted}
+            width="100%"
+            height="100%"
+            volume={volume}
+            onBuffer={() => useVideoPlayerStore.setState({ buffering: true })}
+            onBufferEnd={() => useVideoPlayerStore.setState({ buffering: false })}
+            onDuration={handleDuration}
+            onError={onError}
+            onProgress={handleProgress}
+          />
+        )}
+
+        {currentSource && vttURL && (
+          <ReactPlayer
+            className="video"
+            ref={playerRef}
+            url={currentSource?.url}
             config={{
               file: {
                 attributes: {
