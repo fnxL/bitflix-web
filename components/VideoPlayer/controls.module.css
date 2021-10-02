@@ -15,7 +15,7 @@
   line-height: 34px;
   font-size: 15px;
   padding: 8px 15px;
-  @apply lg:text-[28px] lg:py-[21px] lg:px-[60px];
+  @apply lg:text-[25px] lg:py-[21px] lg:px-[60px];
 }
 
 .menu_title ul {
@@ -35,10 +35,12 @@
 
 .quality_title {
   padding: 8px 55px;
+  @apply lg:text-[25px] lg:py-[21px] lg:px-[60px];
 }
 
 .quality_menu ul li {
   padding: 21px 55px;
+  @apply lg:text-[21px] lg:py-[21px] lg:px-[60px];
 }
 
 .menu ul li:hover {

@@ -304,7 +304,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                       >
                         <PopoverBody>
                           <div
-                            className={`${styles.menu} ${styles.quality_menu} lg:w-[450px] max-h-[250px] pb-40 inline-flex overflow-hidden rounded-[0.8rem]`}
+                            className={`${styles.menu} ${styles.quality_menu} lg:w-[450px] max-h-[250px] lg:max-h-[none] pb-40 inline-flex overflow-hidden rounded-[0.8rem]`}
                           >
                             <div className={`${styles.quality} flex-grow flex-shrink`}>
                               <h3 className={`${styles.menu_title} ${styles.quality_title}`}>
@@ -328,7 +328,9 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                             </div>
                             {vttURL && (
                               <div className={`${styles.quality} subtitles flex-grow flex-shrink`}>
-                                <h3 className={styles.menu_title}>Subtitles</h3>
+                                <h3 className={`${styles.menu_title} ${styles.quality_title}`}>
+                                  Subtitles
+                                </h3>
                                 <ul>
                                   <li onClick={handleSubChange}>
                                     {subsEnabled && <Selected />}English
