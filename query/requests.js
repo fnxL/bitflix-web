@@ -35,27 +35,6 @@ const requests = {
 
   actionAdventureShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_null_first_air_dates=false&watch_region=${WATCH_REGION}&with_genres=10759`,
   scifiShows: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&include_null_first_air_dates=false&watch_region=${WATCH_REGION}&with_genres=10765`,
-
-  // waste
-  fetchActionMovies: `/discover/movie?api_key=${TMDB}&with_genres=28&sort_by=popularity.desc&language=${ENG}`,
-  fetchAdventureMovies: `/discover/movie?api_key=${TMDB}&with_genres=12&sort_by=popularity.desc&language=${ENG}`,
-  fetchComedyMovies: `/discover/movie?api_key=${TMDB}&with_genres=35&sort_by=popularity.desc&language=${ENG}`,
-  fetchHorrorMovies: `/discover/movie?api_key=${TMDB}&with_genres=27&sort_by=popularity.desc&language=${ENG}`,
-  fetchRomanceMovies: `/discover/movie?api_key=${TMDB}&with_genres=10749&sort_by=popularity.desc&language=${ENG}`,
-  fetchWarMovies: `/discover/movie?api_key=${TMDB}&with_genres=10752&sort_by=popularity.desc&language=${ENG}`,
-  fetchAnimationMovies: `/discover/movie?api_key=${TMDB}&with_genres=16&sort_by=popularity.desc&language=${ENG}`,
-  discoverMovies: `/discover/movie?api_key=${TMDB}&sort_by=popularity.desc&language=${ENG}`,
-  // Series
-  discoverSeries: `/discover/tv?api_key=${TMDB}&sort_by=popularity.desc&language=${ENG}`,
-  fetchTrendingSeries: `/trending/tv/week?api_key=${TMDB}&sort_by=popularity.desc&language=${ENG}`,
-  fetchActionAdventureSeries: `/discover/tv?api_key=${TMDB}&with_genres=10759&sort_by=popularity.desc&language=${ENG}`,
-  fetchAnimationSeries: `/discover/tv?api_key=${TMDB}&with_genres=16&sort_by=popularity.desc&language=${ENG}`,
-  fetchComedySeries: `/discover/tv?api_key=${TMDB}&with_genres=35&sort_by=popularity.desc&language=${ENG}`,
-  fetchCrimeSeries: `/discover/tv?api_key=${TMDB}&with_genres=80&sort_by=popularity.desc&language=${ENG}`,
-  fetchDocumentarySeries: `/discover/tv?api_key=${TMDB}&with_genres=99&sort_by=popularity.desc&language=${ENG}`,
-  fetchFamilySeries: `/discover/tv?api_key=${TMDB}&with_genres=10751&sort_by=popularity.desc&language=${ENG}`,
-  fetchKidsSeries: `/discover/tv?api_key=${TMDB}&with_genres=10762&sort_by=popularity.desc&language=${ENG}`,
-  fetchSciFiFantasySeries: `/discover/tv?api_key=${TMDB}&with_genres=10765&sort_by=popularity.desc&language=${ENG}`,
 };
 
 export default requests;

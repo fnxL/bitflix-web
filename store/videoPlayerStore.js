@@ -11,7 +11,7 @@ const useVideoPlayerStore = create(
     loaded: 0,
     seeking: false,
     duration: 0,
-    elapsedTime: '00:00',
+    elapsedTime: '0:00',
     sourceLoaded: false,
     currentSource: null,
     sourceList: [],

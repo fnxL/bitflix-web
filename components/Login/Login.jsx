@@ -7,7 +7,6 @@ import useStore from '../../store/store';
 import { login } from '../../utils/auth';
 import InputField from '../Input/Input';
 import Loader from '../Loader/Loader';
-import Toast from '../Toast/Toast';
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +47,6 @@ function Login() {
 
   return (
     <>
-      <Toast variant={variant} message={message} />
       <form className="SignIn__form" onSubmit={handleSubmit(onSubmit)}>
         <div className="SignIn__form--inputwrp my-[0.6em] mx-0">
           <InputField

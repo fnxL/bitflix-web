@@ -1,18 +1,18 @@
 /* eslint-disable react/no-this-in-sfc */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/self-closing-comp */
-import { Alert } from '@mui/material';
+import { Alert, AlertIcon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import shallow from 'zustand/shallow';
-import { Spinner } from '..';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
 import { formatTime } from '../../utils/utils';
 import { Back } from './Icons';
 import PlaybackControls from './PlaybackControls';
 import PlaybackNotification from './PlaybackNotification';
+import { Spinner } from '..';
 
 let count = 0;
 
@@ -107,10 +107,11 @@ const VideoPlayer = ({ onError }) => {
       onMouseMove={handleVisibility}
       className="video_player w-[100vw] h-[100vh]"
     >
-      {buffering && <Spinner />}
+      {buffering && <Spinner color="red.500" />}
       <div className="video_container w-full h-full left-0 absolute m-0 overflow-hidden p-0 top-0">
         {error && (
-          <Alert variant="filled" severity="error">
+          <Alert status="error">
+            <AlertIcon />
             {error}
           </Alert>
         )}
@@ -188,7 +189,7 @@ const VideoPlayer = ({ onError }) => {
                   e.stopPropagation();
                   router.back();
                 }}
-                className="h-[44px] w-[44px]"
+                className="h-[25px] w-[25px] md:h-[35px] md:w-[35px] lg:h-[44px] lg:w-[44px]"
               >
                 <Back />
               </button>

@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import shallow from 'zustand/shallow';
 import useVideoPlayerStore from '../store/videoPlayerStore';
 import { formatTime } from '../utils/utils';
 
 const usePlaybackControls = (ref) => {
-  const { playerRef } = ref;
+  const { playerRef, sliderRef } = ref;
+  const [mouseLeft, setMouseLeft] = useState('0%');
+  const [hoverTime, setHoverTime] = useState('0');
 
   const [
     playing,
@@ -78,11 +81,11 @@ const usePlaybackControls = (ref) => {
     playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
   };
 
-  const handleVolumeChange = (e, value) => {
+  const handleVolumeChange = (value) => {
     setVolume(parseFloat(value / 100));
   };
 
-  const handleSeekChange = (e, value) => {
+  const handleSeekChange = (value) => {
     const valueInSeconds = formatTime((value / 100) * duration);
     useVideoPlayerStore.setState({ played: parseFloat(value / 100), elapsedTime: valueInSeconds });
   };
@@ -91,7 +94,7 @@ const usePlaybackControls = (ref) => {
     useVideoPlayerStore.setState({ seeking: true });
   };
 
-  const handleSeekCommited = (e, value) => {
+  const handleSeekCommited = (value) => {
     useVideoPlayerStore.setState({ seeking: false });
     playerRef.current.seekTo(value / 100);
   };
@@ -125,6 +128,18 @@ const usePlaybackControls = (ref) => {
     useVideoPlayerStore.setState({ sourceList: modifiedList, currentSource: selected });
   };
 
+  const handleProgressMouseMove = (e) => {
+    const { left, width } = sliderRef.current.getBoundingClientRect();
+    setMouseLeft(e.clientX - left); // for position of tooltip
+    const time = formatTime(((e.clientX - left) / width) * duration);
+    setHoverTime(time);
+  };
+
+  const handleSourceListMenuClick = (source) => {
+    source.selected = true;
+    useVideoPlayerStore.setState({ currentSource: source });
+  };
+
   return {
     handleSeekBack,
     handleSeekChange,
@@ -135,9 +150,13 @@ const usePlaybackControls = (ref) => {
     handleSourceChange,
     handleVolumeChange,
     handleSeekForward,
+    handleProgressMouseMove,
+    handleSourceListMenuClick,
     played,
     elapsedTime,
     timeLeft,
+    hoverTime,
+    mouseLeft,
     togglePlayback,
     playing,
     volume,

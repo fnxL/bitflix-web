@@ -4,7 +4,6 @@ import useStore from '../../store/store';
 import { signUp } from '../../utils/auth';
 import InputField from '../Input/Input';
 import Loader from '../Loader/Loader';
-import Toast from '../Toast/Toast';
 
 function SignUp({ setIsSignedUp }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +37,6 @@ function SignUp({ setIsSignedUp }) {
 
   return (
     <>
-      <Toast variant={variant} message={message} />
       <form className="SignUp__form" onSubmit={handleSubmit(onSubmit)}>
         <div className="wrapper">
           <InputField

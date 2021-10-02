@@ -1,4 +1,6 @@
 /* eslint-disable object-shorthand */
+import moment from 'moment';
+
 export const getOneMonthAgoReleaseDate = () => {
   const date = new Date();
   date.setMonth(date.getMonth() - 1);
@@ -53,11 +55,10 @@ export const getMaturityRating = (data, type) => {
 
 export const formatTime = (seconds) => {
   if (Number.isNaN(seconds)) return '00:00';
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.round(seconds % 60);
-  // eslint-disable-next-line prefer-template
-  return [h, m > 9 ? m : h ? '0' + m : m || '0', s > 9 ? s : '0' + s].filter(Boolean).join(':');
+  return moment
+    .utc(seconds * 1000)
+    .format('HH:mm:ss')
+    .replace(/^0(?:0:0?)?/, '');
 };
 
 export const watchProviders = {

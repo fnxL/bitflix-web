@@ -1,10 +1,24 @@
 /* eslint-disable no-sparse-arrays */
-import { Menu, MenuItem, Tooltip } from '@mui/material';
-import MButton from '@mui/material/Button';
-import Slider from '@mui/material/Slider';
-import { forwardRef, useState } from 'react';
-import useVideoPlayerStore from '../../store/videoPlayerStore';
-import { formatBytes, ProgressBarStyles, VolumeSliderStyles } from '../../utils/utils';
+import {
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Tooltip,
+} from '@chakra-ui/react';
+import { forwardRef, useRef } from 'react';
+import { BsFiles } from 'react-icons/bs';
+import usePlaybackControls from '../../hooks/usePlaybackControls';
+import { formatBytes } from '../../utils/utils';
 import Button from './Button';
 import {
   FullScreen,
@@ -19,25 +33,12 @@ import {
   VolumeMuted,
 } from './Icons';
 import Spacing from './Spacing';
-import ToolTip from './ToolTip';
-import usePlaybackControls from '../../hooks/usePlaybackControls';
-
-function ValueLabelComponent(props) {
-  const { children, value } = props;
-
-  return (
-    <Tooltip
-      enterTouchDelay={0}
-      placement="top"
-      title={<div className="text-[18px] bg-[rgb(38,38,38)]">{value}</div>}
-    >
-      {children}
-    </Tooltip>
-  );
-}
 
 const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
   const { fullscreenRef } = ref;
+
+  const sliderRef = useRef();
+  ref.sliderRef = sliderRef;
 
   const {
     handleSeekBack,
@@ -49,6 +50,10 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
     handleSubChange,
     handleTurnOffSub,
     handleVolumeChange,
+    handleProgressMouseMove,
+    handleSourceListMenuClick,
+    hoverTime,
+    mouseLeft,
     played,
     elapsedTime,
     timeLeft,
@@ -67,18 +72,6 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
     sourceList,
   } = usePlaybackControls(ref);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleMenuClick = (source) => {
-    source.selected = true;
-    useVideoPlayerStore.setState({ currentSource: source });
-    setAnchorEl(null);
-  };
-  const handleClose = () => setAnchorEl(null);
-
   return (
     <>
       <div className="bottom_controls_container relative w-full flex min-h-0 min-w-0 items-end justify-center">
@@ -90,21 +83,58 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
             <div className="flex h-full relative w-full">
               <div className="flex min-h-0 min-w-0 relative items-center flex-grow">
                 <div className="horizontal_progress_bar h-[22.5px] cursor-pointer flex justify-center items-center relative w-full">
-                  <span className="buffer_bar absolute left-0 z-0 top-auto" />
-
                   <span className="time_range h-full w-full flex items-center">
                     <Slider
-                      sx={ProgressBarStyles}
                       value={played * 100}
-                      components={{
-                        ValueLabel: ValueLabelComponent,
-                      }}
-                      valueLabelDisplay="auto"
-                      valueLabelFormat={() => elapsedTime}
+                      focusThumbOnChange={false}
+                      getAriaValueText={() => elapsedTime}
                       onChange={handleSeekChange}
-                      onMouseDown={handleSeekMouseDown}
-                      onChangeCommitted={handleSeekCommited}
-                    />
+                      onChangeStart={handleSeekMouseDown}
+                      onChangeEnd={handleSeekCommited}
+                      sx={{
+                        borderRadius: '0px',
+                      }}
+                      role="group"
+                    >
+                      <Tooltip
+                        portalProps={{ containerRef: fullscreenRef }}
+                        offset={[mouseLeft, 8]}
+                        placement="top-start"
+                        label={hoverTime}
+                        fontSize="lg"
+                        bg="rgb(38,38,38)"
+                      >
+                        <SliderTrack
+                          ref={sliderRef}
+                          sx={{
+                            height: '3.75px',
+                            bg: 'gray',
+                            border: 0,
+                            transition:
+                              'left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,width 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,bottom 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,height 0.2s ease 0s',
+                            _groupHover: { height: '7.7px' },
+                          }}
+                          onMouseMove={handleProgressMouseMove}
+                        >
+                          <span className="buffer_bar absolute left-0 z-0 top-auto" />
+                          <SliderFilledTrack bg="red" sx={{ border: 0 }} />
+                        </SliderTrack>
+                      </Tooltip>
+                      <Tooltip placement="top" label={elapsedTime} fontSize="lg" bg="rgb(38,38,38)">
+                        <SliderThumb
+                          bg="red"
+                          sx={{
+                            height: '15px',
+                            width: '15px',
+                            _hover: {
+                              height: '18px',
+                              width: '18px',
+                              transition: 'all 0.2s ease 0s',
+                            },
+                          }}
+                        />
+                      </Tooltip>
+                    </Slider>
                   </span>
                 </div>
               </div>
@@ -123,34 +153,53 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                   <Spacing />
 
                   <Button onClick={handleSeekBack} icon={<SeekBack />} />
-
                   <Spacing />
 
                   <Button onClick={handleSeekForward} icon={<SeekForward />} />
 
                   <Spacing />
-
-                  <ToolTip
-                    PopperProps={{ container: fullscreenRef.current }}
-                    title={
-                      <div className="rounded-[3px] text-[8px] p-0 h-[20vh] max-h-[200px] min-h-[100px] py-[20px]">
-                        <Slider
-                          value={volume * 100}
-                          min={0}
-                          max={100}
-                          sx={VolumeSliderStyles}
-                          orientation="vertical"
-                          onChange={handleVolumeChange}
-                          onChangeCommitted={handleVolumeChange}
-                        />
-                      </div>
-                    }
-                  >
-                    <Button onClick={toggleMute} icon={muted ? <VolumeMuted /> : <VolumeFull />} />
-                  </ToolTip>
+                  {/* Volume Slider */}
+                  <Popover trigger="hover">
+                    <PopoverTrigger>
+                      <Button
+                        onClick={toggleMute}
+                        icon={muted ? <VolumeMuted /> : <VolumeFull />}
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent
+                      width="auto"
+                      bg="rgb(38,38,38)"
+                      border="0"
+                      _focus={{ boxShadow: 'none' }}
+                    >
+                      <PopoverBody>
+                        <div className="rounded-[3px] h-[20vh] text-[8px] p-0 max-h-[200px] min-h-[100px] py-[10px] md:py-[20px]">
+                          <Slider
+                            min={0}
+                            max={100}
+                            value={volume * 100}
+                            orientation="vertical"
+                            onChange={handleVolumeChange}
+                            onChangeEnd={handleVolumeChange}
+                            focusThumbOnChange={false}
+                            sx={{
+                              borderRadius: '0px',
+                            }}
+                            role="group"
+                          >
+                            <SliderTrack width="12px" border="0">
+                              <SliderFilledTrack bg="red" />
+                            </SliderTrack>
+                            <SliderThumb height="22.5px" width="22.5px" bg="red" />
+                          </Slider>
+                        </div>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
                 </div>
+                {/* Title */}
                 <div
-                  className="title flex flex-grow min-h-0 min-w-0 relative ml-[5px] mr-[5px] pt-[5px]"
+                  className="invisible lg:visible flex title flex-grow min-h-0 min-w-0 relative ml-[5px] mr-[5px] pt-[5px]"
                   style={{ flexBasis: '14px' }}
                 >
                   <Spacing />
@@ -164,102 +213,118 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                 </div>
                 <div className="buttons_right flex min-h-0 min-w-0 relative justify-end">
                   <Spacing />
+                  {/* Source List Menu */}
 
-                  <MButton
-                    id="basic-button"
-                    aria-controls="basic-menu"
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
-                  >
-                    Source
-                  </MButton>
-                  <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    container={fullscreenRef.current}
-                    onClose={handleClose}
-                    sx={{
-                      '.MuiMenu-paper': {
-                        backgroundColor: 'rgb(38, 38, 38)',
-                        color: 'white',
-                      },
-                    }}
-                    MenuListProps={{
-                      'aria-labelledby': 'basic-button',
-                    }}
-                  >
-                    {selectedSourceList.map((source, i) => (
-                      <MenuItem
-                        key={`menuItem-${i}_${source.size}`}
-                        onClick={() => handleMenuClick(source)}
+                  {selectedSourceList.length !== 0 && (
+                    <Menu isLazy placement="top-start" boundary="scrollParent">
+                      <MenuButton
+                        as={Button}
+                        icon={
+                          <BsFiles className="w-[20px] h-[25px] lg:h-[40px] lg:w-[40px] md:h-[33px] md:w-[30px]" />
+                        }
+                        bg="transparent"
+                        _hover={{ bg: 'transparent', transform: 'scale(1.3)' }}
+                        _focus={{ boxShadow: 'none' }}
+                        _active={{ bg: 'transparent' }}
+                      />
+                      <MenuList
+                        bg="rgb(38,38,38)"
+                        border="0"
+                        maxW={{ base: '500px', md: '1000px' }}
+                        sx={{ overflowY: 'auto', maxH: '800px' }}
                       >
-                        {source.name}
-                      </MenuItem>
-                    ))}
-                  </Menu>
+                        {selectedSourceList.map((source, i) => (
+                          <MenuItem
+                            _hover={{ bg: 'rgba(0,0,0,0.3)' }}
+                            key={`menuItem-${i}_${source.size}`}
+                            _focus={{ bg: 'rgba(0,0,0,0.3)' }}
+                            _active={{ bg: 'rgba(0,0,0,0.3)' }}
+                            onClick={() => handleSourceListMenuClick(source)}
+                          >
+                            {source.name}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </Menu>
+                  )}
                   <Spacing />
-
-                  <ToolTip
-                    PopperProps={{ container: fullscreenRef.current }}
-                    title={
-                      <div className="menu pb-[8px] max-w-[350px] flex flex-col overflow-hidden rounded-[0.8rem] ">
-                        <h3 className="menu_title">Information</h3>
-                        <ul>
-                          <li>{currentSource?.name}</li>
-                          <li>Size: {formatBytes(currentSource?.size)}</li>
-                          <li>Sub: {subName}</li>
-                        </ul>
-                      </div>
-                    }
-                  >
-                    <Button icon={<Info />} />
-                  </ToolTip>
-
-                  <Spacing />
-
-                  <ToolTip
-                    PopperProps={{ container: fullscreenRef.current }}
-                    title={
-                      <div className="menu pb-40 inline-flex overflow-hidden rounded-[0.8rem] whitespace-nowrap">
-                        <div className="quality flex-grow flex-shrink">
-                          <h3 className="menu_title">Quality</h3>
-                          <ul>
-                            {sourceList.map((item) => {
-                              if (item.url) {
-                                return (
-                                  <li
-                                    onClick={(e) => handleSourceChange(item.quality)}
-                                    key={item.url}
-                                  >
-                                    {item.selected && <Selected />} {item.quality}
-                                  </li>
-                                );
-                              }
-                              return null;
-                            })}
-                          </ul>
-                        </div>
-                        {vttURL && (
-                          <div className="subtitles quality flex-grow flex-shrink">
-                            <h3 className="menu_title">Subtitles</h3>
+                  {/* Source Information */}
+                  <Popover trigger="hover">
+                    <PopoverTrigger>
+                      <Button icon={<Info />} />
+                    </PopoverTrigger>
+                    {currentSource && (
+                      <PopoverContent
+                        width="auto"
+                        bg="rgb(38,38,38)"
+                        border="0"
+                        _focus={{ boxShadow: 'none' }}
+                      >
+                        <PopoverBody>
+                          <div className="menu pb-[8px] max-w-[350px] flex flex-col overflow-hidden rounded-[0.8rem] ">
+                            <h3 className="menu_title">Information</h3>
                             <ul>
-                              <li onClick={handleSubChange}>
-                                {subsEnabled && <Selected />}English
-                              </li>
-                              <li onClick={handleTurnOffSub}>{!subsEnabled && <Selected />} Off</li>
+                              <li>{currentSource?.name}</li>
+                              <li>Size: {formatBytes(currentSource?.size)}</li>
+                              <li>Sub: {subName}</li>
                             </ul>
                           </div>
-                        )}
-                      </div>
-                    }
-                  >
-                    <Button icon={<Subtitles />} />
-                  </ToolTip>
-
+                        </PopoverBody>
+                      </PopoverContent>
+                    )}
+                  </Popover>
                   <Spacing />
-
+                  {/* Quality and Subtitles  */}
+                  <Popover trigger="hover" offset={[-125, 10]}>
+                    <PopoverTrigger>
+                      <Button icon={<Subtitles />} />
+                    </PopoverTrigger>
+                    {sourceList.length !== 0 && (
+                      <PopoverContent
+                        width="auto"
+                        bg="rgb(38,38,38)"
+                        border="0"
+                        _focus={{ boxShadow: 'none' }}
+                      >
+                        <PopoverBody>
+                          <div className="w-[450px] menu pb-40 inline-flex overflow-hidden rounded-[0.8rem]">
+                            <div className="quality flex-grow flex-shrink">
+                              <h3 className="menu_title">Quality</h3>
+                              <ul>
+                                {sourceList.map((item) => {
+                                  if (item.url) {
+                                    return (
+                                      <li
+                                        onClick={() => handleSourceChange(item.quality)}
+                                        key={item.url}
+                                      >
+                                        {item.selected && <Selected />} {item.quality}
+                                      </li>
+                                    );
+                                  }
+                                  return null;
+                                })}
+                              </ul>
+                            </div>
+                            {vttURL && (
+                              <div className="subtitles quality flex-grow flex-shrink">
+                                <h3 className="menu_title">Subtitles</h3>
+                                <ul>
+                                  <li onClick={handleSubChange}>
+                                    {subsEnabled && <Selected />}English
+                                  </li>
+                                  <li onClick={handleTurnOffSub}>
+                                    {!subsEnabled && <Selected />} Off
+                                  </li>
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        </PopoverBody>
+                      </PopoverContent>
+                    )}
+                  </Popover>
+                  <Spacing />
                   <Button onClick={onToggleFullscreen} icon={<FullScreen />} />
                 </div>
               </div>

@@ -1,6 +1,6 @@
 function SeekForward() {
   return (
-    <div className="h-[44px] w-[44px] flex items-center justify-center ">
+    <div className="h-[25px] w-[25px] md:h-[35px] md:w-[35px] lg:h-[44px] lg:w-[44px] flex items-center justify-center ">
       <svg className="w-full h-full" viewBox="0 0 24 24">
         <g id="forward-10">
           <path
