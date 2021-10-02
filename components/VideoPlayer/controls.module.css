@@ -1,0 +1,46 @@
+.menu {
+  background: rgb(38, 38, 38);
+  user-select: none;
+}
+.quality {
+  flex-basis: 0%;
+}
+
+.menu_title {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  letter-spacing: 0.01rem;
+  line-height: 34px;
+  font-size: 15px;
+  padding: 8px 15px;
+  @apply lg:text-[28px] lg:py-[21px] lg:px-[60px];
+}
+
+.menu_title ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px 0px 8px;
+}
+
+.menu ul li {
+  cursor: pointer;
+  position: relative;
+  font-size: 15px;
+  padding: 8px 15px;
+  line-height: 26px;
+  @apply lg:py-[21px] lg:px-[60px] lg:text-[21px];
+}
+
+.quality_title {
+  padding: 8px 55px;
+}
+
+.quality_menu ul li {
+  padding: 21px 55px;
+}
+
+.menu ul li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

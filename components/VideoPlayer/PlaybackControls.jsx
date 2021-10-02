@@ -17,9 +17,11 @@ import {
 } from '@chakra-ui/react';
 import { forwardRef, useRef } from 'react';
 import { BsFiles } from 'react-icons/bs';
+import { isMobile } from 'react-device-detect';
 import usePlaybackControls from '../../hooks/usePlaybackControls';
 import { formatBytes } from '../../utils/utils';
 import Button from './Button';
+import styles from './controls.module.css';
 import {
   FullScreen,
   Info,
@@ -97,6 +99,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                       role="group"
                     >
                       <Tooltip
+                        color="#f2f2f2"
                         portalProps={{ containerRef: fullscreenRef }}
                         offset={[mouseLeft, 8]}
                         placement="top-start"
@@ -120,7 +123,13 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                           <SliderFilledTrack bg="red" sx={{ border: 0 }} />
                         </SliderTrack>
                       </Tooltip>
-                      <Tooltip placement="top" label={elapsedTime} fontSize="lg" bg="rgb(38,38,38)">
+                      <Tooltip
+                        color="#f2f2f2"
+                        placement="top"
+                        label={elapsedTime}
+                        fontSize="lg"
+                        bg="rgb(38,38,38)"
+                      >
                         <SliderThumb
                           bg="red"
                           sx={{
@@ -216,7 +225,12 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                   {/* Source List Menu */}
 
                   {selectedSourceList.length !== 0 && (
-                    <Menu isLazy placement="top-start" boundary="scrollParent">
+                    <Menu
+                      offset={[isMobile ? -250 : 0, 10]}
+                      isLazy
+                      placement="top-start"
+                      boundary="scrollParent"
+                    >
                       <MenuButton
                         as={Button}
                         icon={
@@ -230,8 +244,8 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                       <MenuList
                         bg="rgb(38,38,38)"
                         border="0"
-                        maxW={{ base: '500px', md: '1000px' }}
-                        sx={{ overflowY: 'auto', maxH: '800px' }}
+                        maxW={{ base: '500px', md: '500px', lg: '800px' }}
+                        sx={{ overflowY: 'auto', maxH: isMobile ? '275px' : '750px' }}
                       >
                         {selectedSourceList.map((source, i) => (
                           <MenuItem
@@ -261,8 +275,10 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                         _focus={{ boxShadow: 'none' }}
                       >
                         <PopoverBody>
-                          <div className="menu pb-[8px] max-w-[350px] flex flex-col overflow-hidden rounded-[0.8rem] ">
-                            <h3 className="menu_title">Information</h3>
+                          <div
+                            className={`${styles.menu} pb-[8px] max-w-[150px] md:max-w-[250px] max-h-[250px] lg:max-w-[350px] lg:max-h-[none] flex flex-col overflow-hidden rounded-[0.8rem]`}
+                          >
+                            <h3 className={styles.menu_title}>Information</h3>
                             <ul>
                               <li>{currentSource?.name}</li>
                               <li>Size: {formatBytes(currentSource?.size)}</li>
@@ -287,9 +303,13 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                         _focus={{ boxShadow: 'none' }}
                       >
                         <PopoverBody>
-                          <div className="w-[450px] menu pb-40 inline-flex overflow-hidden rounded-[0.8rem]">
-                            <div className="quality flex-grow flex-shrink">
-                              <h3 className="menu_title">Quality</h3>
+                          <div
+                            className={`${styles.menu} ${styles.quality_menu} lg:w-[450px] max-h-[250px] pb-40 inline-flex overflow-hidden rounded-[0.8rem]`}
+                          >
+                            <div className={`${styles.quality} flex-grow flex-shrink`}>
+                              <h3 className={`${styles.menu_title} ${styles.quality_title}`}>
+                                Quality
+                              </h3>
                               <ul>
                                 {sourceList.map((item) => {
                                   if (item.url) {
@@ -307,8 +327,8 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                               </ul>
                             </div>
                             {vttURL && (
-                              <div className="subtitles quality flex-grow flex-shrink">
-                                <h3 className="menu_title">Subtitles</h3>
+                              <div className={`${styles.quality} subtitles flex-grow flex-shrink`}>
+                                <h3 className={styles.menu_title}>Subtitles</h3>
                                 <ul>
                                   <li onClick={handleSubChange}>
                                     {subsEnabled && <Selected />}English
@@ -334,43 +354,6 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
         </div>
 
         <style jsx>{`
-          .menu {
-            background: rgb(38, 38, 38);
-            user-select: none;
-          }
-          .quality {
-            flex-basis: 0%;
-          }
-
-          .menu_title {
-            color: white;
-            font-weight: bold;
-            margin-bottom: 0px;
-            margin-top: 0px;
-            letter-spacing: 0.01rem;
-            line-height: 34px;
-            font-size: 28px;
-            padding: 21px 60px;
-          }
-
-          .menu_title ul {
-            list-style: none;
-            margin: 0px;
-            padding: 0px 0px 8px;
-          }
-
-          .menu ul li {
-            cursor: pointer;
-            position: relative;
-            padding: 21px 60px;
-            line-height: 26px;
-            font-size: 21px;
-          }
-
-          .menu ul li:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-          }
-
           .buffer_bar {
             height: 3.75px;
             width: ${parseFloat(loaded * 100)}%;
