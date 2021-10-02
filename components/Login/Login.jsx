@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { decodeToken } from 'react-jwt';
+import { useToast } from '@chakra-ui/react';
 import useStore from '../../store/store';
 import { login } from '../../utils/auth';
 import InputField from '../Input/Input';
@@ -10,9 +10,8 @@ import Loader from '../Loader/Loader';
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState();
-  const [variant, setVariant] = useState('');
 
+  const toast = useToast();
   const router = useRouter();
 
   const {
@@ -28,19 +27,27 @@ function Login() {
     const response = await login(data);
 
     if (response.status === 'success') {
-      setVariant('success');
-      useStore.setState({ isToastOpen: true });
-      setMessage(response.message);
+      toast({
+        title: 'Logged in successfully!',
+        status: 'success',
+        duration: 3000,
+        position: 'top',
+        isClosable: true,
+      });
 
-      const token = Cookies.get('x-auth-token');
-      const user = decodeToken(token);
+      const { token, user } = response;
+      Cookies.set('x-auth-token', JSON.stringify(token));
       Cookies.set('user', JSON.stringify(user));
       useStore.setState({ user });
       router.push('/');
     } else {
-      setVariant('error');
-      setMessage(response.message);
-      useStore.setState({ isToastOpen: true });
+      toast({
+        title: 'Invalid Credentials',
+        status: 'error',
+        duration: 5000,
+        position: 'top',
+        isClosable: true,
+      });
       setIsLoading(false);
     }
   };

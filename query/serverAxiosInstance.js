@@ -1,10 +1,10 @@
 import axios from 'axios';
 import config from '../config';
 
-const { PROXY_URL } = config;
+const { SERVER_URL } = config;
 
 const instance = axios.create({
-  baseURL: PROXY_URL,
+  baseURL: SERVER_URL,
   withCredentials: true,
 });
 

@@ -1,14 +1,16 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useToast } from '@chakra-ui/toast';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useStore from '../../store/store';
 import { signUp } from '../../utils/auth';
 import InputField from '../Input/Input';
 import Loader from '../Loader/Loader';
 
 function SignUp({ setIsSignedUp }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState();
-  const [variant, setVariant] = useState('');
+
+  const toast = useToast();
+
   const {
     register,
     handleSubmit,
@@ -22,15 +24,24 @@ function SignUp({ setIsSignedUp }) {
     setIsLoading(true);
     const response = await signUp(data);
     if (response.status === 'success') {
-      setVariant('success');
-      useStore.setState({ isToastOpen: true });
-      setMessage(response.message);
+      toast({
+        title: 'Account created successfully.',
+        status: 'success',
+        duration: 3000,
+        position: 'top',
+        isClosable: true,
+      });
+
       setIsLoading(false);
       setIsSignedUp(true);
     } else {
-      setVariant('error');
-      useStore.setState({ isToastOpen: true });
-      setMessage(response.message);
+      toast({
+        title: response.message,
+        status: 'error',
+        duration: 5000,
+        position: 'top',
+        isClosable: true,
+      });
       setIsLoading(false);
     }
   };
