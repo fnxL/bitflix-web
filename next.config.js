@@ -11,7 +11,7 @@ module.exports = {
     BACKDROP_URL: 'https://image.tmdb.org/t/p/w300',
     POSTER_URL: 'https://image.tmdb.org/t/p/w342',
     FALLBACK_URL: 'https://i.stack.imgur.com/y9DpT.jpg',
-    PROXY_URL: 'http://127.0.0.1:3000/api', // cloudflare end url
+    PROXY_URL: 'https://bitflix.pages.dev/api', // cloudflare end url
     SERVER_URL: 'https://bit-flix.herokuapp.com/api',
   },
   async rewrites() {
