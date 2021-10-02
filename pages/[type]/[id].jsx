@@ -2,9 +2,9 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import {
+  AuthGuard,
   EpisodesContainer,
   Information,
-  Navbar,
   Recommendations,
   SkeletonBanner,
   VideoBanner,
@@ -65,4 +65,4 @@ DetailPage.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export default DetailPage;
+export default AuthGuard(DetailPage);

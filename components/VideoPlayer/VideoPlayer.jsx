@@ -1,17 +1,18 @@
+/* eslint-disable react/no-this-in-sfc */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/self-closing-comp */
-import { Alert } from '@mui/material';
+import { Alert, AlertIcon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import shallow from 'zustand/shallow';
-import { Spinner } from '..';
 import useVideoPlayerStore from '../../store/videoPlayerStore';
 import { formatTime } from '../../utils/utils';
 import { Back } from './Icons';
 import PlaybackControls from './PlaybackControls';
 import PlaybackNotification from './PlaybackNotification';
+import { Spinner } from '..';
 
 let count = 0;
 
@@ -30,6 +31,7 @@ const VideoPlayer = ({ onError }) => {
       ],
       shallow
     );
+
   const router = useRouter();
   const playerRef = useRef();
   const controlsRef = useRef();
@@ -80,8 +82,23 @@ const VideoPlayer = ({ onError }) => {
     fullscreenRef,
   };
 
+  // update track visibility
   useEffect(() => {
-    if (playerRef.current) playerRef.current.seekTo(currentTime);
+    const videoElement = playerRef.current?.getInternalPlayer();
+    if (videoElement) {
+      if (videoElement?.textTracks[0]) videoElement.textTracks[0].mode = 'hidden';
+    }
+
+    const timeout = setTimeout(() => {
+      if (videoElement)
+        if (videoElement?.textTracks[0]) videoElement.textTracks[0].mode = 'showing';
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [currentSource, vttURL]);
+
+  useEffect(() => {
+    if (playerRef.current && currentTime !== 0) playerRef.current?.seekTo(currentTime);
   }, [currentSource]);
 
   return (
@@ -90,22 +107,49 @@ const VideoPlayer = ({ onError }) => {
       onMouseMove={handleVisibility}
       className="video_player w-[100vw] h-[100vh]"
     >
-      {buffering && <Spinner />}
+      {buffering && <Spinner color="red.500" />}
       <div className="video_container w-full h-full left-0 absolute m-0 overflow-hidden p-0 top-0">
         {error && (
-          <Alert variant="filled" severity="error">
+          <Alert status="error">
+            <AlertIcon />
             {error}
           </Alert>
         )}
-        {vttURL && (
+
+        {currentSource && !vttURL && (
           <ReactPlayer
             className="video"
             ref={playerRef}
-            url={currentSource.url}
+            url={currentSource?.url}
             config={{
               file: {
                 attributes: {
-                  crossOrigin: 'anonymous',
+                  crossOrigin: 'use-credentials',
+                },
+              },
+            }}
+            playing={playing}
+            muted={muted}
+            width="100%"
+            height="100%"
+            volume={volume}
+            onBuffer={() => useVideoPlayerStore.setState({ buffering: true })}
+            onBufferEnd={() => useVideoPlayerStore.setState({ buffering: false })}
+            onDuration={handleDuration}
+            onError={onError}
+            onProgress={handleProgress}
+          />
+        )}
+
+        {currentSource && vttURL && (
+          <ReactPlayer
+            className="video"
+            ref={playerRef}
+            url={currentSource?.url}
+            config={{
+              file: {
+                attributes: {
+                  crossOrigin: 'use-credentials',
                 },
                 tracks: [
                   {
@@ -145,7 +189,7 @@ const VideoPlayer = ({ onError }) => {
                   e.stopPropagation();
                   router.back();
                 }}
-                className="h-[44px] w-[44px]"
+                className="h-[25px] w-[25px] md:h-[35px] md:w-[35px] lg:h-[44px] lg:w-[44px]"
               >
                 <Back />
               </button>

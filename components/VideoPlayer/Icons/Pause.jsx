@@ -1,6 +1,6 @@
 function Pause() {
   return (
-    <div className="w-[44px] h-[44px] flex items-center justify-center ">
+    <div className="h-[25px] w-[25px] md:h-[35px] md:w-[35px] lg:h-[44px] lg:w-[44px] flex items-center justify-center ">
       <svg viewBox="0 0 24 24">
         <g id="pause">
           <path

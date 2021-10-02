@@ -1,6 +1,9 @@
 function PlaybackSpeed() {
   return (
-    <div className="h-[44px] w-[44px] flex items-center justify-center" role="presentation">
+    <div
+      className="h-[25px] w-[25px] md:h-[35px] md:w-[35px] lg:h-[44px] lg:w-[44px] flex items-center justify-center"
+      role="presentation"
+    >
       <svg viewBox="3 3 28 28" className="w-full h-full">
         <g id="speed">
           <path

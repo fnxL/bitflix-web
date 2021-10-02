@@ -1,6 +1,6 @@
 import { encode } from 'js-base64';
 import { useRouter } from 'next/router';
-import { FaChevronDown, FaPlay, FaPlus } from 'react-icons/fa';
+import { FaChevronDown, FaPlay } from 'react-icons/fa';
 import config from '../../config';
 import useGenreConversion from '../../hooks/useGenreConversion';
 import requests from '../../query/requests';
@@ -34,7 +34,11 @@ function RowPoster(result) {
     const reducedDate = dateToYearOnly(release_date);
 
     const url =
-      type === 'movie' ? `/movie/${id}${requests.movieDetails}` : `/tv/${id}${requests.tvDetails}`;
+      type === 'movie'
+        ? `/movie/${id}${requests.movieDetails}`
+        : type === 'tv'
+        ? `/tv/${id}${requests.tvDetails}`
+        : `/${media_type}/${id}${requests.tvDetails}`;
 
     axios.get(url).then((res) => {
       const imdb_id = res.data?.external_ids?.imdb_id;
@@ -43,9 +47,9 @@ function RowPoster(result) {
           title: fallbackTitle,
           imdb_id,
           year: reducedDate,
-          type,
-          episode_number: type === 'tv' && 1,
-          season_number: type === 'tv' && 1,
+          type: type === 'all' ? media_type : type,
+          episode_number: (type === 'tv' && 1) || (media_type === 'tv' && 1),
+          season_number: (type === 'tv' && 1) || (media_type === 'tv' && 1),
           episode_name: 'Pilot',
         })
       );
@@ -81,9 +85,6 @@ function RowPoster(result) {
             <div onClick={handlePlay} className="flex ml-[2px] items-center justify-center">
               <FaPlay />
             </div>
-          </button>
-          <button className={`${styles.icon}`}>
-            <FaPlus />
           </button>
           <button className={`${styles.icon}`}>
             <FaChevronDown />

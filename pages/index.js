@@ -2,15 +2,15 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useQuery } from 'react-query';
-import { Navbar, Row, VideoBanner } from '../components';
+import { AuthGuard, Row, VideoBanner } from '../components';
+import Layout from '../components/Layout';
+import { HomePageRows } from '../config/rowConfig';
 import useViewport from '../hooks/useViewport';
 import fetcher from '../query/fetcher';
 import requests from '../query/requests';
 import useStore from '../store/store';
-import { HomePageRows } from '../config/rowConfig';
-import { randomize } from '../utils/utils';
 import useVideoPlayerStore from '../store/videoPlayerStore';
-import Layout from '../components/Layout';
+import { randomize } from '../utils/utils';
 
 const url = requests.popularHotstarMovies;
 
@@ -67,4 +67,4 @@ function Home() {
 Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
-export default Home;
+export default AuthGuard(Home);

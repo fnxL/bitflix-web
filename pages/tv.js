@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useQuery } from 'react-query';
-import { Navbar, Row, VideoBanner } from '../components';
+import { AuthGuard, Row, VideoBanner } from '../components';
 import Layout from '../components/Layout';
 import { tvPageRows } from '../config/rowConfig';
 import useViewport from '../hooks/useViewport';
@@ -66,4 +66,4 @@ Tv.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export default Tv;
+export default AuthGuard(Tv);

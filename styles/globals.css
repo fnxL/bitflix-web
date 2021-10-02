@@ -49,11 +49,12 @@ a {
 video::cue {
   background-color: transparent;
   margin-bottom: 100px;
-  font-size: 43px;
+  font-size: 25px;
   color: #ffffff;
   line-height: normal;
   font-weight: bolder;
   text-shadow: #000000 0px 0px 7px;
+  @apply lg:text-[43px] md:text-[35px];
 }
 
 video::-webkit-media-text-track-container {

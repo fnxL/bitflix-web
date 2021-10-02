@@ -1,4 +1,6 @@
 /* eslint-disable object-shorthand */
+import moment from 'moment';
+
 export const getOneMonthAgoReleaseDate = () => {
   const date = new Date();
   date.setMonth(date.getMonth() - 1);
@@ -14,7 +16,7 @@ export const dateToYearOnly = (date) => {
 
 export const capitalizeFirstLetter = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export const randomize = (data) => Math.floor(Math.random() * data.length);
+export const randomize = (data) => Math.floor(Math.random() * data?.length);
 
 export const truncate = (text, n) => (text?.length > n ? `${text.substr(0, n - 1)}...` : text);
 
@@ -53,11 +55,10 @@ export const getMaturityRating = (data, type) => {
 
 export const formatTime = (seconds) => {
   if (Number.isNaN(seconds)) return '00:00';
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.round(seconds % 60);
-  // eslint-disable-next-line prefer-template
-  return [h, m > 9 ? m : h ? '0' + m : m || '0', s > 9 ? s : '0' + s].filter(Boolean).join(':');
+  return moment
+    .utc(seconds * 1000)
+    .format('HH:mm:ss')
+    .replace(/^0(?:0:0?)?/, '');
 };
 
 export const watchProviders = {
@@ -135,5 +136,5 @@ export function formatBytes(bytes, decimals = 2) {
 
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
