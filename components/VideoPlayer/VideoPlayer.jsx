@@ -74,7 +74,8 @@ const VideoPlayer = ({ onError }) => {
   };
 
   const toggleFullscreen = () => {
-    screenfull.toggle(fullscreenRef.current);
+    screenfull.toggle(fullscreenRef.current, { navigationUI: 'hide' });
+    screen.orientation.lock('landscape');
   };
 
   const ref = {
