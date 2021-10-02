@@ -15,6 +15,7 @@ module.exports = {
     SERVER_URL: 'https://bit-flix.herokuapp.com/api',
   },
   async rewrites() {
+    console.log('rewrites');
     return [
       {
         source: '/v1/:path*',
