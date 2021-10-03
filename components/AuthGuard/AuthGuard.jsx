@@ -6,7 +6,7 @@ import { isExpired } from 'react-jwt';
 import useStore from '../../store/store';
 import { verifyUser } from '../../utils/auth';
 
-const AuthGuard = (WrappedComponent) => async (props) => {
+const AuthGuard = (WrappedComponent) => (props) => {
   const getLayout = WrappedComponent.getLayout || ((page) => page);
   if (typeof window !== 'undefined') {
     const router = useRouter();
@@ -21,15 +21,15 @@ const AuthGuard = (WrappedComponent) => async (props) => {
       return null;
     }
     if (user) {
-      const response = await verifyUser(token);
-
-      if (response.status === 'success') {
-        useStore.setState({ user: JSON.parse(user) });
-        // pass
-        return getLayout(<WrappedComponent {...props} />);
-      }
-      // fail
-      router.replace('/login');
+      verifyUser(token).then((response) => {
+        if (response.status === 'success') {
+          useStore.setState({ user: JSON.parse(user) });
+          // pass
+          return getLayout(<WrappedComponent {...props} />);
+        }
+        // fail
+        router.replace('/login');
+      });
     }
   }
   return null;
