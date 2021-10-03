@@ -244,8 +244,8 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                       <MenuList
                         bg="rgb(38,38,38)"
                         border="0"
-                        maxW={{ base: '500px', md: '500px', lg: '800px' }}
-                        sx={{ overflowY: 'auto', maxH: isMobile ? '275px' : '750px' }}
+                        maxW={{ base: '360px', md: '500px', lg: '768px' }}
+                        sx={{ overflowY: 'auto', maxH: isMobile ? '275px' : '600px' }}
                       >
                         {selectedSourceList.map((source, i) => (
                           <MenuItem
@@ -276,7 +276,11 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                       >
                         <PopoverBody>
                           <div
-                            className={`${styles.menu} pb-[8px] max-w-[150px] md:max-w-[250px] max-h-[250px] lg:max-w-[350px] lg:max-h-[none] flex flex-col overflow-hidden rounded-[0.8rem]`}
+                            className={`${
+                              styles.menu
+                            } pb-[8px] max-w-[150px] md:max-w-[250px] max-h-[400px] ${
+                              isMobile && 'md:max-h-[250px]'
+                            } lg:max-w-[350px] lg:max-h-[550px] flex flex-col overflow-hidden rounded-[0.8rem]`}
                           >
                             <h3 className={styles.menu_title}>Information</h3>
                             <ul>
@@ -291,7 +295,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                   </Popover>
                   <Spacing />
                   {/* Quality and Subtitles  */}
-                  <Popover trigger="hover" offset={[-125, 10]}>
+                  <Popover trigger="hover" offset={[-125, 10]} placement="top">
                     <PopoverTrigger>
                       <Button icon={<Subtitles />} />
                     </PopoverTrigger>
@@ -304,7 +308,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                       >
                         <PopoverBody>
                           <div
-                            className={`${styles.menu} ${styles.quality_menu} lg:w-[450px] max-h-[250px] lg:max-h-[none] pb-40 inline-flex overflow-hidden rounded-[0.8rem]`}
+                            className={`${styles.menu} ${styles.quality_menu} max-w-[350px] md:max-w-[350px] max-h-[250px] lg:max-w-[450px] lg:max-h-[550px] pb-40 inline-flex overflow-hidden rounded-[0.8rem]`}
                           >
                             <div className={`${styles.quality} flex-grow flex-shrink`}>
                               <h3 className={`${styles.menu_title} ${styles.quality_title}`}>
