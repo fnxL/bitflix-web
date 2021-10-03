@@ -56,8 +56,7 @@ function MyApp({ Component, pageProps }) {
           router.replace('/login');
         }
       });
-    }
-    router.replace('/login');
+    } else router.replace('/login');
   }, []);
 
   return getLayout(
