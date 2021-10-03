@@ -208,7 +208,7 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
                 </div>
                 {/* Title */}
                 <div
-                  className="invisible lg:visible flex title flex-grow min-h-0 min-w-0 relative ml-[5px] mr-[5px] pt-[5px]"
+                  className="title_container invisible flex title flex-grow min-h-0 min-w-0 relative ml-[5px] mr-[5px] pt-[5px]"
                   style={{ flexBasis: '14px' }}
                 >
                   <Spacing />
@@ -369,6 +369,12 @@ const PlaybackControls = forwardRef(({ onToggleFullscreen }, ref) => {
 
           .horizontal_progress_bar:hover .buffer_bar {
             height: 7.5px;
+          }
+
+          @media screen and (min-width: 1024px) {
+            .title_container {
+              visibility: unset;
+            }
           }
         `}</style>
       </div>
