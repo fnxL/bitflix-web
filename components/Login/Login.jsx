@@ -36,8 +36,8 @@ function Login() {
       });
 
       const { token, user } = response;
-      Cookies.set('token', token);
-      Cookies.set('user', JSON.stringify(user));
+      Cookies.set('token', token, { expires: 7 });
+      Cookies.set('user', JSON.stringify(user), { expires: 7 });
       useStore.setState({ user });
       router.push('/');
     } else {
