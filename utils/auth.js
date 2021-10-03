@@ -9,7 +9,7 @@ export const login = async (data) => {
   }
 };
 
-export const verifyToken = async (token) => {
+export const verifyUser = async (token) => {
   try {
     const { data: response } = await axios.get(`/auth/verify?token=${token}`);
     return response;

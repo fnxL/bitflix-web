@@ -4,8 +4,9 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { isExpired } from 'react-jwt';
 import useStore from '../../store/store';
+import { verifyUser } from '../../utils/auth';
 
-const AuthGuard = (WrappedComponent) => (props) => {
+const AuthGuard = (WrappedComponent) => async (props) => {
   const getLayout = WrappedComponent.getLayout || ((page) => page);
   if (typeof window !== 'undefined') {
     const router = useRouter();
@@ -19,9 +20,17 @@ const AuthGuard = (WrappedComponent) => (props) => {
       router.replace('/login');
       return null;
     }
-    if (user) useStore.setState({ user: JSON.parse(user) });
+    if (user) {
+      const response = await verifyUser(token);
 
-    return getLayout(<WrappedComponent {...props} />);
+      if (response.status === 'success') {
+        useStore.setState({ user: JSON.parse(user) });
+        // pass
+        return getLayout(<WrappedComponent {...props} />);
+      }
+      // fail
+      router.replace('/login');
+    }
   }
   return null;
 };
