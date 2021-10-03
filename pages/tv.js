@@ -41,7 +41,9 @@ function Tv() {
 
   return (
     <>
-      <Head>TV Shows</Head>
+      <Head>
+        <title>TV Shows</title>
+      </Head>
       <div className="overflow-hidden">
         <VideoBanner id={featured?.id} type="tv">
           {width > 1024 && <Row {...tvPageRows[0]} />}

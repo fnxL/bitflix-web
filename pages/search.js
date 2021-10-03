@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { AuthGuard, Poster } from '../components';
@@ -16,6 +17,9 @@ function Search() {
 
   return (
     <>
+      <Head>
+        <title>Search</title>
+      </Head>
       <div className="Search">
         {results && results.length > 0 && <h2 className="title">Search results for: {q}</h2>}
         <div className="search_container">

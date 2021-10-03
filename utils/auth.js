@@ -35,3 +35,21 @@ export const logOut = async () => {
     return error.response.data;
   }
 };
+
+export const getInviteKeys = async () => {
+  try {
+    const { data: response } = await axios.get('/auth/invitekeys');
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const generateKeys = async () => {
+  try {
+    const { data: response } = await axios.get('/auth/generatekey');
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

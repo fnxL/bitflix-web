@@ -1,3 +1,15 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useDisclosure } from '@chakra-ui/hooks';
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  useToast,
+} from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,7 +21,7 @@ import useOutSideClick from '../../hooks/useOutsideClick';
 import useScroll from '../../hooks/useScroll';
 import useViewPort from '../../hooks/useViewport';
 import useStore from '../../store/store';
-import { logOut } from '../../utils/auth';
+import { generateKeys, getInviteKeys, logOut } from '../../utils/auth';
 import ActiveLink from '../ActiveLink/ActiveLink';
 import Search from '../Search/Search';
 import styles from './Navbar.module.css';
@@ -22,9 +34,11 @@ function Navbar() {
   const mobileNavRef = useRef();
   const profileNavRef = useRef();
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [invitekeys, setInvitekeys] = useState([]);
 
   const user = JSON.parse(Cookies.get('user'));
-
+  const toast = useToast();
   useOutSideClick(mobileNavRef, () => {
     if (mobileNav) setMobileNav(false);
   });
@@ -42,8 +56,49 @@ function Navbar() {
     }
   };
 
+  const handleGetInviteKeys = async () => {
+    const response = await getInviteKeys();
+    if (response.status === 'success') {
+      setInvitekeys(response.keys);
+      onOpen();
+    }
+  };
+
+  const handleGenerateKeys = async () => {
+    const response = await generateKeys();
+    if (response.status === 'success') {
+      toast({
+        title: 'Invite key generated!',
+        position: 'top',
+        description: response.key,
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+    } else
+      toast({
+        title: 'Error',
+        description: response,
+        duration: 9000,
+        isClosable: true,
+        position: 'top',
+      });
+  };
+
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent bg="rgb(38,38,38)">
+          <ModalHeader>Invite Keys</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {invitekeys.map((key) => (
+              <p>{key.inviteKey}</p>
+            ))}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <nav className={`${styles.navbar__primary} ${isScrolled && styles.scrolled}`}>
         <div className={styles.navbar__left}>
           <div className="navbar__logo">
@@ -125,14 +180,10 @@ function Navbar() {
                   {user.username === 'admin' && (
                     <>
                       <li className="text-[#f2f2f2] block px-[15px] py-[5px] hover:underline">
-                        <Link href="/api/auth/generatekey">
-                          <a>Generate Invite key</a>
-                        </Link>
+                        <a onClick={handleGenerateKeys}>Generate Invite key</a>
                       </li>
                       <li className="text-[#f2f2f2] block px-[15px] py-[5px] hover:underline">
-                        <Link href="/api/auth/invitekeys">
-                          <a>Invite keys</a>
-                        </Link>
+                        <a onClick={handleGetInviteKeys}>Invite keys</a>
                       </li>
                     </>
                   )}
