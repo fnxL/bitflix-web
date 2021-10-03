@@ -36,7 +36,7 @@ function Login() {
       });
 
       const { token, user } = response;
-      Cookies.set('x-auth-token', JSON.stringify(token));
+      Cookies.set('token', token);
       Cookies.set('user', JSON.stringify(user));
       useStore.setState({ user });
       router.push('/');

@@ -3,23 +3,15 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SignUp } from '../components';
 import Login from '../components/Login/Login';
-import { verifyToken } from '../utils/auth';
 
 function LoginPage() {
   const [isSignedUp, setIsSignedUp] = useState(true);
   const router = useRouter();
 
   // Check if cookie is set
-  const token = Cookies.get('x-auth-token');
+  const token = Cookies.get('token');
   if (token) {
-    // Validate token from server.
-    const verify = async (token) => {
-      const response = await verifyToken(token);
-      return response;
-    };
-    verify(token).then((response) => {
-      if (response.status === 'success') router.push('/');
-    });
+    router.push('/');
   }
 
   return (
