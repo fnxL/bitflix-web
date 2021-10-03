@@ -35,7 +35,7 @@ function Navbar() {
   const handleLogout = async () => {
     const response = await logOut();
     if (response.status === 'success') {
-      Cookies.remove('x-auth-token');
+      Cookies.remove('token');
       Cookies.remove('user');
       useStore.setState({ user: null });
       router.push('/login');
