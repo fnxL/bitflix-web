@@ -10,7 +10,7 @@ const config = {
   FALLBACK_URL: process.env.FALLBACK_URL,
   PROXY_URL: process.env.PROXY_URL,
   TMDB_URL: process.env.TMDB_URl,
-  SERVER_URL: process.env.SERVER_URL,
+  SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
 };
 
 export default config;
