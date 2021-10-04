@@ -25,8 +25,21 @@ function RowPoster(result) {
 
   const handleRedirect = () => {
     if (type === 'all') {
-      router.push('/[type]/[id]', `/${media_type}/${id}`);
-    } else router.push('/[type]/[id]', `/${type}/${id}`);
+      router.push({
+        pathname: '/[type]/[id]',
+        query: {
+          type: media_type,
+          id,
+        },
+      });
+    } else
+      router.push({
+        pathname: '/[type]/[id]',
+        query: {
+          type,
+          id,
+        },
+      });
   };
 
   const handlePlay = (e) => {

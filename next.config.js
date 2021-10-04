@@ -1,7 +1,6 @@
 /* eslint-disable object-shorthand */
 module.exports = {
   reactStrictMode: true,
-  trailingSlash: true,
   env: {
     TMDB: 'e47e6864261ea10181fc486b7cf6aba5',
     FANART: '3a565b507ab4255eb92cb933687f1064',

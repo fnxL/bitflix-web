@@ -19,8 +19,21 @@ function Poster({ result, type }) {
 
   const handleRedirect = () => {
     if (type === 'all') {
-      router.push('/[type]/[id]', `/${type}/${id}`);
-    } else router.push('/[type]/[id]', `/${type}/${id}`);
+      router.push({
+        pathname: '/[type]/[id]',
+        query: {
+          type,
+          id,
+        },
+      });
+    } else
+      router.push({
+        pathname: '/[type]/[id]',
+        query: {
+          type,
+          id,
+        },
+      });
   };
 
   const handlePlay = (e) => {
