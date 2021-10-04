@@ -19,8 +19,8 @@ function Poster({ result, type }) {
 
   const handleRedirect = () => {
     if (type === 'all') {
-      router.push(`/${type}/${id}`);
-    } else router.push(`/${type}/${id}`);
+      router.push('/[type]/[id]', `/${type}/${id}`);
+    } else router.push('/[type]/[id]', `/${type}/${id}`);
   };
 
   const handlePlay = (e) => {

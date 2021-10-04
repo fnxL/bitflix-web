@@ -23,7 +23,7 @@ function RecomPoster({ data }) {
   const { type } = router.query;
 
   const handleRedirect = () => {
-    router.push(`/${type}/${id}`);
+    router.push('/[type]/[id]', `/${type}/${id}`);
   };
 
   return (
