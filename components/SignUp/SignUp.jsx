@@ -103,7 +103,7 @@ function SignUp({ setIsSignedUp }) {
           <InputField
             type="password"
             name="check_password"
-            placeholder="Configm your password"
+            placeholder="Confirm your password"
             validationMessage="Passwords should match"
             register={register}
             errors={errors}
