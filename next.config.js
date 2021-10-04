@@ -12,14 +12,13 @@ module.exports = {
     POSTER_URL: 'https://image.tmdb.org/t/p/w342',
     FALLBACK_URL: 'https://i.stack.imgur.com/y9DpT.jpg',
     // PROXY_URL: 'https://bitflix.pages.dev/v1', // cloudflare end url
-    SERVER_URL: 'https://bit-flix.herokuapp.com/api',
   },
   // async rewrites() {
   //   console.log('rewrites');
   //   return [
   //     {
   //       source: '/v1/:path*',
-  //       destination: 'https://bit-flix.herokuapp.com/api/:path*', // server url, proxy requests to backend
+  //       destination: 'SERVER_URL/api/:path*', // server url, proxy requests to backend
   //     },
   //   ];
   // },
