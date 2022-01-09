@@ -27,8 +27,10 @@ function Home() {
     enabled: isMount,
   });
 
+  const router = useRouter();
   useEffect(() => {
     setIsMount(true);
+    router.push('/maintenance')
   }, []);
 
   useEffect(() => {

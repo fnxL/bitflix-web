@@ -9,6 +9,9 @@ function LoginPage() {
   const [isSignedUp, setIsSignedUp] = useState(true);
   const router = useRouter();
 
+  useEffect(() => {
+    router.replace('/maintenance')
+  }, [])
   // Check if cookie is set
   const token = Cookies.get('token');
   if (token) {

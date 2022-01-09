@@ -57,7 +57,7 @@ function MyApp({ Component, pageProps }) {
     //     }
     //   });
     // } else router.replace('/login');
-    router.replace('/maintenance')
+    router.push('/maintenance')
   }, []);
 
   return getLayout(
