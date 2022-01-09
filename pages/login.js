@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { SignUp } from '../components';
 import Login from '../components/Login/Login';
 
