@@ -49,14 +49,15 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
-    const token = Cookies.get('token');
-    if (token) {
-      verifyUser(token).then((response) => {
-        if (!response.status === 'success') {
-          router.replace('/login');
-        }
-      });
-    } else router.replace('/login');
+    // const token = Cookies.get('token');
+    // if (token) {
+    //   verifyUser(token).then((response) => {
+    //     if (!response.status === 'success') {
+    //       router.replace('/login');
+    //     }
+    //   });
+    // } else router.replace('/login');
+    router.replace('/maintenance')
   }, []);
 
   return getLayout(
